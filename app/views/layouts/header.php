@@ -33,17 +33,6 @@
 
 <body>
 
-<?php include 'includes/header.php'; ?>
-
-<?php include 'includes/hero.php'; ?>
-
-<?php include 'includes/categorias.php'; ?>
-
-<?php include 'includes/productos.php'; ?>
-
-<?php include 'includes/beneficios.php'; ?>
-
-<?php include 'includes/footer.php'; ?>
 <header>
 
     <div class="logo">
@@ -81,15 +70,3 @@
     </div>
 
 </header>
-
-
-
-
-
-
-
-<script src="assets/js/script.js"></script>
-
-</body>
-
-</html>
