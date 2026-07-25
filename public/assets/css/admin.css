@@ -1,0 +1,14 @@
+body{
+    margin:0;
+    font-family:Poppins,sans-serif;
+    background:#f5f7fa;
+}
+
+h1{
+    text-align:center;
+    margin-top:50px;
+}
+
+p{
+    text-align:center;
+}
