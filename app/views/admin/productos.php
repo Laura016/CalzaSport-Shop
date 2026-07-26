@@ -130,23 +130,28 @@ alt="<?php echo $producto['nombre']; ?>">
 
                     </td>
 
-                    <td>
+<td class="acciones">
 
-                        <a
-                        href="admin.php?accion=editar&id=<?php echo $producto['id']; ?>">
+    <a
+        href="admin.php?accion=editar&id=<?php echo $producto['id']; ?>"
+        class="btn-edit"
+        title="Editar">
 
-                        ✏️
+        <i class="fa-solid fa-pen-to-square"></i>
 
-                        </a>
+    </a>
 
-                        <a
-                        href="admin.php?accion=eliminar&id=<?php echo $producto['id']; ?>">
+    <a
+        href="admin.php?accion=eliminar&id=<?php echo $producto['id']; ?>"
+        class="btn-delete"
+        title="Eliminar"
+        onclick="return confirm('¿Seguro que deseas eliminar este producto?')">
 
-                        🗑️
+        <i class="fa-solid fa-trash"></i>
 
-                        </a>
+    </a>
 
-                    </td>
+</td>
 
                 </tr>
 

@@ -119,3 +119,66 @@ table.dataTable tbody tr:hover{
     background:#f5f7fb;
 
 }
+
+/*=============================
+BOTONES DE ACCIONES
+==============================*/
+
+.acciones{
+
+    white-space: nowrap;
+
+}
+
+.btn-edit,
+.btn-delete{
+
+    width:40px;
+
+    height:40px;
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:10px;
+
+    color:white;
+
+    text-decoration:none;
+
+    transition:.3s;
+
+    margin-right:6px;
+
+}
+
+.btn-edit{
+
+    background:#2563EB;
+
+}
+
+.btn-edit:hover{
+
+    background:#1D4ED8;
+
+    transform:translateY(-2px);
+
+}
+
+.btn-delete{
+
+    background:#DC2626;
+
+}
+
+.btn-delete:hover{
+
+    background:#B91C1C;
+
+    transform:translateY(-2px);
+
+}
