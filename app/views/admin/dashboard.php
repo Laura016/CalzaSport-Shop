@@ -1,27 +1,87 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
 
-<head>
+require_once 'layouts/header.php';
 
-<meta charset="UTF-8">
+require_once 'layouts/sidebar.php';
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+?>
 
-<title>Panel Administrativo</title>
+<main class="main-content">
 
-<link rel="stylesheet" href="../../public/assets/css/admin.css">
+    <div class="topbar">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+        <h1>Dashboard</h1>
 
-</head>
+        <div class="admin-user">
 
-<body>
+            <i class="fa-solid fa-user"></i>
 
-<h1>Panel Administrativo CalzaSport</h1>
+            <span>Administrador</span>
 
-<p>Bienvenida al panel de administración.</p>
+        </div>
 
-</body>
+    </div>
 
-</html>
+    <section class="dashboard-content">
+
+        <h2>Bienvenida a CalzaSport</h2>
+
+        <p>
+
+            Desde este panel podrás administrar toda tu tienda.
+
+        </p>
+
+        <div class="stats-grid">
+
+    <div class="stat-card">
+
+        <i class="fa-solid fa-shoe-prints"></i>
+
+        <h3>Productos</h3>
+
+        <span>5</span>
+
+    </div>
+
+    <div class="stat-card">
+
+        <i class="fa-solid fa-box"></i>
+
+        <h3>Disponibles</h3>
+
+        <span>5</span>
+
+    </div>
+
+    <div class="stat-card">
+
+        <i class="fa-solid fa-dollar-sign"></i>
+
+        <h3>Ventas</h3>
+
+        <span>$0</span>
+
+    </div>
+
+    <div class="stat-card">
+
+        <i class="fa-solid fa-users"></i>
+
+        <h3>Clientes</h3>
+
+        <span>0</span>
+
+    </div>
+
+</div>
+
+    </section>
+
+</main>
+
+<?php
+
+require_once 'layouts/footer.php';
+
+?>

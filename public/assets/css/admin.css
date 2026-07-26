@@ -1,14 +1,25 @@
-body{
+*{
+
     margin:0;
-    font-family:Poppins,sans-serif;
-    background:#f5f7fa;
+
+    padding:0;
+
+    box-sizing:border-box;
+
 }
 
-h1{
-    text-align:center;
-    margin-top:50px;
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:#f4f6f9;
+
 }
 
-p{
-    text-align:center;
+.admin-layout{
+
+    display:flex;
+
+    min-height:100vh;
+
 }
