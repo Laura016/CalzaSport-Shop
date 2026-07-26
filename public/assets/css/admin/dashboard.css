@@ -1,7 +1,40 @@
 /* ===== CONTENIDO ===== */
 
+.left-topbar{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+}
+
+#menuToggle{
+
+    display:none;
+
+    border:none;
+
+    background:#2563EB;
+
+    color:white;
+
+    width:46px;
+
+    height:46px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+}
+
 .main-content{
     flex:1;
+    min-width:0;
     padding:40px;
 }
 

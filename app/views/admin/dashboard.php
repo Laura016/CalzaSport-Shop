@@ -10,17 +10,27 @@ require_once 'layouts/sidebar.php';
 
     <div class="topbar">
 
+    <div class="left-topbar">
+
+        <button id="menuToggle">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
         <h1>Dashboard</h1>
 
-        <div class="admin-user">
+    </div>
 
-            <i class="fa-solid fa-user"></i>
+    <div class="admin-user">
 
-            <span>Administrador</span>
+        <i class="fa-solid fa-user"></i>
 
-        </div>
+        <span>Administrador</span>
 
     </div>
+
+</div>
 
     <section class="dashboard-content">
 

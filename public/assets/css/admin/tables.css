@@ -46,11 +46,29 @@
 
     object-fit:cover;
 
-    border-radius:10px;
+    border-radius:14px;
+
+    border:1px solid #E5E7EB;
+
+    transition:transform .3s ease;
+
+}
+
+.img-producto:hover{
+
+    transform:scale(1.08);
 
 }
 
 .btn-primary{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:10px;
 
     background:#2563EB;
 
@@ -58,20 +76,46 @@
 
     text-decoration:none;
 
-    padding:12px 20px;
+    padding:12px 24px;
 
-    border-radius:10px;
+    border-radius:12px;
 
-    display:flex;
+    font-weight:600;
 
-    align-items:center;
-
-    gap:10px;
+    transition:all .3s ease;
 
 }
 
 .btn-primary:hover{
 
     background:#1d4ed8;
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 25px rgba(37,99,235,.25);
+
+}
+
+.dataTables_wrapper{
+
+    margin-top:20px;
+
+}
+
+.dataTables_filter{
+
+    margin-bottom:20px;
+
+}
+
+.dataTables_length{
+
+    margin-bottom:20px;
+
+}
+
+table.dataTable tbody tr:hover{
+
+    background:#f5f7fb;
 
 }

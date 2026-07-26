@@ -9,17 +9,27 @@ require_once 'layouts/sidebar.php';
 
     <div class="topbar">
 
+    <div class="left-topbar">
+
+        <button id="menuToggle">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
         <h1>Productos</h1>
 
-        <a href="admin.php?accion=nuevo" class="btn-primary">
-
-            <i class="fa-solid fa-plus"></i>
-
-            Nuevo Producto
-
-        </a>
-
     </div>
+
+    <a href="admin.php?accion=nuevo" class="btn-primary">
+
+        <i class="fa-solid fa-plus"></i>
+
+        Nuevo Producto
+
+    </a>
+
+</div>
 
     <div class="table-container">
 
@@ -62,8 +72,9 @@ require_once 'layouts/sidebar.php';
                     <td>
 
                         <img
-                        src="uploads/<?php echo $producto['imagen']; ?>"
-                        class="img-producto">
+src="assets/img/<?php echo $producto['imagen']; ?>"
+class="img-producto"
+alt="<?php echo $producto['nombre']; ?>">
 
                     </td>
 
