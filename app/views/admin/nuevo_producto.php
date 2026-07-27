@@ -1,3 +1,10 @@
+<?php
+
+require_once 'layouts/header.php';
+require_once 'layouts/sidebar.php';
+
+?>
+
 <main class="main-content">
 
     <div class="topbar">
@@ -18,121 +25,87 @@
 
         <form action="admin.php?accion=guardar" method="POST" enctype="multipart/form-data">
 
-            <div class="form-grid">
+           <div class="form-grid">
 
-                <div class="form-group">
+    <div class="form-left">
 
-                    <label>Nombre</label>
+        <div class="form-group">
+            <label>Nombre</label>
+            <input type="text" name="nombre" required>
+        </div>
 
-                    <input type="text" name="nombre" required>
+        <div class="form-group">
+            <label>Referencia</label>
+            <input type="text" name="referencia" required>
+        </div>
 
-                </div>
+        <div class="form-group">
+            <label>Marca</label>
+            <input type="text" name="marca">
+        </div>
 
-                <div class="form-group">
+        <div class="form-group">
+            <label>Categoría</label>
+            <select name="categoria">
+                <option>Running</option>
+                <option>Casual</option>
+                <option>Baloncesto</option>
+                <option>Training</option>
+            </select>
+        </div>
 
-                    <label>Referencia</label>
+        <div class="form-group">
+            <label>Precio</label>
+            <input type="number" name="precio" required>
+        </div>
 
-                    <input type="text" name="referencia" required>
+        <div class="form-group">
+            <label>Stock</label>
+            <input type="number" name="stock" value="1">
+        </div>
 
-                </div>
+        <div class="form-group">
+            <label>Tallas</label>
+            <input type="text" name="tallas" placeholder="37,38,39,40">
+        </div>
 
-                <div class="form-group">
+        <div class="form-group">
+            <label>Destacado</label>
+            <select name="destacado">
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+            </select>
+        </div>
 
-                    <label>Marca</label>
+    </div>
 
-                    <input type="text" name="marca">
+    <div class="form-right">
 
-                </div>
+        <div class="form-group">
 
-                <div class="form-group">
+            <label>Imagen del producto</label>
 
-                    <label>Categoría</label>
+            <input type="file" name="imagen" id="imagen">
 
-                    <select name="categoria">
+            <div class="preview-container">
 
-                        <option>Running</option>
-                        <option>Casual</option>
-                        <option>Baloncesto</option>
-                        <option>Training</option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Precio</label>
-
-                    <input type="number" name="precio" required>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Stock</label>
-
-                    <input type="number" name="stock" value="1">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Tallas</label>
-
-                    <input type="text"
-                           name="tallas"
-                           placeholder="37,38,39,40">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Estado</label>
-
-                    <select name="estado">
-
-                        <option value="Disponible">Disponible</option>
-
-                        <option value="Agotado">Agotado</option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Destacado</label>
-
-                    <select name="destacado">
-
-                        <option value="1">Sí</option>
-
-                        <option value="0">No</option>
-
-                    </select>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Imagen</label>
-
-                    <input type="file"
-                           name="imagen"
-                           accept="image/*"
-                           required>
-
-                </div>
+                <img id="previewImagen"
+                     src="assets/img/no-image.png"
+                     alt="Vista previa">
 
             </div>
+
+        </div>
+
+    </div>
+
+</div>
 
             <div class="form-group">
 
                 <label>Descripción</label>
 
-                <textarea
-                    name="descripcion"
-                    rows="5">
+                <textarea name="descripcion" rows="5">
                 </textarea>
 
             </div>
@@ -150,3 +123,9 @@
     </div>
 
 </main>
+
+<?php
+
+require_once 'layouts/footer.php';
+
+?>

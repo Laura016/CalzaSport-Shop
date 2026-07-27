@@ -32,29 +32,17 @@ class AdminController
     }
 
     // Guardar producto
-    public function guardarProducto()
+   public function guardarProducto()
 {
-    // Verificar que se envió una imagen
-    if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] != 0) {
+    // Subir la imagen usando la función reutilizable
+    $nombreImagen = $this->subirImagen($_FILES['imagen']);
 
-        die("Debes seleccionar una imagen.");
+    if ($nombreImagen === null) {
 
-    }
-
-    // Nombre original
-    $nombreImagen = time() . "_" . basename($_FILES['imagen']['name']);
-
-    // Ruta donde se guardará
-    $rutaDestino = __DIR__ . "/../../public/assets/img/" . $nombreImagen;
-
-    // Copiar imagen
-    if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
-
-        die("No se pudo subir la imagen.");
+        die("Debes seleccionar una imagen válida (JPG, JPEG, PNG o WEBP, máximo 5 MB).");
 
     }
 
-    // Preparar datos
     $datos = [
 
         "nombre" => $_POST['nombre'],
@@ -74,8 +62,6 @@ class AdminController
         "tallas" => $_POST['tallas'],
 
         "stock" => $_POST['stock'],
-
-        "estado" => $_POST['estado'],
 
         "destacado" => $_POST['destacado']
 
@@ -145,8 +131,6 @@ class AdminController
 
         "stock" => $_POST['stock'],
 
-        "estado" => $_POST['estado'],
-
         "destacado" => $_POST['destacado']
 
     ];
@@ -160,7 +144,66 @@ class AdminController
 
     // Eliminar producto
     public function eliminarProducto($id)
-    {
+{
+    $producto = $this->producto->obtenerPorId($id);
+
+    if (!$producto) {
+        die("Producto no encontrado.");
+    }
+
+    $rutaImagen = __DIR__ . "/../../public/assets/img/" . $producto['imagen'];
+
+    if (file_exists($rutaImagen)) {
+        unlink($rutaImagen);
+    }
+
+    $this->producto->eliminar($id);
+
+    header("Location: admin.php?accion=productos");
+
+    exit;
+ 
+}
+
+private function subirImagen($archivo)
+{
+    if (
+        !isset($archivo) ||
+        $archivo['error'] != 0 ||
+        empty($archivo['name'])
+    ) {
+        return null;
+    }
+
+    $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+
+    $permitidas = ['jpg', 'jpeg', 'png', 'webp'];
+
+    if (!in_array($extension, $permitidas)) {
+        return null;
+    }
+
+    // Tamaño máximo: 5 MB
+    if ($archivo['size'] > 5 * 1024 * 1024) {
+        return null;
+    }
+
+    $nombre = uniqid('producto_') . "." . $extension;
+
+    $ruta = __DIR__ . "/../../public/assets/img/" . $nombre;
+
+    if (move_uploaded_file($archivo['tmp_name'], $ruta)) {
+
+        return $nombre;
 
     }
+
+    return null;
+}
+public function inventario()
+{
+    $productos = $this->producto->obtenerProductos();
+
+    require_once '../app/views/admin/inventario.php';
+}
 }

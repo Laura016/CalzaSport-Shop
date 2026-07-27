@@ -1,3 +1,10 @@
+<?php
+
+require_once 'layouts/header.php';
+require_once 'layouts/sidebar.php';
+
+?>
+
 <main class="main-content">
 
     <div class="topbar">
@@ -8,7 +15,7 @@
                 <i class="fa-solid fa-bars"></i>
             </button>
 
-            <h1>Nuevo Producto</h1>
+            <h1>Editar Producto</h1>
 
         </div>
 
@@ -16,7 +23,11 @@
 
     <div class="form-container">
 
-        <form action="admin.php?accion=guardar" method="POST" enctype="multipart/form-data">
+        <form action="admin.php?accion=actualizar" method="POST" enctype="multipart/form-data">
+
+            <input type="hidden" name="id" value="<?php echo $producto['id']; ?>">
+
+            <input type="hidden" name="imagen_actual" value="<?php echo $producto['imagen']; ?>">
 
             <div class="form-grid">
 
@@ -24,7 +35,8 @@
 
                     <label>Nombre</label>
 
-                    <input type="text" name="nombre" required>
+                    <input type="text" name="nombre" value="<?php echo htmlspecialchars($producto['nombre']); ?>"
+                        required>
 
                 </div>
 
@@ -32,7 +44,8 @@
 
                     <label>Referencia</label>
 
-                    <input type="text" name="referencia" required>
+                    <input type="text" name="referencia"
+                        value="<?php echo htmlspecialchars($producto['referencia']); ?>" required>
 
                 </div>
 
@@ -40,7 +53,7 @@
 
                     <label>Marca</label>
 
-                    <input type="text" name="marca">
+                    <input type="text" name="marca" value="<?php echo htmlspecialchars($producto['marca']); ?>">
 
                 </div>
 
@@ -50,10 +63,25 @@
 
                     <select name="categoria">
 
-                        <option>Running</option>
-                        <option>Casual</option>
-                        <option>Baloncesto</option>
-                        <option>Training</option>
+                        <option value="Running" <?php if ($producto['categoria'] == "Running")
+                            echo "selected"; ?>>
+                            Running
+                        </option>
+
+                        <option value="Casual" <?php if ($producto['categoria'] == "Casual")
+                            echo "selected"; ?>>
+                            Casual
+                        </option>
+
+                        <option value="Baloncesto" <?php if ($producto['categoria'] == "Baloncesto")
+                            echo "selected"; ?>>
+                            Baloncesto
+                        </option>
+
+                        <option value="Training" <?php if ($producto['categoria'] == "Training")
+                            echo "selected"; ?>>
+                            Training
+                        </option>
 
                     </select>
 
@@ -63,7 +91,7 @@
 
                     <label>Precio</label>
 
-                    <input type="number" name="precio" required>
+                    <input type="number" name="precio" value="<?php echo $producto['precio']; ?>" required>
 
                 </div>
 
@@ -71,7 +99,7 @@
 
                     <label>Stock</label>
 
-                    <input type="number" name="stock" value="1">
+                    <input type="number" name="stock" value="<?php echo $producto['stock']; ?>">
 
                 </div>
 
@@ -79,23 +107,7 @@
 
                     <label>Tallas</label>
 
-                    <input type="text"
-                           name="tallas"
-                           placeholder="37,38,39,40">
-
-                </div>
-
-                <div class="form-group">
-
-                    <label>Estado</label>
-
-                    <select name="estado">
-
-                        <option value="Disponible">Disponible</option>
-
-                        <option value="Agotado">Agotado</option>
-
-                    </select>
+                    <input type="text" name="tallas" value="<?php echo htmlspecialchars($producto['tallas']); ?>">
 
                 </div>
 
@@ -105,22 +117,44 @@
 
                     <select name="destacado">
 
-                        <option value="1">Sí</option>
+                        <option value="1" <?php if ($producto['destacado'] == 1)
+                            echo "selected"; ?>>
 
-                        <option value="0">No</option>
+                            Sí
+
+                        </option>
+
+                        <option value="0" <?php if ($producto['destacado'] == 0)
+                            echo "selected"; ?>>
+
+                            No
+
+                        </option>
 
                     </select>
 
                 </div>
 
-                <div class="form-group">
+                <div class="form-right">
 
-                    <label>Imagen</label>
+                    <div class="form-group">
 
-                    <input type="file"
-                           name="imagen"
-                           accept="image/*"
-                           required>
+                        <label>Imagen actual</label>
+
+                        <input type="file" name="imagen" id="imagen">
+
+                        <div class="preview-container">
+
+                            <img id="previewImagen" src="assets/img/<?php echo $producto['imagen']; ?>"
+                                alt="Vista previa">
+
+                        </div>
+
+                        <small>
+                            Si no seleccionas otra imagen, se conservará la actual.
+                        </small>
+
+                    </div>
 
                 </div>
 
@@ -130,10 +164,8 @@
 
                 <label>Descripción</label>
 
-                <textarea
-                    name="descripcion"
-                    rows="5">
-                </textarea>
+                <textarea name="descripcion"
+                    rows="5"><?php echo htmlspecialchars($producto['descripcion']); ?></textarea>
 
             </div>
 
@@ -141,7 +173,7 @@
 
                 <i class="fa-solid fa-floppy-disk"></i>
 
-                Guardar Producto
+                Actualizar Producto
 
             </button>
 
@@ -150,3 +182,9 @@
     </div>
 
 </main>
+
+<?php
+
+require_once 'layouts/footer.php';
+
+?>

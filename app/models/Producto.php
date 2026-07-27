@@ -116,6 +116,16 @@ public function guardar($datos)
 
     $stmt = $this->conexion->prepare($sql);
 
+    if($datos['stock'] <= 0){
+
+    $datos['estado']="Agotado";
+
+}else{
+
+    $datos['estado']="Disponible";
+
+}
+
     return $stmt->execute([
         $datos['nombre'],
         $datos['referencia'],
@@ -150,6 +160,16 @@ public function actualizar($datos)
         WHERE id=?";
 
     $stmt = $this->conexion->prepare($sql);
+    
+    if($datos['stock'] <= 0){
+
+    $datos['estado']="Agotado";
+
+}else{
+
+    $datos['estado']="Disponible";
+
+}
 
     return $stmt->execute([
 

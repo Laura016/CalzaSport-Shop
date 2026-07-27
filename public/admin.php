@@ -16,6 +16,10 @@ switch ($accion) {
         $admin->productos();
         break;
 
+    case 'inventario':
+    $admin->inventario();
+    break;
+
     case 'nuevo':
         $admin->nuevoProducto();
         break;

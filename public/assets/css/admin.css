@@ -23,3 +23,25 @@ body{
     min-height:100vh;
 
 }
+
+.preview-container{
+
+    margin-top:15px;
+
+}
+
+#previewImagen{
+
+    width:180px;
+
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+
+    border:2px dashed #D1D5DB;
+
+    padding:5px;
+
+}

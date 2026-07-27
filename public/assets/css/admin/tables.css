@@ -182,3 +182,99 @@ BOTONES DE ACCIONES
     transform:translateY(-2px);
 
 }
+
+.producto-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:4px;
+
+}
+
+.producto-info strong{
+
+    font-size:16px;
+
+    color:#111827;
+
+}
+
+.producto-info small{
+
+    color:#6B7280;
+
+    font-size:13px;
+
+}
+
+/* ===== TARJETAS DE INVENTARIO ===== */
+
+.inventory-cards{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.inventory-card{
+
+    background:#fff;
+
+    border-radius:16px;
+
+    padding:25px;
+
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+}
+
+.inventory-card h3{
+
+    font-size:16px;
+
+    color:#6B7280;
+
+    margin-bottom:10px;
+
+}
+
+.inventory-card span{
+
+    font-size:34px;
+
+    font-weight:700;
+
+    color:#111827;
+
+}
+
+.inventory-card.total{
+
+    border-left:6px solid #2563EB;
+
+}
+
+.inventory-card.disponibles{
+
+    border-left:6px solid #10B981;
+
+}
+
+.inventory-card.agotados{
+
+    border-left:6px solid #EF4444;
+
+}
+
+.inventory-card.bajo{
+
+    border-left:6px solid #F59E0B;
+
+}

@@ -17,7 +17,7 @@ require_once 'layouts/sidebar.php';
 
             </button>
 
-            <h1>Productos</h1>
+            <h1>Inventario</h1>
 
         </div>
 
@@ -25,11 +25,102 @@ require_once 'layouts/sidebar.php';
 
             <i class="fa-solid fa-plus"></i>
 
-            Nuevo Producto
+            Actualizar Inventario
 
         </a>
 
     </div>
+
+    <div class="inventory-cards">
+
+    <div class="inventory-card total">
+        <h3>Total Productos</h3>
+        <span><?php echo count($productos); ?></span>
+    </div>
+
+    <div class="inventory-card disponibles">
+        <h3>Disponibles</h3>
+
+        <span>
+        <?php
+
+        $totalDisponibles = 0;
+
+        foreach($productos as $p){
+
+            if($p['stock'] > 0){
+
+                $totalDisponibles++;
+
+            }
+
+        }
+
+        echo $totalDisponibles;
+
+        ?>
+        </span>
+
+    </div>
+
+    <div class="inventory-card agotados">
+
+        <h3>Agotados</h3>
+
+        <span>
+
+        <?php
+
+        $agotados=0;
+
+        foreach($productos as $p){
+
+            if($p['stock']==0){
+
+                $agotados++;
+
+            }
+
+        }
+
+        echo $agotados;
+
+        ?>
+
+        </span>
+
+    </div>
+
+    <div class="inventory-card bajo">
+
+        <h3>Poco Stock</h3>
+
+        <span>
+
+        <?php
+
+        $bajo=0;
+
+        foreach($productos as $p){
+
+            if($p['stock']>0 && $p['stock']<=5){
+
+                $bajo++;
+
+            }
+
+        }
+
+        echo $bajo;
+
+        ?>
+
+        </span>
+
+    </div>
+
+</div>
+
 
     <div class="table-container">
 

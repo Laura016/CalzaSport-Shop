@@ -34,7 +34,7 @@
 </li>
 
 <li>
-    <a href="#">
+    <a href="admin.php?accion=inventario">
         <i class="fa-solid fa-box"></i>
         Inventario
     </a>
