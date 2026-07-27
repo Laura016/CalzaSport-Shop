@@ -8,7 +8,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="assets/js/admin.js"></script>
+<script src="assets/js/admin/sidebar.js"></script>
+
+<script src="assets/js/admin/datatable.js"></script>
+
+<script src="assets/js/admin/preview.js"></script>
+
+<script src="assets/js/admin/alerts.js"></script>
+
+<script src="assets/js/admin/admin.js"></script>
 
 </body>
 

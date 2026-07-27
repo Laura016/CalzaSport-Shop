@@ -1,0 +1,124 @@
+/*==========================
+COMPONENTES REUTILIZABLES
+==========================*/
+
+/* ---------- Tarjetas ---------- */
+
+.card{
+
+    background:#fff;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+
+}
+
+/* ---------- Contenedores ---------- */
+
+.container-box{
+
+    background:#fff;
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow);
+    padding:25px;
+
+}
+
+/* ---------- Botón principal ---------- */
+
+.btn{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+
+    padding:12px 24px;
+
+    border:none;
+    border-radius:var(--radius);
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+    font-weight:600;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/* ---------- Azul ---------- */
+
+.btn-primary{
+
+    background:var(--primary);
+    color:white;
+
+}
+
+.btn-primary:hover{
+
+    background:var(--primary-dark);
+
+}
+
+/* ---------- Verde ---------- */
+
+.btn-success{
+
+    background:var(--success);
+    color:white;
+
+}
+
+/* ---------- Rojo ---------- */
+
+.btn-danger{
+
+    background:var(--danger);
+    color:white;
+
+}
+
+/* ---------- Badges ---------- */
+
+.badge{
+
+    display:inline-block;
+
+    padding:6px 12px;
+
+    border-radius:50px;
+
+    font-size:13px;
+
+    font-weight:600;
+
+}
+
+.badge-success{
+
+    background:#DCFCE7;
+    color:#166534;
+
+}
+
+.badge-danger{
+
+    background:#FEE2E2;
+    color:#991B1B;
+
+}
+
+.badge-warning{
+
+    background:#FEF3C7;
+    color:#92400E;
+
+}

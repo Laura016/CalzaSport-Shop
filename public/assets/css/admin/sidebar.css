@@ -1,8 +1,10 @@
-/* ===== SIDEBAR ===== */
+/*==========================
+SIDEBAR
+==========================*/
 
 .sidebar{
     width:260px;
-    background:#111827;
+    background:var(--dark);
     color:#fff;
     display:flex;
     flex-direction:column;
@@ -39,14 +41,10 @@
     display:flex;
     align-items:center;
     gap:15px;
-
     color:#D1D5DB;
     text-decoration:none;
-
     padding:14px 18px;
-
     border-radius:12px;
-
     transition:.3s;
 }
 
@@ -56,63 +54,23 @@
 }
 
 .sidebar nav ul li:hover a{
-    background:#1F2937;
+    background:#374151;
     color:white;
 }
 
 .sidebar .active a{
-    background:#2563EB;
+    background:var(--primary);
     color:white;
 }
 
 .overlay{
-
     display:none;
-
     position:fixed;
-
     inset:0;
-
     background:rgba(0,0,0,.4);
-
     z-index:998;
-
 }
 
 .overlay.active{
-
     display:block;
-
-}
-
-@media(max-width:992px){
-
-.sidebar{
-
-    position:fixed;
-
-    left:-260px;
-
-    top:0;
-
-    bottom:0;
-
-    z-index:999;
-
-    transition:.35s;
-
-}
-
-.sidebar.active{
-
-    left:0;
-
-}
-
-#menuToggle{
-
-    display:block;
-
-}
-
 }

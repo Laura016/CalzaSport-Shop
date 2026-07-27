@@ -21,13 +21,15 @@ require_once 'layouts/sidebar.php';
 
         </div>
 
-        <a href="admin.php?accion=nuevo" class="btn-primary">
+        <?php
 
-            <i class="fa-solid fa-plus"></i>
+$href = "admin.php?accion=nuevo";
+$texto = "Nuevo Producto";
+$icono = "fa-solid fa-plus";
 
-            Nuevo Producto
+require_once __DIR__ . "/components/button.php";
 
-        </a>
+?>
 
     </div>
 
