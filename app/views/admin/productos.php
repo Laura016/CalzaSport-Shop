@@ -23,13 +23,13 @@ require_once 'layouts/sidebar.php';
 
         <?php
 
-$href = "admin.php?accion=nuevo";
-$texto = "Nuevo Producto";
-$icono = "fa-solid fa-plus";
+        $href = "admin.php?accion=nuevo";
+        $texto = "Nuevo Producto";
+        $icono = "fa-solid fa-plus";
 
-require_once __DIR__ . "/components/button.php";
+        require_once __DIR__ . "/components/button.php";
 
-?>
+        ?>
 
     </div>
 
@@ -39,11 +39,12 @@ require_once __DIR__ . "/components/button.php";
 
             <thead>
                 <tr>
-                    <th>Imagen</th>
                     <th>Producto</th>
+                    <th>Categoría</th>
                     <th>Precio</th>
                     <th>Stock</th>
                     <th>Estado</th>
+                    <th>Destacado</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -56,32 +57,40 @@ require_once __DIR__ . "/components/button.php";
 
                         <td>
 
-                            <img src="assets/img/<?php echo $producto['imagen']; ?>" class="img-producto"
-                                alt="<?php echo $producto['nombre']; ?>">
+                            <div class="producto-item">
+
+                                <img src="assets/img/<?php echo $producto['imagen']; ?>" class="img-producto"
+                                    alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
+
+                                <div class="producto-info">
+
+                                    <strong>
+
+                                        <?php echo htmlspecialchars($producto['nombre']); ?>
+
+                                    </strong>
+
+                                    <small>
+
+                                        Ref: <?php echo htmlspecialchars($producto['referencia']); ?>
+
+                                    </small>
+
+                                    <small>
+
+                                        <?php echo htmlspecialchars($producto['marca']); ?>
+
+                                    </small>
+
+                                </div>
+
+                            </div>
 
                         </td>
 
                         <td>
 
-                            <div class="producto-info">
-
-                                <strong>
-                                    <?php echo $producto['nombre']; ?>
-                                </strong>
-
-                                <small>
-                                    REF: <?php echo $producto['referencia']; ?>
-                                </small>
-
-                                <small>
-                                    <?php echo $producto['marca']; ?>
-                                </small>
-
-                                <small>
-                                    <?php echo $producto['categoria']; ?>
-                                </small>
-
-                            </div>
+                            <?php echo $producto['categoria']; ?>
 
                         </td>
 
@@ -99,14 +108,41 @@ require_once __DIR__ . "/components/button.php";
 
                         <td>
 
-                            <?php echo $producto['estado']; ?>
+                            <?php
+
+                            $texto = $producto['estado'];
+
+                            $tipo = ($producto['estado'] == "Disponible")
+                                ? "success"
+                                : "danger";
+
+                            require __DIR__ . "/components/badge.php";
+
+                            ?>
+
+                        </td>
+
+                        <td>
+
+                            <?php
+
+                            $texto = $producto['destacado']
+                                ? "⭐ Destacado"
+                                : "Normal";
+
+                            $tipo = $producto['destacado']
+                                ? "warning"
+                                : "primary";
+
+                            require __DIR__ . "/components/badge.php";
+
+                            ?>
 
                         </td>
 
                         <td class="acciones">
 
-                            <a href="admin.php?accion=editar&id=<?php echo $producto['id']; ?>" class="btn-edit"
-                                title="Editar">
+                            <a href="admin.php?accion=editar&id=<?php echo $producto['id']; ?>" class="btn-edit">
 
                                 <i class="fa-solid fa-pen-to-square"></i>
 

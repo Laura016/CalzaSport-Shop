@@ -204,6 +204,14 @@ public function inventario()
 {
     $productos = $this->producto->obtenerProductos();
 
+    $totalProductos = $this->producto->totalProductos();
+
+    $productosDisponibles = $this->producto->productosDisponibles();
+
+    $productosAgotados = $this->producto->productosAgotados();
+
+    $productosBajoStock = $this->producto->productosBajoStock();
+
     require_once '../app/views/admin/inventario.php';
 }
 }

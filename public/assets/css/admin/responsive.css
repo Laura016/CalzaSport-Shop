@@ -1,62 +1,89 @@
-/*==========================
+/*====================================
 RESPONSIVE
-==========================*/
+=====================================*/
 
-@media(max-width:992px){
+@media (max-width:992px){
 
-    #menuToggle{
-        display:flex;
-        justify-content:center;
-        align-items:center;
-    }
+    /* Sidebar */
 
     .sidebar{
+
         position:fixed;
-        left:-260px;
         top:0;
+        left:-260px;
         width:260px;
         height:100vh;
         z-index:999;
         transition:.35s;
+
     }
 
     .sidebar.active{
+
         left:0;
+
     }
 
+    /* Overlay */
+
     .overlay{
+
         display:none;
         position:fixed;
         inset:0;
         background:rgba(0,0,0,.45);
         z-index:998;
+
     }
 
     .overlay.active{
+
         display:block;
+
     }
+
+    /* Main */
 
     .main-content{
+
         width:100%;
         padding:25px;
+
     }
+
+    /* Topbar */
 
     .topbar{
-        flex-wrap:wrap;
+
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
         gap:20px;
+
     }
 
-    .form-grid{
-        grid-template-columns:1fr;
+    .left-topbar{
+
+        width:100%;
+        display:flex;
+        align-items:center;
+        gap:15px;
+
     }
 
-    .form-left{
-        grid-template-columns:1fr;
+    #menuToggle{
+
+        display:flex;
+        justify-content:center;
+        align-items:center;
+
     }
 
-    #previewImagen{
-        max-width:220px;
-        height:220px;
+    .topbar .btn{
+
+        width:100%;
+        justify-content:center;
+
     }
 
 }

@@ -188,4 +188,23 @@ public function actualizar($datos)
 
     ]);
 }
+
+/* ==========================
+   CONTAR PRODUCTOS CON POCO STOCK
+========================== */
+
+public function productosBajoStock()
+{
+    $sql = "SELECT COUNT(*) AS total
+            FROM productos
+            WHERE stock > 0
+            AND stock <= 5";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 }

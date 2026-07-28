@@ -21,105 +21,66 @@ require_once 'layouts/sidebar.php';
 
         </div>
 
-        <a href="admin.php?accion=nuevo" class="btn-primary">
+        <?php
 
-            <i class="fa-solid fa-plus"></i>
+        $href = "admin.php?accion=nuevo";
+        $texto = "Actualizar Inventario";
+        $icono = "fa-solid fa-arrows-rotate";
+        $color = "primary";
 
-            Actualizar Inventario
+        require __DIR__ . "/components/button.php";
 
-        </a>
+        ?>
 
     </div>
 
     <div class="inventory-cards">
 
-    <div class="inventory-card total">
-        <h3>Total Productos</h3>
-        <span><?php echo count($productos); ?></span>
-    </div>
-
-    <div class="inventory-card disponibles">
-        <h3>Disponibles</h3>
-
-        <span>
         <?php
 
-        $totalDisponibles = 0;
+        $titulo = "Total Productos";
+        $valor = $totalProductos['total'];
+        $icono = "fa-solid fa-box";
+        $color = "total";
 
-        foreach($productos as $p){
-
-            if($p['stock'] > 0){
-
-                $totalDisponibles++;
-
-            }
-
-        }
-
-        echo $totalDisponibles;
-
-        ?>
-        </span>
-
-    </div>
-
-    <div class="inventory-card agotados">
-
-        <h3>Agotados</h3>
-
-        <span>
-
-        <?php
-
-        $agotados=0;
-
-        foreach($productos as $p){
-
-            if($p['stock']==0){
-
-                $agotados++;
-
-            }
-
-        }
-
-        echo $agotados;
+        require __DIR__ . "/components/stat-card.php";
 
         ?>
 
-        </span>
-
-    </div>
-
-    <div class="inventory-card bajo">
-
-        <h3>Poco Stock</h3>
-
-        <span>
-
         <?php
 
-        $bajo=0;
+        $titulo = "Disponibles";
+        $valor = $productosDisponibles['total'];
+        $icono = "fa-solid fa-circle-check";
+        $color = "disponibles";
 
-        foreach($productos as $p){
-
-            if($p['stock']>0 && $p['stock']<=5){
-
-                $bajo++;
-
-            }
-
-        }
-
-        echo $bajo;
+        require __DIR__ . "/components/stat-card.php";
 
         ?>
 
-        </span>
+        <?php
+
+        $titulo = "Agotados";
+        $valor = $productosAgotados['total'];
+        $icono = "fa-solid fa-circle-xmark";
+        $color = "agotados";
+
+        require __DIR__ . "/components/stat-card.php";
+
+        ?>
+
+        <?php
+
+        $titulo = "Poco Stock";
+        $valor = $productosBajoStock['total'];
+        $icono = "fa-solid fa-triangle-exclamation";
+        $color = "bajo";
+
+        require __DIR__ . "/components/stat-card.php";
+
+        ?>
 
     </div>
-
-</div>
 
 
     <div class="table-container">

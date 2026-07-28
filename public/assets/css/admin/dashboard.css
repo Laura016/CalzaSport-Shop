@@ -61,3 +61,107 @@ DASHBOARD
 .dashboard-content p{
     color:#6B7280;
 }
+
+/*==========================
+STAT CARDS
+==========================*/
+
+.inventory-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+
+    background:#fff;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    box-shadow:var(--shadow);
+
+    transition:.30s;
+
+}
+
+.inventory-card:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.card-icon{
+
+    width:65px;
+
+    height:65px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:white;
+
+    font-size:28px;
+
+}
+
+.card-info{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.card-info h3{
+
+    color:#6B7280;
+
+    font-size:15px;
+
+    margin-bottom:8px;
+
+}
+
+.card-info span{
+
+    font-size:32px;
+
+    font-weight:700;
+
+    color:#111827;
+
+}
+
+/* Colores */
+
+.inventory-card.total .card-icon{
+
+    background:#2563EB;
+
+}
+
+.inventory-card.disponibles .card-icon{
+
+    background:#10B981;
+
+}
+
+.inventory-card.agotados .card-icon{
+
+    background:#EF4444;
+
+}
+
+.inventory-card.bajo .card-icon{
+
+    background:#F59E0B;
+
+}

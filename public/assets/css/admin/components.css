@@ -32,7 +32,9 @@ COMPONENTES REUTILIZABLES
     justify-content:center;
     gap:10px;
 
-    padding:12px 24px;
+    min-width:190px;
+
+    padding:14px 24px;
 
     border:none;
     border-radius:var(--radius);
@@ -45,11 +47,27 @@ COMPONENTES REUTILIZABLES
 
     font-weight:600;
 
+    font-size:15px;
+
+}
+
+.btn i{
+
+    font-size:16px;
+
+}
+
+.btn span{
+
+    white-space:nowrap;
+
 }
 
 .btn:hover{
 
     transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(0,0,0,.12);
 
 }
 
@@ -73,7 +91,14 @@ COMPONENTES REUTILIZABLES
 .btn-success{
 
     background:var(--success);
+
     color:white;
+
+}
+
+.btn-success:hover{
+
+    background:#059669;
 
 }
 
@@ -82,7 +107,46 @@ COMPONENTES REUTILIZABLES
 .btn-danger{
 
     background:var(--danger);
+
     color:white;
+
+}
+
+.btn-danger:hover{
+
+    background:#DC2626;
+
+}
+
+/* ---------- Amarillo ---------- */
+
+.btn-warning{
+
+    background:#F59E0B;
+
+    color:white;
+
+}
+
+.btn-warning:hover{
+
+    background:#D97706;
+
+}
+
+/* ---------- Gris ---------- */
+
+.btn-secondary{
+
+    background:#6B7280;
+
+    color:white;
+
+}
+
+.btn-secondary:hover{
+
+    background:#4B5563;
 
 }
 
@@ -122,3 +186,11 @@ COMPONENTES REUTILIZABLES
     color:#92400E;
 
 }
+
+.badge-primary{
+
+    background:#DBEAFE;
+    color:#1D4ED8;
+
+}
+
