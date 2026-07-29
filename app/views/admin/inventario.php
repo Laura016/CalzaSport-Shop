@@ -178,6 +178,16 @@ require_once 'layouts/sidebar.php';
 
         </table>
 
+        <div class="mobile-products">
+
+            <?php foreach ($productos as $producto): ?>
+
+                <?php require __DIR__ . "/components/product-card.php"; ?>
+
+            <?php endforeach; ?>
+
+        </div>
+
     </div>
 
 </main>

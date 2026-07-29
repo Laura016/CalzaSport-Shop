@@ -207,4 +207,72 @@ public function productosBajoStock()
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
+public function obtenerPorCategoria($categoria)
+{
+    $sql = "SELECT *
+            FROM productos
+            WHERE categoria = ?
+            ORDER BY id DESC";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute([$categoria]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function buscar($busqueda)
+{
+    $sql = "SELECT *
+            FROM productos
+            WHERE nombre LIKE ?
+               OR referencia LIKE ?
+               OR marca LIKE ?
+            ORDER BY id DESC";
+
+    $texto = "%" . $busqueda . "%";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute([
+        $texto,
+        $texto,
+        $texto
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function relacionados($categoria, $id)
+{
+    $sql = "SELECT *
+            FROM productos
+            WHERE categoria = ?
+            AND id <> ?
+            LIMIT 4";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute([
+        $categoria,
+        $id
+    ]);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function nuevos($limite = 8)
+{
+    $sql = "SELECT *
+            FROM productos
+            ORDER BY id DESC
+            LIMIT $limite";
+
+    $stmt = $this->conexion->prepare($sql);
+
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }

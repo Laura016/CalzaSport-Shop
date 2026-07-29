@@ -87,3 +87,109 @@ RESPONSIVE
     }
 
 }
+
+/*==================================
+TARJETAS DE PRODUCTOS EN MÓVIL
+===================================*/
+
+.mobile-products{
+
+    display:none;
+
+}
+
+.product-card-mobile{
+
+    background:#fff;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:20px;
+
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+
+}
+
+.product-card-img{
+
+    width:100%;
+    height:220px;
+
+    object-fit:cover;
+
+    border-radius:15px;
+
+    margin-bottom:18px;
+
+}
+
+.product-card-body h3{
+
+    font-size:20px;
+
+    color:#111827;
+
+    margin-bottom:10px;
+
+}
+
+.product-card-body p{
+
+    margin-bottom:6px;
+
+    color:#6B7280;
+
+}
+
+.product-card-price{
+
+    margin-top:15px;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#2563EB;
+
+}
+
+.product-card-stock{
+
+    margin-top:8px;
+
+    margin-bottom:15px;
+
+    font-weight:600;
+
+}
+
+.product-card-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:18px;
+
+}
+
+.product-card-actions a{
+
+    flex:1;
+
+}
+
+@media (max-width:992px){
+
+    #tablaProductos_wrapper{
+
+        display:none !important;
+
+    }
+
+    .mobile-products{
+
+        display:block !important;
+
+    }
+
+}
