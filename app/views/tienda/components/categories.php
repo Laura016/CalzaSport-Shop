@@ -17,7 +17,7 @@ CATEGORÍAS
 
         <div class="category-card">
 
-            <img src="assets/img/hombre.jpg" alt="Hombre">
+            <img src="assets/img/hombre.png" alt="Hombre">
 
             <div class="category-overlay">
 
@@ -29,7 +29,7 @@ CATEGORÍAS
 
         <div class="category-card">
 
-            <img src="assets/img/mujer.jpg" alt="Mujer">
+            <img src="assets/img/mujer.png" alt="Mujer">
 
             <div class="category-overlay">
 
@@ -41,7 +41,7 @@ CATEGORÍAS
 
         <div class="category-card">
 
-            <img src="assets/img/running.jpg" alt="Running">
+            <img src="assets/img/running.png" alt="Running">
 
             <div class="category-overlay">
 
@@ -53,7 +53,7 @@ CATEGORÍAS
 
         <div class="category-card">
 
-            <img src="assets/img/casual.jpg" alt="Casual">
+            <img src="assets/img/casual.png" alt="Casual">
 
             <div class="category-overlay">
 
