@@ -31,7 +31,7 @@
                     </div>
 
                     <img
-                        src="assets/img/<?php echo $producto['imagen']; ?>"
+                        src="assets/img/productos/<?php echo $producto['imagen']; ?>"
                         alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
 
                     <div class="product-info">

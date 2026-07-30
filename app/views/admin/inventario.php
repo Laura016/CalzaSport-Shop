@@ -106,7 +106,7 @@ require_once 'layouts/sidebar.php';
 
                         <td>
 
-                            <img src="assets/img/<?php echo $producto['imagen']; ?>" class="img-producto"
+                            <img src="assets/img/productos/<?php echo $producto['imagen']; ?>" class="img-producto"
                                 alt="<?php echo $producto['nombre']; ?>">
 
                         </td>

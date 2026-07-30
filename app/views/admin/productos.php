@@ -59,7 +59,7 @@ require_once 'layouts/sidebar.php';
 
                             <div class="producto-item">
 
-                                <img src="assets/img/<?php echo $producto['imagen']; ?>" class="img-producto"
+                                <img src="assets/img/productos/<?php echo $producto['imagen']; ?>" class="img-producto"
                                     alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
 
                                 <div class="producto-info">

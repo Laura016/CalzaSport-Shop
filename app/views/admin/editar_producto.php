@@ -145,7 +145,7 @@ require_once 'layouts/sidebar.php';
 
                         <div class="preview-container">
 
-                            <img id="previewImagen" src="assets/img/<?php echo $producto['imagen']; ?>"
+                            <img id="previewImagen" src="assets/img/productos/<?php echo $producto['imagen']; ?>"
                                 alt="Vista previa">
 
                         </div>
