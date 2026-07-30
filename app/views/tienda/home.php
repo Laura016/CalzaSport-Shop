@@ -1,25 +1,9 @@
-<?php require_once __DIR__.'/components/hero.php'; ?>
+<?php
 
-<?php require_once __DIR__.'/components/categories.php'; ?>
+$titulo = "Productos destacados";
 
-<section class="products">
+$subtitulo = "Descubre nuestros modelos más populares.";
 
-    <div class="section-title">
+require __DIR__ . '/components/product-section.php';
 
-        <h2>Productos destacados</h2>
-
-        <p>Descubre nuestros modelos más vendidos.</p>
-
-    </div>
-
-    <div class="products-grid">
-
-        <?php foreach($productos as $producto): ?>
-
-            <?php require __DIR__.'/components/product-card.php'; ?>
-
-        <?php endforeach; ?>
-
-    </div>
-
-</section>
+?>

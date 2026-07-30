@@ -1,42 +1,39 @@
 <header class="navbar">
 
-    <div class="nav-container">
+    <div class="container navbar-container">
 
         <a href="index.php" class="logo">
-
             Calza<span>Sport</span>
-
         </a>
 
-        <nav>
+        <nav class="nav-menu">
 
-            <ul class="nav-links">
-
-                <li><a href="index.php">Inicio</a></li>
-
-                <li><a href="#">Hombre</a></li>
-
-                <li><a href="#">Mujer</a></li>
-
-                <li><a href="#">Running</a></li>
-
-                <li><a href="#">Casual</a></li>
-
-            </ul>
+            <a href="index.php">Inicio</a>
+            <a href="#">Hombre</a>
+            <a href="#">Mujer</a>
+            <a href="#">Running</a>
+            <a href="#">Casual</a>
+            <a href="#">Ofertas</a>
 
         </nav>
 
         <div class="nav-icons">
 
-            <i class="fa-solid fa-magnifying-glass"></i>
+            <a href="#">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </a>
 
-            <i class="fa-regular fa-heart"></i>
+            <a href="#">
+                <i class="fa-regular fa-heart"></i>
+            </a>
 
-            <i class="fa-solid fa-cart-shopping"></i>
+            <a href="#">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
 
         </div>
 
-        <button class="menu-toggle">
+        <button class="menu-mobile" id="menuToggle">
 
             <i class="fa-solid fa-bars"></i>
 
@@ -45,3 +42,43 @@
     </div>
 
 </header>
+
+<!-- Fondo oscuro -->
+
+<div class="menu-overlay"></div>
+
+<!-- Menú lateral -->
+
+<div class="mobile-menu">
+
+    <button class="close-menu">
+
+        <i class="fa-solid fa-xmark"></i>
+
+    </button>
+
+    <a href="index.php">Inicio</a>
+
+    <a href="#">Hombre</a>
+
+    <a href="#">Mujer</a>
+
+    <a href="#">Running</a>
+
+    <a href="#">Casual</a>
+
+    <a href="#">Ofertas</a>
+
+    <hr>
+
+    <a href="#">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        Buscar
+    </a>
+
+    <a href="#">
+        <i class="fa-solid fa-cart-shopping"></i>
+        Carrito
+    </a>
+
+</div>
