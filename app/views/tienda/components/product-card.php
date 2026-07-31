@@ -1,28 +1,60 @@
-<div class="product-card">
+<div class="product-card"
 
-    <span class="badge">
-        Nuevo
-    </span>
+    data-nombre="<?= strtolower($producto['nombre']) ?>"
 
-    <div class="favorite">
+    data-referencia="<?= strtolower($producto['referencia']) ?>"
+
+    data-categoria="<?= strtolower($producto['categoria']) ?>"
+
+    data-tallas="<?= strtolower($producto['tallas']) ?>"
+
+    data-precio="<?= $producto['precio'] ?>">
+
+    <?php if($producto['destacado']): ?>
+
+        <span class="badge">
+
+            Destacado
+
+        </span>
+
+    <?php else: ?>
+
+        <span class="badge nuevo">
+
+            Nuevo
+
+        </span>
+
+    <?php endif; ?>
+
+    <button class="favorite">
+
         <i class="fa-regular fa-heart"></i>
-    </div>
 
-    <img
-        src="assets/img/productos/<?php echo $producto['imagen']; ?>"
-        alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
+    </button>
+
+    <div class="product-image">
+
+        <img
+
+            src="assets/img/productos/<?= $producto['imagen']; ?>"
+
+            alt="<?= htmlspecialchars($producto['nombre']); ?>">
+
+    </div>
 
     <div class="product-info">
 
         <h3>
 
-            <?php echo htmlspecialchars($producto['nombre']); ?>
+            <?= htmlspecialchars($producto['nombre']); ?>
 
         </h3>
 
         <span class="reference">
 
-            REF <?php echo htmlspecialchars($producto['referencia']); ?>
+            REF <?= htmlspecialchars($producto['referencia']); ?>
 
         </span>
 
@@ -32,21 +64,15 @@
 
         </div>
 
-        <?php require __DIR__ . '/price.php'; ?>
+        <?php require __DIR__.'/price.php'; ?>
 
         <div class="sizes">
 
-            <?php
-
-            $tallas = explode(",", $producto['tallas']);
-
-            foreach($tallas as $talla):
-
-            ?>
+            <?php foreach(explode(",", $producto['tallas']) as $talla): ?>
 
                 <span>
 
-                    <?php echo trim($talla); ?>
+                    <?= trim($talla); ?>
 
                 </span>
 

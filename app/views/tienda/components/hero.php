@@ -20,14 +20,13 @@
 
             <p>
 
-                Descubre zapatillas deportivas y casuales con la mejor calidad,
-                comodidad y diseño para acompañarte en cada paso.
+               Diseños deportivos y casuales con calidad, comodidad y estilo.
 
             </p>
 
             <div class="hero-buttons">
 
-                <a href="#productos" class="btn btn-primary">
+                <a href="catalogo.php" class="btn btn-primary">
 
                     Comprar ahora
 

@@ -5,6 +5,9 @@
 @import url("hero.css");
 @import url("categories.css");
 @import url("products.css");
+@import url("catalogo.css");
+@import url("catalog-header.css");
+@import url("catalog-filters.css");
 @import url("footer.css");
 
 @import url("components.css");

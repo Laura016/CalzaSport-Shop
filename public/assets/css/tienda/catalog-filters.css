@@ -1,0 +1,141 @@
+/*==========================
+CATEGORÍAS
+==========================*/
+
+.filter-group{
+
+    margin:35px 0;
+
+}
+
+.filter-group h3{
+
+    color:white;
+
+    margin-bottom:18px;
+
+    font-size:18px;
+
+}
+
+.category-chips{
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+
+}
+
+.chip{
+
+    padding:12px 24px;
+
+    border:none;
+
+    border-radius:50px;
+
+    background:rgba(255,255,255,.15);
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    font-weight:600;
+
+    backdrop-filter:blur(8px);
+
+}
+
+.chip:hover{
+
+    background:white;
+
+    color:#2563EB;
+
+}
+
+.chip.active{
+
+    background:white;
+
+    color:#2563EB;
+
+}
+
+.filters-row{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.filters-row label{
+
+    display:block;
+
+    color:white;
+
+    margin-bottom:10px;
+
+    font-weight:600;
+
+}
+
+.filters-row select{
+
+    width:100%;
+
+    padding:16px 18px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:#fff;
+
+    color:#1F2937;
+
+    font-size:15px;
+
+    font-weight:500;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+
+    outline:none;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    -moz-appearance:none;
+
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%232563EB' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6.5 6 6.5-6' stroke='%232563EB' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+
+    background-repeat:no-repeat;
+
+    background-position:right 18px center;
+
+}
+
+.filters-row select:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.filters-row select:focus{
+
+    box-shadow:0 0 0 4px rgba(37,99,235,.20);
+
+}

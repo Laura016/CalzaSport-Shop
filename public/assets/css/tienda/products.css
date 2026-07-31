@@ -1,22 +1,53 @@
-/*==========================
+/*======================================
 PRODUCTOS
-==========================*/
+======================================*/
 
 .products{
 
-    padding:90px 0;
+    width:92%;
+    max-width:1400px;
+    margin:90px auto;
 
 }
+
+.section-title{
+
+    text-align:center;
+    margin-bottom:60px;
+
+}
+
+.section-title h2{
+
+    font-size:48px;
+    color:#0F172A;
+    margin-bottom:15px;
+    font-weight:800;
+
+}
+
+.section-title p{
+
+    font-size:20px;
+    color:#64748B;
+
+}
+
+/*======================================
+GRID
+======================================*/
 
 .products-grid{
 
     display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-
+    grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
     gap:35px;
 
 }
+
+/*======================================
+CARD
+======================================*/
 
 .product-card{
 
@@ -24,41 +55,61 @@ PRODUCTOS
 
     background:#fff;
 
-    border-radius:22px;
+    border-radius:28px;
 
     overflow:hidden;
 
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    box-shadow:0 15px 40px rgba(15,23,42,.08);
 
-    transition:.35s ease;
+    transition:.35s;
 
 }
 
 .product-card:hover{
 
-    transform:translateY(-8px);
+    transform:translateY(-10px);
 
-    box-shadow:0 20px 40px rgba(0,0,0,.15);
-
-}
-
-.product-card img{
-
-    width:100%;
-
-    height:300px;
-
-    object-fit:cover;
-
-    transition:.4s;
+    box-shadow:0 25px 55px rgba(15,23,42,.18);
 
 }
 
-.product-card:hover img{
+/*======================================
+BADGE
+======================================*/
 
-    transform:scale(1.08);
+.badge{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    background:#2563EB;
+
+    color:#fff;
+
+    padding:10px 20px;
+
+    border-radius:40px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+    z-index:10;
 
 }
+
+.badge.nuevo{
+
+    background:#FF4D4F;
+
+}
+
+/*======================================
+FAVORITO
+======================================*/
 
 .favorite{
 
@@ -68,13 +119,15 @@ PRODUCTOS
 
     right:18px;
 
-    width:45px;
+    width:54px;
 
-    height:45px;
-
-    background:white;
+    height:54px;
 
     border-radius:50%;
+
+    background:#fff;
+
+    border:none;
 
     display:flex;
 
@@ -82,85 +135,147 @@ PRODUCTOS
 
     align-items:center;
 
-    box-shadow:0 5px 15px rgba(0,0,0,.15);
+    font-size:20px;
+
+    color:#64748B;
 
     cursor:pointer;
 
-    z-index:2;
-
-}
-
-.favorite i{
-
-    color:#6B7280;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
 
     transition:.3s;
 
+    z-index:10;
+
 }
 
-.favorite:hover i{
+.favorite:hover{
+
+    transform:scale(1.12);
 
     color:#EF4444;
 
 }
 
+/*======================================
+IMAGEN
+======================================*/
+
+.product-image{
+
+    height:330px;
+
+    overflow:hidden;
+
+}
+
+.product-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    transition:.45s;
+
+}
+
+.product-card:hover .product-image img{
+
+    transform:scale(1.08);
+
+}
+
+/*======================================
+INFO
+======================================*/
+
 .product-info{
 
-    padding:25px;
+    padding:28px;
 
 }
 
 .product-info h3{
 
-    font-size:22px;
+    font-size:30px;
 
-    margin-bottom:8px;
+    font-weight:700;
 
     color:#111827;
+
+    margin-bottom:8px;
 
 }
 
 .reference{
 
-    color:#6B7280;
+    display:block;
 
-    font-size:14px;
+    color:#64748B;
+
+    margin-bottom:12px;
+
+    font-size:15px;
 
 }
+
+/*======================================
+RATING
+======================================*/
+
+.rating{
+
+    color:#FBBF24;
+
+    font-size:18px;
+
+    margin-bottom:18px;
+
+}
+
+/*======================================
+PRECIO
+======================================*/
 
 .price{
 
-    margin:20px 0;
+    font-size:42px;
 
-    font-size:30px;
-
-    font-weight:700;
+    font-weight:800;
 
     color:#2563EB;
 
+    margin-bottom:22px;
+
 }
+
+/*======================================
+TALLAS
+======================================*/
 
 .sizes{
 
     display:flex;
 
-    gap:10px;
-
     flex-wrap:wrap;
 
-    margin-bottom:25px;
+    gap:10px;
+
+    margin-bottom:24px;
 
 }
 
 .sizes span{
 
-    width:42px;
+    width:44px;
 
-    height:42px;
+    height:44px;
+
+    border-radius:12px;
 
     border:1px solid #E5E7EB;
-
-    border-radius:10px;
 
     display:flex;
 
@@ -168,9 +283,15 @@ PRODUCTOS
 
     align-items:center;
 
+    cursor:pointer;
+
     transition:.3s;
 
-    cursor:pointer;
+    font-weight:600;
+
+    color:#334155;
+
+    background:#fff;
 
 }
 
@@ -178,14 +299,112 @@ PRODUCTOS
 
     background:#2563EB;
 
-    color:white;
+    color:#fff;
 
     border-color:#2563EB;
 
 }
 
-.product-info .btn{
+/*======================================
+BOTÓN
+======================================*/
+
+.btn-producto{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
 
     width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:#2563EB;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+    transition:.3s;
+
+}
+
+.btn-producto:hover{
+
+    background:#1D4ED8;
+
+    transform:translateY(-3px);
+
+}
+
+/*======================================
+RESPONSIVE
+======================================*/
+
+@media(max-width:992px){
+
+    .section-title h2{
+
+        font-size:40px;
+
+    }
+
+}
+
+@media(max-width:768px){
+
+    .products{
+
+        width:94%;
+
+    }
+
+    .section-title{
+
+        margin-bottom:40px;
+
+    }
+
+    .section-title h2{
+
+        font-size:34px;
+
+    }
+
+    .section-title p{
+
+        font-size:18px;
+
+    }
+
+    .product-image{
+
+        height:280px;
+
+    }
+
+    .product-info{
+
+        padding:22px;
+
+    }
+
+    .product-info h3{
+
+        font-size:24px;
+
+    }
+
+    .price{
+
+        font-size:34px;
+
+    }
 
 }
