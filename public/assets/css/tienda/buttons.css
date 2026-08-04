@@ -1,0 +1,65 @@
+/*======================================
+BOTONES
+======================================*/
+
+.btn{
+
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:14px 32px;
+
+    border:none;
+
+    border-radius:var(--radius-lg);
+
+    background:var(--primary);
+
+    color:var(--white);
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:var(--transition);
+
+    box-shadow:var(--shadow-sm);
+
+}
+
+.btn:hover{
+
+    background:var(--primary-dark);
+
+    transform:translateY(-3px);
+
+    box-shadow:var(--shadow-md);
+
+}
+
+.btn-outline{
+
+    background:transparent;
+
+    border:2px solid var(--primary);
+
+    color:var(--primary);
+
+}
+
+.btn-outline:hover{
+
+    background:var(--primary);
+
+    color:white;
+
+}
+
+.btn-block{
+
+    width:100%;
+
+}

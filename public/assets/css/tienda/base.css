@@ -14,11 +14,15 @@ html{
 
 body{
 
-    font-family:'Poppins',sans-serif;
+    font-family:var(--font-family);
 
-    background:var(--gray-100);
+    background:var(--white);
 
     color:var(--secondary);
+
+    overflow-x:hidden;
+
+    -webkit-font-smoothing:antialiased;
 
 }
 
@@ -46,8 +50,7 @@ button{
 
 section{
 
-    padding:90px 0;
-
+    padding:var(--space-xl) 0;
 }
 
 .container{

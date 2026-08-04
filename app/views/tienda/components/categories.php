@@ -1,67 +1,80 @@
-
-<!-- =========================
+<!--=================================
 CATEGORÍAS
-========================= -->
+==================================-->
 
 <section class="categories">
 
     <div class="section-title">
 
-        <h2>Compra por categoría</h2>
+        <h2>Encuentra tu próximo par</h2>
 
-        <p>Encuentra el estilo perfecto para ti.</p>
+        <p>
+            Explora nuestras colecciones exclusivas para hombre y mujer.
+        </p>
 
     </div>
 
     <div class="category-grid">
 
-        <div class="category-card">
+        <!-- Hombre -->
 
-            <img src="assets/img/categorias/hombre.png" alt="Hombre">
+        <a href="catalogo.php?categoria=Hombre" class="category-card">
 
-            <div class="category-overlay">
+            <img
+                src="assets/img/categorias/hombre.png"
+                alt="Calzado Hombre">
+
+            <div class="category-content">
 
                 <h3>Hombre</h3>
 
+                <p>
+
+                    Deportivos y casuales diseñados para brindar comodidad y estilo en cada paso.
+
+                </p>
+
+                <span class="category-button">
+
+                    Explorar colección
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </span>
+
             </div>
 
-        </div>
+        </a>
 
-        <div class="category-card">
+        <!-- Mujer -->
 
-            <img src="assets/img/categorias/mujer.png" alt="Mujer">
+        <a href="catalogo.php?categoria=Mujer" class="category-card">
 
-            <div class="category-overlay">
+            <img
+                src="assets/img/categorias/mujer.png"
+                alt="Calzado Mujer">
+
+            <div class="category-content">
 
                 <h3>Mujer</h3>
 
-            </div>
+                <p>
 
-        </div>
+                    Diseños modernos, cómodos y versátiles para acompañarte todos los días.
 
-        <div class="category-card">
+                </p>
 
-            <img src="assets/img/categorias/running.png" alt="Running">
+                <span class="category-button">
 
-            <div class="category-overlay">
+                    Explorar colección
 
-                <h3>Running</h3>
+                    <i class="fa-solid fa-arrow-right"></i>
 
-            </div>
-
-        </div>
-
-        <div class="category-card">
-
-            <img src="assets/img/categorias/casual.png" alt="Casual">
-
-            <div class="category-overlay">
-
-                <h3>Casual</h3>
+                </span>
 
             </div>
 
-        </div>
+        </a>
 
     </div>
 

@@ -2,37 +2,58 @@
 
     <div class="container navbar-container">
 
+        <!-- Logo -->
         <a href="index.php" class="logo">
-            Calza<span>Sport</span>
+
+            <img src="assets/img/logos/logo-oficial.png" alt="CalzaSport">
+
         </a>
 
+        <!-- Menú escritorio -->
         <nav class="nav-menu">
 
-            <a href="index.php">Inicio</a>
-            <a href="#">Hombre</a>
-            <a href="#">Mujer</a>
-            <a href="#">Running</a>
-            <a href="#">Casual</a>
-            <a href="#">Ofertas</a>
+            <a href="index.php" class="active">Inicio</a>
+
+            <a href="catalogo.php">Catálogo</a>
+
+            <a href="catalogo.php?categoria=Hombre">Hombre</a>
+
+            <a href="catalogo.php?categoria=Mujer">Mujer</a>
+
+            <a href="catalogo.php?categoria=Running">Running</a>
+
+            <a href="catalogo.php?categoria=Casual">Casual</a>
+
+            <a href="ofertas.php">Ofertas</a>
 
         </nav>
 
+        <!-- Iconos -->
         <div class="nav-icons">
 
-            <a href="#">
+            <a href="#" title="Buscar">
+
                 <i class="fa-solid fa-magnifying-glass"></i>
+
             </a>
 
-            <a href="#">
+            <a href="#" title="Favoritos">
+
                 <i class="fa-regular fa-heart"></i>
+
             </a>
 
-            <a href="#">
+            <a href="carrito.php" class="cart-icon" title="Carrito">
+
                 <i class="fa-solid fa-cart-shopping"></i>
+
+                <span class="cart-count">0</span>
+
             </a>
 
         </div>
 
+        <!-- Botón móvil -->
         <button class="menu-mobile" id="menuToggle">
 
             <i class="fa-solid fa-bars"></i>
@@ -43,11 +64,11 @@
 
 </header>
 
-<!-- Fondo oscuro -->
+<!-- Overlay -->
 
 <div class="menu-overlay"></div>
 
-<!-- Menú lateral -->
+<!-- Menú móvil -->
 
 <div class="mobile-menu">
 
@@ -59,26 +80,60 @@
 
     <a href="index.php">Inicio</a>
 
-    <a href="#">Hombre</a>
+    <a href="catalogo.php">Catálogo</a>
 
-    <a href="#">Mujer</a>
+    <a href="catalogo.php?categoria=Hombre">Hombre</a>
 
-    <a href="#">Running</a>
+    <a href="catalogo.php?categoria=Mujer">Mujer</a>
 
-    <a href="#">Casual</a>
+    <a href="catalogo.php?categoria=Running">Running</a>
 
-    <a href="#">Ofertas</a>
+    <a href="catalogo.php?categoria=Casual">Casual</a>
+
+    <a href="ofertas.php">Ofertas</a>
 
     <hr>
 
     <a href="#">
+
         <i class="fa-solid fa-magnifying-glass"></i>
+
         Buscar
+
     </a>
 
     <a href="#">
+
+        <i class="fa-regular fa-heart"></i>
+
+        Favoritos
+
+    </a>
+
+    <a href="carrito.php">
+
         <i class="fa-solid fa-cart-shopping"></i>
+
         Carrito
+
+    </a>
+
+    <hr>
+
+    <a href="https://wa.me/TUNUMERO" target="_blank">
+
+        <i class="fa-brands fa-whatsapp"></i>
+
+        WhatsApp
+
+    </a>
+
+    <a href="https://instagram.com/TUUSUARIO" target="_blank">
+
+        <i class="fa-brands fa-instagram"></i>
+
+        Instagram
+
     </a>
 
 </div>

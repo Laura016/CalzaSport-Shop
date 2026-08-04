@@ -1,0 +1,106 @@
+/*=========================
+BOTONES FLOTANTES
+=========================*/
+
+.floating-buttons{
+
+    position:fixed;
+
+    right:25px;
+
+    bottom:35px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+    z-index:9999;
+
+}
+
+.float-btn{
+
+    width:62px;
+
+    height:62px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-decoration:none;
+
+    color:white;
+
+    font-size:26px;
+
+    position:relative;
+
+    box-shadow:0 12px 35px rgba(0,0,0,.20);
+
+    transition:.35s;
+
+}
+
+.float-btn:hover{
+
+    transform:translateY(-6px) scale(1.08);
+
+}
+
+.whatsapp{
+
+    background:#25D366;
+
+}
+
+.instagram{
+
+    background:linear-gradient(
+        45deg,
+        #F9CE34,
+        #EE2A7B,
+        #6228D7
+    );
+
+}
+
+.cart{
+
+    background:#2563EB;
+
+}
+
+.cart-counter{
+
+    position:absolute;
+
+    top:-5px;
+
+    right:-5px;
+
+    width:24px;
+
+    height:24px;
+
+    border-radius:50%;
+
+    background:#EF4444;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+}

@@ -1,42 +1,118 @@
-:root{
+/*======================================
+CALZASPORT DESIGN SYSTEM
+======================================*/
 
-    /* Colores */
+:root {
 
-    --primary:#2563EB;
-    --primary-dark:#1D4ED8;
+    /*==============================
+    COLORES PRINCIPALES
+    ==============================*/
 
-    --secondary:#111827;
+    --primary: #2563EB;
+    --primary-dark: #1D4ED8;
+    --primary-light: #DBEAFE;
 
-    --success:#10B981;
-    --danger:#EF4444;
-    --warning:#F59E0B;
+    --secondary: #111827;
 
-    --gray-100:#F9FAFB;
-    --gray-200:#F3F4F6;
-    --gray-300:#E5E7EB;
-    --gray-400:#9CA3AF;
-    --gray-500:#6B7280;
+    --accent: #0EA5E9;
 
-    --white:#FFFFFF;
-    --black:#111827;
+    --success: #22C55E;
 
-    /* Sombras */
+    --danger: #EF4444;
 
-    --shadow-sm:0 5px 15px rgba(0,0,0,.08);
-    --shadow:0 10px 30px rgba(0,0,0,.10);
-    --shadow-lg:0 20px 40px rgba(0,0,0,.12);
+    --warning: #F59E0B;
 
-    /* Bordes */
+    /*==============================
+    GRISES
+    ==============================*/
 
-    --radius:14px;
-    --radius-lg:22px;
+    --white: #FFFFFF;
 
-    /* Transiciones */
+    --gray-50: #F8FAFC;
+    --gray-100: #F1F5F9;
+    --gray-200: #E2E8F0;
+    --gray-300: #CBD5E1;
+    --gray-400: #94A3B8;
+    --gray-500: #64748B;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1E293B;
+    --gray-900: #0F172A;
 
-    --transition:.30s ease;
+    /*==============================
+    TIPOGRAFÍA
+    ==============================*/
 
-    /* Tamaño máximo */
+    --font-family: 'Poppins', sans-serif;
 
-    --container:1300px;
+    --title-xl: 64px;
+    --title-lg: 48px;
+    --title-md: 36px;
+    --title-sm: 28px;
+
+    --text-lg: 20px;
+    --text-md: 18px;
+    --text: 16px;
+    --text-sm: 14px;
+
+    /*==============================
+    BORDES
+    ==============================*/
+
+    --radius-xs: 8px;
+    --radius-sm: 12px;
+    --radius-md: 18px;
+    --radius-lg: 28px;
+    --radius-xl: 40px;
+
+    /*==============================
+    SOMBRAS
+    ==============================*/
+
+    --shadow-sm: 0 8px 20px rgba(15, 23, 42, .08);
+
+    --shadow-md: 0 15px 40px rgba(15, 23, 42, .10);
+
+    --shadow-lg: 0 25px 55px rgba(15, 23, 42, .18);
+
+    /*==============================
+    ESPACIADOS
+    ==============================*/
+
+    --space-xs: 10px;
+    --space-sm: 20px;
+    --space-md: 40px;
+    --space-lg: 70px;
+    --space-xl: 100px;
+
+   /*==============================
+CONTENEDORES
+==============================*/
+
+--container:1400px;
+--container-lg:1280px;
+--container-md:1100px;
+--container-sm:900px;
+
+/*==============================
+HEADER
+==============================*/
+
+--header-height:80px;
+
+/*==============================
+Z-INDEX
+==============================*/
+
+--z-navbar:1000;
+--z-overlay:1100;
+--z-menu:1200;
+--z-floating:1300;
+--z-modal:2000;
+    /*==============================
+    TRANSICIONES
+    ==============================*/
+
+    --transition: .35s ease;
 
 }

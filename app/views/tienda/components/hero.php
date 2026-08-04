@@ -20,7 +20,8 @@
 
             <p>
 
-               Diseños deportivos y casuales con calidad, comodidad y estilo.
+                Descubre nuestra colección de calzado deportivo y casual diseñada para brindar comodidad, rendimiento y
+                estilo en cada paso.
 
             </p>
 
@@ -32,7 +33,7 @@
 
                 </a>
 
-                <a href="#" class="btn btn-outline">
+                <a href="catalogo.php" class="btn btn-outline">
 
                     Ver catálogo
 
@@ -40,29 +41,49 @@
 
             </div>
 
+            <!-- Confianza -->
+
+            <div class="hero-rating">
+
+                <div class="stars">
+
+                    ★★★★★
+
+                </div>
+
+                <span>
+
+                    Más de <strong>500 clientes</strong> satisfechos
+
+                </span>
+
+            </div>
+
+            <!-- Beneficios -->
+
             <div class="hero-benefits">
 
-                <div>
+                <div class="benefit-card">
 
                     <i class="fa-solid fa-truck-fast"></i>
 
-                    Envíos a toda Colombia
+                    <span>Envíos a toda Colombia</span>
 
                 </div>
 
-                <div>
+                <div class="benefit-card">
 
                     <i class="fa-solid fa-credit-card"></i>
 
-                    Pago seguro
+                    <span>Pago 100% seguro</span>
 
                 </div>
 
-                <div>
+                <div class="benefit-card">
 
                     <i class="fa-solid fa-award"></i>
 
-                    Calidad garantizada
+                    <span>Calidad garantizada</span>
 
                 </div>
 
