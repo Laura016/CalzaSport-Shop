@@ -12,4 +12,6 @@ $subtitulo = "Descubre nuestros modelos más populares.";
 
 require __DIR__ . '/components/product-section.php';
 
+require __DIR__ . '/components/offers.php';
+
 ?>

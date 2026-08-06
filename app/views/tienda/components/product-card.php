@@ -10,57 +10,58 @@
 
     data-precio="<?= $producto['precio'] ?>">
 
+    <!-- Badge -->
     <?php if($producto['destacado']): ?>
 
         <span class="badge">
-
             Destacado
-
         </span>
 
     <?php else: ?>
 
         <span class="badge nuevo">
-
             Nuevo
-
         </span>
 
     <?php endif; ?>
 
-    <button class="favorite">
+    <!-- Favorito -->
+    <button
+    class="favorite"
+    data-id="<?= $producto['id']; ?>"
+    data-nombre="<?= htmlspecialchars($producto['nombre']); ?>"
+    data-precio="<?= $producto['precio']; ?>"
+    data-imagen="<?= $producto['imagen']; ?>">
 
-        <i class="fa-regular fa-heart"></i>
+    <i class="fa-regular fa-heart"></i>
 
-    </button>
+</button>
 
+    <!-- Imagen -->
     <div class="product-image">
 
         <img
-
             src="assets/img/productos/<?= $producto['imagen']; ?>"
-
             alt="<?= htmlspecialchars($producto['nombre']); ?>">
 
     </div>
 
+    <!-- Información -->
     <div class="product-info">
 
-        <h3>
-
-            <?= htmlspecialchars($producto['nombre']); ?>
-
-        </h3>
+        <h3><?= htmlspecialchars($producto['nombre']); ?></h3>
 
         <span class="reference">
-
             REF <?= htmlspecialchars($producto['referencia']); ?>
-
         </span>
 
         <div class="rating">
 
-            ★★★★★
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
+            <i class="fa-solid fa-star"></i>
 
         </div>
 
@@ -70,17 +71,17 @@
 
             <?php foreach(explode(",", $producto['tallas']) as $talla): ?>
 
-                <span>
-
-                    <?= trim($talla); ?>
-
-                </span>
+                <span><?= trim($talla); ?></span>
 
             <?php endforeach; ?>
 
         </div>
 
-        <?php require __DIR__.'/product-button.php'; ?>
+        <div class="product-action">
+
+            <?php require __DIR__.'/product-button.php'; ?>
+
+        </div>
 
     </div>
 

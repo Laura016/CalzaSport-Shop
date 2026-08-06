@@ -1,0 +1,205 @@
+/*======================================
+OFERTAS
+======================================*/
+
+.offers{
+
+    width:92%;
+    max-width:1400px;
+    margin:70px auto;
+
+    background:var(--primary-light);
+
+    border-radius:32px;
+
+    padding:70px 50px;
+
+}
+
+.offers-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+
+    gap:35px;
+
+}
+
+/*======================================
+CARD
+======================================*/
+
+.offer-card{
+
+    position:relative;
+
+    background:#FFFFFF;
+
+    border-radius:26px;
+
+    overflow:hidden;
+
+    padding:30px;
+
+    text-align:center;
+
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+
+    transition:.35s ease;
+
+}
+
+.offer-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 20px 45px rgba(15,23,42,.15);
+
+}
+
+/*======================================
+BADGE
+======================================*/
+
+.offer-badge{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    background:var(--danger);
+
+    color:white;
+
+    padding:8px 16px;
+
+    border-radius:30px;
+
+    font-size:14px;
+
+    font-weight:700;
+
+}
+
+/*======================================
+IMAGEN
+======================================*/
+
+.offer-card img{
+
+    width:100%;
+
+    height:260px;
+
+    object-fit:contain;
+
+    margin-bottom:25px;
+
+}
+
+/*======================================
+TEXTOS
+======================================*/
+
+.offer-card h3{
+
+    font-size:24px;
+
+    margin-bottom:15px;
+
+    color:var(--gray-900);
+
+}
+
+.old-price{
+
+    display:block;
+
+    text-decoration:line-through;
+
+    color:var(--gray-500);
+
+    font-size:18px;
+
+    margin-bottom:6px;
+
+}
+
+.new-price{
+
+    display:block;
+
+    font-size:34px;
+
+    font-weight:800;
+
+    color:var(--primary);
+
+    margin-bottom:25px;
+
+}
+
+/*======================================
+BOTÓN
+======================================*/
+
+.btn-offer{
+
+    display:inline-flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    background:var(--primary);
+
+    color:#FFFFFF;
+
+    font-weight:600;
+
+    transition:.30s ease;
+
+}
+
+.btn-offer:hover{
+
+    background:var(--primary-dark);
+
+}
+
+/*======================================
+RESPONSIVE
+======================================*/
+
+@media(max-width:768px){
+
+    .offers{
+
+        padding:45px 25px;
+
+        border-radius:24px;
+
+    }
+
+    .offer-card{
+
+        padding:24px;
+
+    }
+
+    .offer-card img{
+
+        height:220px;
+
+    }
+
+}

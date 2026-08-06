@@ -86,10 +86,6 @@
 
     <a href="catalogo.php?categoria=Mujer">Mujer</a>
 
-    <a href="catalogo.php?categoria=Running">Running</a>
-
-    <a href="catalogo.php?categoria=Casual">Casual</a>
-
     <a href="ofertas.php">Ofertas</a>
 
     <hr>
@@ -110,11 +106,11 @@
 
     </a>
 
-    <a href="carrito.php">
+    <a href="carrito.php" class="cart-icon">
 
         <i class="fa-solid fa-cart-shopping"></i>
 
-        Carrito
+        <span class="cart-count">0</span>
 
     </a>
 

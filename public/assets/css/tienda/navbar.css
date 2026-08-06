@@ -187,35 +187,41 @@ ICONOS
 CONTADOR CARRITO
 ======================================*/
 
+.cart-icon{
+
+    position:relative;
+
+}
+
 .cart-count{
 
     position:absolute;
 
-    top:-5px;
+    top:-8px;
 
-    right:-4px;
+    right:-8px;
 
-    width:20px;
+    width:22px;
 
-    height:20px;
+    height:22px;
 
     border-radius:50%;
 
-    background:var(--danger);
+    background:#EF4444;
 
-    color:white;
+    color:#fff;
 
-    font-size:11px;
+    font-size:12px;
 
     font-weight:700;
 
     display:flex;
 
-    align-items:center;
-
     justify-content:center;
 
-    border:2px solid white;
+    align-items:center;
+
+    box-shadow:0 3px 10px rgba(0,0,0,.2);
 
 }
 

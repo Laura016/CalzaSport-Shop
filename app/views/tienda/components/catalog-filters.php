@@ -7,7 +7,7 @@
         <input
             type="text"
             id="buscarProducto"
-            placeholder="Buscar por nombre o referencia">
+            placeholder="Buscar por nombre o referencia...">
 
     </div>
 
@@ -18,33 +18,15 @@
         <div class="category-chips">
 
             <button class="chip active" data-category="">
-
                 Todos
-
             </button>
 
             <button class="chip" data-category="Hombre">
-
                 Hombre
-
             </button>
 
             <button class="chip" data-category="Mujer">
-
                 Mujer
-
-            </button>
-
-            <button class="chip" data-category="Running">
-
-                Running
-
-            </button>
-
-            <button class="chip" data-category="Casual">
-
-                Casual
-
             </button>
 
         </div>
@@ -81,21 +63,19 @@
             <select id="orden">
 
                 <option value="recientes">
-
                     Más recientes
-
                 </option>
 
                 <option value="precio_asc">
-
                     Precio: menor a mayor
-
                 </option>
 
                 <option value="precio_desc">
-
                     Precio: mayor a menor
+                </option>
 
+                <option value="nombre">
+                    Nombre A-Z
                 </option>
 
             </select>

@@ -155,3 +155,15 @@
     </div>
 
 </footer>
+
+<?php require __DIR__.'/floating-buttons.php'; ?>
+
+<script src="assets/js/tienda/navbar.js"></script>
+<script src="assets/js/tienda/catalogo.js"></script>
+<script src="assets/js/tienda/favoritos.js"></script>
+<script src="assets/js/tienda/carrito.js"></script>
+<script src="assets/js/tienda/carrito-page.js"></script>
+<script src="assets/js/tienda/script.js"></script>
+
+</body>
+</html>

@@ -1,5 +1,12 @@
-<a href="producto.php?id=<?= $producto['id']; ?>" class="btn-producto">
+<button
+    class="btn-producto agregar-carrito"
+    data-id="<?= $producto['id']; ?>"
+    data-nombre="<?= htmlspecialchars($producto['nombre']); ?>"
+    data-precio="<?= $producto['precio']; ?>"
+    data-imagen="<?= $producto['imagen']; ?>">
 
-    Ver producto
+    <i class="fa-solid fa-cart-shopping"></i>
 
-</a>
+    Agregar al carrito
+
+</button>
