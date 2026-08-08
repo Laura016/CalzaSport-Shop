@@ -25,3 +25,5 @@
 
 /* Responsive (siempre al final) */
 @import url("responsive.css");
+
+@import url("checkout.css");

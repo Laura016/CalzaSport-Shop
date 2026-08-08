@@ -58,11 +58,13 @@
 
             </div>
 
-            <button class="checkout-btn">
+            <a href="checkout.php" class="checkout-btn">
+
+                <i class="fa-solid fa-lock"></i>
 
                 Finalizar compra
 
-            </button>
+            </a>
 
             <a href="catalogo.php" class="continue-shopping">
 
