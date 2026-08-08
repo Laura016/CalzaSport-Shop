@@ -4,13 +4,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (!contenedor) return;
 
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    let carrito =
+        JSON.parse(localStorage.getItem("carrito")) || [];
+
+
+    /*======================================
+    PINTAR CARRITO
+    ======================================*/
 
     pintarCarrito();
 
-    function pintarCarrito(){
 
-        if(carrito.length === 0){
+    function pintarCarrito() {
+
+        if (carrito.length === 0) {
 
             contenedor.innerHTML = `
 
@@ -20,9 +27,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     <h2>Tu carrito está vacío</h2>
 
-                    <p>Agrega productos para comenzar tu compra.</p>
+                    <p>
+                        Agrega productos para comenzar tu compra.
+                    </p>
 
-                    <a href="catalogo.php" class="checkout-btn">
+                    <a
+                        href="catalogo.php"
+                        class="checkout-btn">
 
                         Ir al catálogo
 
@@ -33,126 +44,329 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
 
             actualizarResumen();
+            actualizarContadores();
 
             return;
 
         }
 
-        contenedor.innerHTML="";
 
-        carrito.forEach((producto,index)=>{
+        contenedor.innerHTML = "";
+
+
+        carrito.forEach((producto, index) => {
+
+            const talla =
+                producto.talla || "No especificada";
+
+
+            const precio =
+                Number(producto.precio);
+
 
             contenedor.innerHTML += `
 
-                <div class="cart-item">
+                <article class="cart-item">
 
-                    <img src="assets/img/productos/${producto.imagen}" alt="">
+                    <!--==================================
+                    IMAGEN
+                    ==================================-->
+
+                    <div class="cart-image">
+
+                        <img
+                            src="assets/img/productos/${producto.imagen}"
+                            alt="${producto.nombre}">
+
+                    </div>
+
+
+                    <!--==================================
+                    INFORMACIÓN
+                    ==================================-->
 
                     <div class="cart-info">
 
-                        <h3>${producto.nombre}</h3>
+                        <h3>
 
-                        <span>$${producto.precio.toLocaleString()}</span>
+                            ${producto.nombre}
+
+                        </h3>
+
+
+                        <!-- REFERENCIA -->
+
+                        <span class="cart-reference">
+
+                            REF:
+
+                            <strong>
+
+                                ${producto.referencia || "N/A"}
+
+                            </strong>
+
+                        </span>
+
+
+                        <!-- TALLA -->
+
+                        <span class="cart-size">
+
+                            Talla:
+
+                            <strong>
+
+                                ${talla}
+
+                            </strong>
+
+                        </span>
+
+
+                        <!-- PRECIO -->
+
+                        <div class="cart-price">
+
+                            $${precio.toLocaleString("es-CO")}
+
+                        </div>
+
+
+                        <!-- CANTIDAD -->
+
+                        <div class="cart-quantity-box">
+
+                            <span class="quantity-label">
+
+                                Cantidad
+
+                            </span>
+
+
+                            <div class="cart-quantity">
+
+                                <button
+                                    class="menos"
+                                    data-index="${index}"
+                                    aria-label="Disminuir cantidad">
+
+                                    <i class="fa-solid fa-minus"></i>
+
+                                </button>
+
+
+                                <span class="quantity-number">
+
+                                    ${producto.cantidad}
+
+                                </span>
+
+
+                                <button
+                                    class="mas"
+                                    data-index="${index}"
+                                    aria-label="Aumentar cantidad">
+
+                                    <i class="fa-solid fa-plus"></i>
+
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                    <div class="cart-quantity">
 
-                        <button class="menos" data-index="${index}">−</button>
+                    <!--==================================
+                    ELIMINAR
+                    ==================================-->
 
-                        <span>${producto.cantidad}</span>
-
-                        <button class="mas" data-index="${index}">+</button>
-
-                    </div>
-
-                    <button class="delete-item" data-index="${index}">
+                    <button
+                        class="delete-item"
+                        data-index="${index}"
+                        aria-label="Eliminar producto">
 
                         <i class="fa-solid fa-trash"></i>
 
                     </button>
 
-                </div>
+                </article>
 
             `;
 
         });
 
+
         eventos();
 
         actualizarResumen();
+        actualizarContadores();
 
     }
 
-    function eventos(){
 
-        document.querySelectorAll(".mas").forEach(btn=>{
+    /*======================================
+    EVENTOS
+    ======================================*/
 
-            btn.onclick=()=>{
+    function eventos() {
 
-                carrito[btn.dataset.index].cantidad++;
+
+        /* AUMENTAR */
+
+        document.querySelectorAll(".mas").forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                const index =
+                    Number(btn.dataset.index);
+
+                carrito[index].cantidad++;
 
                 guardar();
 
-            };
+            });
 
         });
 
-        document.querySelectorAll(".menos").forEach(btn=>{
 
-            btn.onclick=()=>{
+        /* DISMINUIR */
 
-                if(carrito[btn.dataset.index].cantidad>1){
+        document.querySelectorAll(".menos").forEach(btn => {
 
-                    carrito[btn.dataset.index].cantidad--;
+            btn.addEventListener("click", () => {
+
+                const index =
+                    Number(btn.dataset.index);
+
+                if (carrito[index].cantidad > 1) {
+
+                    carrito[index].cantidad--;
 
                 }
 
                 guardar();
 
-            };
+            });
 
         });
 
-        document.querySelectorAll(".delete-item").forEach(btn=>{
 
-            btn.onclick=()=>{
+        /* ELIMINAR */
 
-                carrito.splice(btn.dataset.index,1);
+        document.querySelectorAll(".delete-item").forEach(btn => {
+
+            btn.addEventListener("click", () => {
+
+                const index =
+                    Number(btn.dataset.index);
+
+                carrito.splice(index, 1);
 
                 guardar();
 
-            };
+            });
 
         });
 
     }
 
-    function guardar(){
 
-        localStorage.setItem("carrito",JSON.stringify(carrito));
+    /*======================================
+    GUARDAR
+    ======================================*/
+
+    function guardar() {
+
+        localStorage.setItem(
+            "carrito",
+            JSON.stringify(carrito)
+        );
 
         pintarCarrito();
 
     }
 
-    function actualizarResumen(){
 
-        let subtotal=0;
+    /*======================================
+    RESUMEN
+    ======================================*/
 
-        carrito.forEach(p=>{
+    function actualizarResumen() {
 
-            subtotal += p.precio*p.cantidad;
+        let subtotal = 0;
+
+
+        carrito.forEach(producto => {
+
+            subtotal +=
+                Number(producto.precio) *
+                Number(producto.cantidad);
 
         });
 
-        document.getElementById("subtotal").textContent=
 
-            "$"+subtotal.toLocaleString();
+        const subtotalElemento =
+            document.getElementById("subtotal");
 
-        document.getElementById("total").textContent=
 
-            "$"+subtotal.toLocaleString();
+        const totalElemento =
+            document.getElementById("total");
+
+
+        if (subtotalElemento) {
+
+            subtotalElemento.textContent =
+                "$" + subtotal.toLocaleString("es-CO");
+
+        }
+
+
+        if (totalElemento) {
+
+            totalElemento.textContent =
+                "$" + subtotal.toLocaleString("es-CO");
+
+        }
+
+    }
+
+
+    /*======================================
+    CONTADORES
+    ======================================*/
+
+    function actualizarContadores() {
+
+        const total = carrito.reduce(
+
+            (suma, producto) => {
+
+                return suma + Number(producto.cantidad);
+
+            },
+
+            0
+
+        );
+
+
+        document.querySelectorAll(".cart-count")
+            .forEach(contador => {
+
+                contador.textContent = total;
+
+            });
+
+
+        document.querySelectorAll(".cart-counter")
+            .forEach(contador => {
+
+                contador.textContent = total;
+
+            });
 
     }
 
