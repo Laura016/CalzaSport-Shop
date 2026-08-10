@@ -294,9 +294,77 @@ document.addEventListener("DOMContentLoaded", () => {
          * con el sistema real de pago.
          */
 
-        alert(
-            "Datos registrados correctamente. Continuaremos con el pago."
-        );
+        fetch("procesar-checkout.php", {
+
+            method: "POST",
+
+            headers: {
+
+                "Content-Type": "application/json"
+
+            },
+
+            body: JSON.stringify(datosCheckout)
+
+        })
+            .then(response => {
+
+                return response.json();
+
+            })
+            .then(data => {
+
+                if (data.success) {
+
+                    console.log(
+                        "Pedido registrado:",
+                        data
+                    );
+
+
+                    /*
+                     * Guardamos temporalmente
+                     * el número del pedido.
+                     */
+
+                    localStorage.setItem(
+                        "pedido_id",
+                        data.pedido_id
+                    );
+
+
+                    /*
+                     * Por ahora iremos a una página
+                     * de confirmación.
+                     */
+
+                    window.location.href =
+                        "pedido-confirmado.php";
+
+                } else {
+
+                    alert(
+                        data.message ||
+                        "No fue posible registrar el pedido."
+                    );
+
+                    console.error(data);
+
+                }
+
+            })
+            .catch(error => {
+
+                console.error(
+                    "Error:",
+                    error
+                );
+
+                alert(
+                    "Ocurrió un error al procesar tu pedido. Intenta nuevamente."
+                );
+
+            });
 
     });
 

@@ -22,6 +22,7 @@
 @import url("cart.css");
 @import url("floating-buttons.css");
 @import url("footer.css");
+@import url("order-success.css");
 
 /* Responsive (siempre al final) */
 @import url("responsive.css");

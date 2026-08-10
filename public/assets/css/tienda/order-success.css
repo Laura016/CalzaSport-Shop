@@ -1,0 +1,491 @@
+/* =========================================
+   PEDIDO RECIBIDO
+========================================= */
+
+.order-success {
+
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 80px 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #f8fafc 0%,
+            #eef4ff 100%
+        );
+
+}
+
+
+.success-container {
+
+    width: 100%;
+
+    max-width: 720px;
+
+    margin: 0 auto;
+
+}
+
+
+.success-card {
+
+    background: #ffffff;
+
+    border-radius: 28px;
+
+    padding: 55px 50px;
+
+    text-align: center;
+
+    box-shadow:
+        0 25px 60px rgba(15, 23, 42, 0.10);
+
+    border: 1px solid rgba(226, 232, 240, 0.8);
+
+}
+
+
+/* =========================================
+   ICONO
+========================================= */
+
+.success-icon {
+
+    width: 82px;
+
+    height: 82px;
+
+    margin: 0 auto 25px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #e9f9ef;
+
+    color: #16a34a;
+
+    font-size: 34px;
+
+    box-shadow:
+        0 10px 30px rgba(22, 163, 74, 0.15);
+
+}
+
+
+.success-icon i {
+
+    font-size: 34px;
+
+}
+
+
+/* =========================================
+   ETIQUETA
+========================================= */
+
+.success-tag {
+
+    display: inline-block;
+
+    padding: 8px 16px;
+
+    border-radius: 30px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    margin-bottom: 18px;
+
+}
+
+
+/* =========================================
+   TITULO
+========================================= */
+
+.success-card h1 {
+
+    margin: 0 0 18px;
+
+    font-size: 42px;
+
+    line-height: 1.15;
+
+    color: #111827;
+
+    font-weight: 700;
+
+}
+
+
+.success-message {
+
+    max-width: 560px;
+
+    margin: 0 auto 30px;
+
+    color: #64748b;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================
+   NUMERO DE PEDIDO
+========================================= */
+
+.order-number {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    padding: 20px;
+
+    margin: 0 auto 30px;
+
+    max-width: 300px;
+
+    border-radius: 18px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e5e7eb;
+
+}
+
+
+.order-number span {
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+}
+
+
+.order-number strong {
+
+    color: #2563eb;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================
+   INFORMACION
+========================================= */
+
+.success-info {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+
+    margin-bottom: 32px;
+
+}
+
+
+.success-info-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 13px;
+
+    padding: 18px;
+
+    text-align: left;
+
+    border-radius: 16px;
+
+    background: #f8fafc;
+
+    border: 1px solid #eef2f7;
+
+}
+
+
+.success-info-item > i {
+
+    flex-shrink: 0;
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #eff6ff;
+
+    color: #2563eb;
+
+    font-size: 16px;
+
+}
+
+
+.success-info-item div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+
+}
+
+
+.success-info-item strong {
+
+    color: #1e293b;
+
+    font-size: 14px;
+
+}
+
+
+.success-info-item span {
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+/* =========================================
+   BOTON PRINCIPAL
+========================================= */
+
+.success-button {
+
+    width: 100%;
+
+    min-height: 54px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 15px 25px;
+
+    border-radius: 14px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+}
+
+
+.success-button:hover {
+
+    background: #1d4ed8;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(37, 99, 235, 0.25);
+
+}
+
+
+.success-button i {
+
+    font-size: 16px;
+
+}
+
+
+/* =========================================
+   VOLVER AL INICIO
+========================================= */
+
+.success-home {
+
+    display: inline-block;
+
+    margin-top: 18px;
+
+    color: #64748b;
+
+    font-size: 14px;
+
+    text-decoration: none;
+
+    transition: color 0.2s ease;
+
+}
+
+
+.success-home:hover {
+
+    color: #2563eb;
+
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 700px) {
+
+    .order-success {
+
+        padding: 45px 15px;
+
+        min-height: calc(100vh - 70px);
+
+    }
+
+
+    .success-card {
+
+        padding: 40px 22px;
+
+        border-radius: 22px;
+
+    }
+
+
+    .success-icon {
+
+        width: 70px;
+
+        height: 70px;
+
+        font-size: 28px;
+
+    }
+
+
+    .success-icon i {
+
+        font-size: 28px;
+
+    }
+
+
+    .success-card h1 {
+
+        font-size: 30px;
+
+    }
+
+
+    .success-message {
+
+        font-size: 14px;
+
+    }
+
+
+    .success-info {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .success-info-item {
+
+        padding: 15px;
+
+    }
+
+
+    .order-number strong {
+
+        font-size: 24px;
+
+    }
+
+}
+
+
+@media (max-width: 420px) {
+
+    .success-card {
+
+        padding: 35px 18px;
+
+    }
+
+
+    .success-card h1 {
+
+        font-size: 27px;
+
+    }
+
+
+    .success-tag {
+
+        font-size: 11px;
+
+    }
+
+}
