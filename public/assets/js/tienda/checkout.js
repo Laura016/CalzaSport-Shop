@@ -23,6 +23,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const carrito =
         JSON.parse(localStorage.getItem("carrito")) || [];
 
+    console.log("CARRITO ACTUAL:", carrito);
+
 
     /*======================================
     SI ESTÁ VACÍO
@@ -338,17 +340,19 @@ document.addEventListener("DOMContentLoaded", () => {
                      * de confirmación.
                      */
 
+                    localStorage.removeItem("carrito");
+
                     window.location.href =
                         "pedido-confirmado.php";
 
                 } else {
 
-                    alert(
-                        data.message ||
-                        "No fue posible registrar el pedido."
-                    );
+                    console.error("ERROR COMPLETO DEL SERVIDOR:", data);
 
-                    console.error(data);
+                    alert(
+                        "ERROR DEL SERVIDOR:\n\n" +
+                        (data.error || data.message || "Error desconocido")
+                    );
 
                 }
 
