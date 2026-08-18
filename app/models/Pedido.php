@@ -5,116 +5,164 @@ require_once __DIR__ . '/../config/database.php';
 class Pedido
 {
     private $conexion;
+    private $wompi;
+
 
     public function __construct()
     {
         $database = new Database();
+
         $this->conexion = $database->conectar();
+
+        $this->wompi = require __DIR__ . '/../config/wompi.php';
     }
 
 
     /**
-     * =========================================================
-     * CREAR PEDIDO
-     * =========================================================
+     * Genera una referencia única para Wompi.
+     */
+    private function generarReferencia($pedidoId)
+    {
+        return 'CALZASPORT-' .
+            $pedidoId .
+            '-' .
+            strtoupper(bin2hex(random_bytes(4)));
+    }
+
+
+    /**
+     * Genera la firma de integridad de Wompi.
      *
-     * Esta función:
-     *
-     * 1. Valida los productos.
-     * 2. Obtiene precios reales desde MySQL.
-     * 3. Valida tallas.
-     * 4. Valida stock disponible.
-     * 5. Crea el cliente.
-     * 6. Crea el pedido.
-     * 7. Guarda los detalles.
+     * Referencia + monto en centavos + moneda + secreto
+     */
+    private function generarFirmaIntegridad(
+        $referencia,
+        $montoCentavos
+    ) {
+
+        $cadena =
+
+            $referencia .
+            $montoCentavos .
+            'COP' .
+            $this->wompi['integrity_secret'];
+
+
+        return hash(
+            'sha256',
+            $cadena
+        );
+    }
+
+
+    /**
+     * Crear cliente y pedido.
      *
      * IMPORTANTE:
-     * El stock NO se descuenta aquí.
      *
-     * El descuento definitivo se realizará cuando
-     * la pasarela confirme el pago.
+     * En esta etapa NO se descuenta stock.
+     *
+     * El stock se descontará posteriormente
+     * cuando Wompi confirme el pago.
      */
     public function crearPedido($datos)
     {
         try {
 
-            /* =====================================================
-               INICIAR TRANSACCIÓN
-            ===================================================== */
-
             $this->conexion->beginTransaction();
 
 
-            /* =====================================================
-               1. VALIDAR DATOS PRINCIPALES
-            ===================================================== */
-
-            if (
-                empty($datos['cliente']) ||
-                empty($datos['envio']) ||
-                empty($datos['productos']) ||
-                empty($datos['metodo_pago'])
-            ) {
-
-                throw new Exception(
-                    "Faltan datos obligatorios para crear el pedido."
-                );
-
-            }
-
-
-            /* =====================================================
-               2. VALIDAR MÉTODO DE PAGO
-            ===================================================== */
-
-            $metodosPermitidos = [
-                'nequi',
-                'bancolombia',
-                'pse',
-                'tarjeta'
-            ];
-
-            if (
-                !in_array(
-                    $datos['metodo_pago'],
-                    $metodosPermitidos,
-                    true
-                )
-            ) {
-
-                throw new Exception(
-                    "El método de pago seleccionado no es válido."
-                );
-
-            }
-
-
-            /* =====================================================
-               3. AGRUPAR PRODUCTOS
-            ===================================================== */
-
-            /*
-             * Si por alguna razón el mismo producto aparece
-             * varias veces en el carrito, sumamos las cantidades.
-             */
-
-            $productosAgrupados = [];
-
+            /*======================================
+            1. VALIDAR PRODUCTOS
+            ======================================*/
 
             foreach ($datos['productos'] as $producto) {
 
-                if (empty($producto['id'])) {
+                $sqlProducto = "
+
+                    SELECT
+                        id,
+                        nombre,
+                        referencia,
+                        precio,
+                        tallas,
+                        stock,
+                        estado
+
+                    FROM productos
+
+                    WHERE id = ?
+
+                    FOR UPDATE
+
+                ";
+
+
+                $stmtProducto =
+                    $this->conexion->prepare($sqlProducto);
+
+
+                $stmtProducto->execute([
+                    $producto['id']
+                ]);
+
+
+                $productoBD =
+                    $stmtProducto->fetch(PDO::FETCH_ASSOC);
+
+
+                /* Producto no existe */
+
+                if (!$productoBD) {
 
                     throw new Exception(
-                        "Uno de los productos seleccionados no tiene un ID válido."
+                        "El producto seleccionado ya no existe."
                     );
 
                 }
 
 
-                $productoId = (int) $producto['id'];
+                /*==================================
+                VALIDAR TALLA
+                ==================================*/
 
-                $cantidad = (int) ($producto['cantidad'] ?? 0);
+                $tallaSeleccionada =
+                    trim($producto['talla'] ?? '');
+
+
+                $tallasDisponibles =
+                    array_map(
+                        'trim',
+                        explode(
+                            ',',
+                            $productoBD['tallas']
+                        )
+                    );
+
+
+                if (
+                    $tallaSeleccionada === '' ||
+                    !in_array(
+                        $tallaSeleccionada,
+                        $tallasDisponibles
+                    )
+                ) {
+
+                    throw new Exception(
+                        "La talla seleccionada para " .
+                        $productoBD['nombre'] .
+                        " ya no está disponible."
+                    );
+
+                }
+
+
+                /*==================================
+                VALIDAR CANTIDAD
+                ==================================*/
+
+                $cantidad =
+                    (int) $producto['cantidad'];
 
 
                 if ($cantidad <= 0) {
@@ -126,199 +174,21 @@ class Pedido
                 }
 
 
-                if (!isset($productosAgrupados[$productoId])) {
-
-                    $productosAgrupados[$productoId] = 0;
-
-                }
-
-
-                $productosAgrupados[$productoId] += $cantidad;
-
-            }
-
-
-            /* =====================================================
-               4. OBTENER PRODUCTOS REALES DESDE MYSQL
-            ===================================================== */
-
-            $productosBD = [];
-
-
-            $sqlProducto = "
-                SELECT
-                    id,
-                    nombre,
-                    referencia,
-                    precio,
-                    tallas,
-                    stock,
-                    estado
-                FROM productos
-                WHERE id = ?
-                FOR UPDATE
-            ";
-
-
-            $stmtProducto =
-                $this->conexion->prepare($sqlProducto);
-
-
-            $subtotal = 0;
-
-
-            foreach (
-                $productosAgrupados
-                as $productoId => $cantidad
-            ) {
-
-                $stmtProducto->execute([
-                    $productoId
-                ]);
-
-
-                $productoBD =
-                    $stmtProducto->fetch(PDO::FETCH_ASSOC);
-
-
-                /* =================================================
-                   PRODUCTO NO EXISTE
-                ================================================= */
-
-                if (!$productoBD) {
-
-                    throw new Exception(
-                        "Uno de los productos seleccionados ya no existe."
-                    );
-
-                }
-
-
-                /* =================================================
-                   VALIDAR STOCK
-                ================================================= */
-
-                if ((int) $productoBD['stock'] < $cantidad) {
-
-                    throw new Exception(
-
-                        "No hay suficiente stock para " .
-                        $productoBD['nombre'] .
-                        ". Disponible: " .
-                        $productoBD['stock']
-
-                    );
-
-                }
-
-
-                /* =================================================
-                   OBTENER PRECIO REAL DE MYSQL
-                ================================================= */
-
-                $precio = (float) $productoBD['precio'];
-
-
-                /* =================================================
-                   SUBTOTAL DEL PRODUCTO
-                ================================================= */
-
-                $subtotalProducto =
-                    $precio * $cantidad;
-
-
-                $subtotal += $subtotalProducto;
-
-
-                /* =================================================
-                   GUARDAR INFORMACIÓN REAL
-                ================================================= */
-
-                $productosBD[$productoId] = [
-
-                    'id' =>
-                        (int) $productoBD['id'],
-
-                    'nombre' =>
-                        $productoBD['nombre'],
-
-                    'referencia' =>
-                        $productoBD['referencia'],
-
-                    'precio' =>
-                        $precio,
-
-                    'tallas' =>
-                        $productoBD['tallas'],
-
-                    'stock' =>
-                        (int) $productoBD['stock'],
-
-                    'cantidad' =>
-                        $cantidad,
-
-                    'subtotal' =>
-                        $subtotalProducto
-
-                ];
-
-            }
-
-
-            /* =====================================================
-               5. VALIDAR TALLAS
-            ===================================================== */
-
-            foreach ($datos['productos'] as $producto) {
-
-                $productoId =
-                    (int) $producto['id'];
-
-
-                $tallaSeleccionada =
-                    trim($producto['talla'] ?? '');
-
-
-                if ($tallaSeleccionada === '') {
-
-                    throw new Exception(
-
-                        "Debes seleccionar una talla para " .
-                        $productosBD[$productoId]['nombre']
-
-                    );
-
-                }
-
-
-                $tallasDisponibles =
-                    array_map(
-
-                        'trim',
-
-                        explode(
-                            ',',
-                            $productosBD[$productoId]['tallas']
-                        )
-
-                    );
-
+                /*==================================
+                VALIDAR STOCK DISPONIBLE
+                ==================================*/
 
                 if (
-                    !in_array(
-                        $tallaSeleccionada,
-                        $tallasDisponibles,
-                        true
-                    )
+                    (int) $productoBD['stock']
+                    < $cantidad
                 ) {
 
                     throw new Exception(
-
-                        "La talla " .
-                        $tallaSeleccionada .
-                        " no está disponible para " .
-                        $productosBD[$productoId]['nombre']
-
+                        "El producto " .
+                        $productoBD['nombre'] .
+                        " no tiene suficiente stock. " .
+                        "Disponible: " .
+                        $productoBD['stock']
                     );
 
                 }
@@ -326,34 +196,9 @@ class Pedido
             }
 
 
-            /* =====================================================
-               6. COSTO DE ENVÍO
-            ===================================================== */
-
-            /*
-             * Por ahora dejamos el envío en 0 porque
-             * todavía no tenemos implementado el cálculo
-             * automático del envío.
-             *
-             * Más adelante podemos calcularlo según:
-             *
-             * - Ciudad
-             * - Departamento
-             * - Transportadora
-             * - Peso
-             * - Valor del pedido
-             */
-
-            $costoEnvio = 0;
-
-
-            $total =
-                $subtotal + $costoEnvio;
-
-
-            /* =====================================================
-               7. CREAR CLIENTE
-            ===================================================== */
+            /*======================================
+            2. CREAR CLIENTE
+            ======================================*/
 
             $sqlCliente = "
 
@@ -381,48 +226,30 @@ class Pedido
 
             $stmtCliente->execute([
 
-                trim(
-                    $datos['cliente']['nombre']
-                ),
+                $datos['cliente']['nombre'],
 
-                trim(
-                    $datos['cliente']['telefono']
-                ),
+                $datos['cliente']['telefono'],
 
-                trim(
-                    $datos['cliente']['correo']
-                ),
+                $datos['cliente']['correo'],
 
-                trim(
-                    $datos['envio']['direccion']
-                ),
+                $datos['envio']['direccion'],
 
-                trim(
-                    $datos['envio']['departamento']
-                ),
+                $datos['envio']['departamento'],
 
-                trim(
-                    $datos['envio']['ciudad']
-                ),
+                $datos['envio']['ciudad'],
 
-                trim(
-                    $datos['envio']['barrio']
-                ),
+                $datos['envio']['barrio'],
 
                 !empty(
                     $datos['envio']['codigo_postal']
                 )
-                    ? trim(
-                        $datos['envio']['codigo_postal']
-                    )
+                    ? $datos['envio']['codigo_postal']
                     : null,
 
                 !empty(
                     $datos['envio']['indicaciones']
                 )
-                    ? trim(
-                        $datos['envio']['indicaciones']
-                    )
+                    ? $datos['envio']['indicaciones']
                     : null
 
             ]);
@@ -432,9 +259,49 @@ class Pedido
                 $this->conexion->lastInsertId();
 
 
-            /* =====================================================
-               8. CREAR PEDIDO
-            ===================================================== */
+            /*======================================
+            3. CALCULAR TOTAL
+            ======================================*/
+
+            $subtotal =
+                (float) $datos['subtotal'];
+
+
+            $costoEnvio = 0;
+
+
+            $total =
+                (float) $datos['total'];
+
+
+            /*
+             * Wompi trabaja los valores en centavos.
+             *
+             * Ejemplo:
+             *
+             * $150.000 COP
+             *
+             * = 15.000.000 centavos
+             */
+
+            $montoCentavos =
+                (int) round(
+                    $total * 100
+                );
+
+
+            if ($montoCentavos <= 0) {
+
+                throw new Exception(
+                    "El valor del pedido no es válido."
+                );
+
+            }
+
+
+            /*======================================
+            4. CREAR PEDIDO
+            ======================================*/
 
             $sqlPedido = "
 
@@ -445,21 +312,25 @@ class Pedido
                     costo_envio,
                     total,
                     metodo_pago,
+                    referencia_pago,
+                    transaccion_id,
                     estado_pago,
                     estado_pedido
                 )
 
-                VALUES (?, ?, ?, ?, ?, ?, ?)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 
             ";
 
 
-            $estadoPago =
-                'Pendiente';
+            /*
+             * Primero creamos una referencia temporal.
+             * Después de obtener el ID del pedido
+             * generaremos la referencia definitiva.
+             */
 
-
-            $estadoPedido =
-                'Pendiente';
+            $referenciaTemporal =
+                'TEMP-' . uniqid();
 
 
             $stmtPedido =
@@ -478,9 +349,13 @@ class Pedido
 
                 $datos['metodo_pago'],
 
-                $estadoPago,
+                $referenciaTemporal,
 
-                $estadoPedido
+                null,
+
+                'Pendiente',
+
+                'Pendiente'
 
             ]);
 
@@ -489,9 +364,60 @@ class Pedido
                 $this->conexion->lastInsertId();
 
 
-            /* =====================================================
-               9. CREAR DETALLES DEL PEDIDO
-            ===================================================== */
+            /*======================================
+            5. GENERAR REFERENCIA WOMPI
+            ======================================*/
+
+            $referencia =
+                $this->generarReferencia(
+                    $pedidoId
+                );
+
+
+            /*======================================
+            6. GENERAR FIRMA DE INTEGRIDAD
+            ======================================*/
+
+            $firma =
+                $this->generarFirmaIntegridad(
+                    $referencia,
+                    $montoCentavos
+                );
+
+
+            /*======================================
+            7. ACTUALIZAR REFERENCIA DEL PEDIDO
+            ======================================*/
+
+            $sqlReferencia = "
+
+                UPDATE pedidos
+
+                SET referencia_pago = ?
+
+                WHERE id = ?
+
+            ";
+
+
+            $stmtReferencia =
+                $this->conexion->prepare(
+                    $sqlReferencia
+                );
+
+
+            $stmtReferencia->execute([
+
+                $referencia,
+
+                $pedidoId
+
+            ]);
+
+
+            /*======================================
+            8. GUARDAR DETALLE DEL PEDIDO
+            ======================================*/
 
             $sqlDetalle = "
 
@@ -513,36 +439,22 @@ class Pedido
 
 
             $stmtDetalle =
-                $this->conexion->prepare($sqlDetalle);
+                $this->conexion->prepare(
+                    $sqlDetalle
+                );
 
 
-            foreach ($datos['productos'] as $producto) {
-
-                $productoId =
-                    (int) $producto['id'];
-
-
-                $talla =
-                    trim(
-                        $producto['talla']
-                    );
-
-
-                /*
-                 * Utilizamos SIEMPRE la información
-                 * obtenida desde MySQL.
-                 */
-
-                $productoBD =
-                    $productosBD[$productoId];
-
+            foreach (
+                $datos['productos']
+                as $producto
+            ) {
 
                 $cantidad =
                     (int) $producto['cantidad'];
 
 
                 $precio =
-                    $productoBD['precio'];
+                    (float) $producto['precio'];
 
 
                 $subtotalProducto =
@@ -553,13 +465,13 @@ class Pedido
 
                     $pedidoId,
 
-                    $productoId,
+                    $producto['id'],
 
-                    $productoBD['nombre'],
+                    $producto['nombre'],
 
-                    $productoBD['referencia'],
+                    $producto['referencia'] ?? 'N/A',
 
-                    $talla,
+                    $producto['talla'] ?? 'N/A',
 
                     $cantidad,
 
@@ -572,16 +484,32 @@ class Pedido
             }
 
 
-            /* =====================================================
-               10. CONFIRMAR TRANSACCIÓN
-            ===================================================== */
+            /*======================================
+            IMPORTANTE:
+            NO DESCONTAMOS STOCK AQUÍ
+            ======================================*/
+
+
+            /*
+             * El stock se descontará solamente
+             * cuando Wompi confirme:
+             *
+             * status = APPROVED
+             *
+             * mediante nuestro webhook.
+             */
+
+
+            /*======================================
+            9. CONFIRMAR TRANSACCIÓN
+            ======================================*/
 
             $this->conexion->commit();
 
 
-            /* =====================================================
-               RESPUESTA
-            ===================================================== */
+            /*======================================
+            10. RESPUESTA
+            ======================================*/
 
             return [
 
@@ -593,14 +521,20 @@ class Pedido
                 'cliente_id' =>
                     $clienteId,
 
-                'subtotal' =>
-                    $subtotal,
+                'referencia' =>
+                    $referencia,
 
-                'costo_envio' =>
-                    $costoEnvio,
+                'amount_in_cents' =>
+                    $montoCentavos,
 
-                'total' =>
-                    $total
+                'currency' =>
+                    'COP',
+
+                'public_key' =>
+                    $this->wompi['public_key'],
+
+                'integrity_signature' =>
+                    $firma
 
             ];
 
@@ -608,175 +542,9 @@ class Pedido
         } catch (Exception $e) {
 
 
-            /* =====================================================
-               DESHACER TRANSACCIÓN
-            ===================================================== */
-
-            if (
-                $this->conexion->inTransaction()
-            ) {
-
-                $this->conexion->rollBack();
-
-            }
-
-
-            return [
-
-                'success' => false,
-
-                'error' =>
-                    $e->getMessage()
-
-            ];
-
-        }
-
-    }
-
-
-    /**
-     * =========================================================
-     * DESCONTAR STOCK DESPUÉS DEL PAGO
-     * =========================================================
-     *
-     * ESTA FUNCIÓN TODAVÍA NO SE UTILIZA.
-     *
-     * La conectaremos cuando integremos la pasarela
-     * de pago y recibamos la confirmación del pago.
-     */
-    public function descontarStockPedido($pedidoId)
-    {
-        try {
-
-            $this->conexion->beginTransaction();
-
-
-            /* =====================================================
-               OBTENER DETALLES DEL PEDIDO
-            ===================================================== */
-
-            $sqlDetalles = "
-
-                SELECT
-                    producto_id,
-                    cantidad
-                FROM detalle_pedido
-                WHERE pedido_id = ?
-
-            ";
-
-
-            $stmtDetalles =
-                $this->conexion->prepare($sqlDetalles);
-
-
-            $stmtDetalles->execute([
-                $pedidoId
-            ]);
-
-
-            $detalles =
-                $stmtDetalles->fetchAll(
-                    PDO::FETCH_ASSOC
-                );
-
-
-            if (!$detalles) {
-
-                throw new Exception(
-                    "El pedido no tiene productos asociados."
-                );
-
-            }
-
-
-            /* =====================================================
-               DESCONTAR STOCK
-            ===================================================== */
-
-            $sqlStock = "
-
-                UPDATE productos
-
-                SET
-                    stock = stock - ?,
-
-                    estado =
-                        CASE
-
-                            WHEN stock - ? <= 0
-                            THEN 'Agotado'
-
-                            ELSE 'Disponible'
-
-                        END
-
-                WHERE id = ?
-
-                AND stock >= ?
-
-            ";
-
-
-            $stmtStock =
-                $this->conexion->prepare($sqlStock);
-
-
-            foreach ($detalles as $detalle) {
-
-                $cantidad =
-                    (int) $detalle['cantidad'];
-
-
-                $productoId =
-                    (int) $detalle['producto_id'];
-
-
-                $stmtStock->execute([
-
-                    $cantidad,
-
-                    $cantidad,
-
-                    $productoId,
-
-                    $cantidad
-
-                ]);
-
-
-                if (
-                    $stmtStock->rowCount() !== 1
-                ) {
-
-                    throw new Exception(
-
-                        "No hay suficiente stock para completar el pedido."
-
-                    );
-
-                }
-
-            }
-
-
-            /* =====================================================
-               CONFIRMAR
-            ===================================================== */
-
-            $this->conexion->commit();
-
-
-            return [
-
-                'success' => true
-
-            ];
-
-
-        } catch (Exception $e) {
-
+            /*======================================
+            CANCELAR TODO SI ALGO FALLA
+            ======================================*/
 
             if (
                 $this->conexion->inTransaction()
