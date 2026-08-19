@@ -206,12 +206,12 @@ class Pedido
                 $datos['envio']['barrio'],
 
                 !empty($datos['envio']['codigo_postal'])
-                    ? $datos['envio']['codigo_postal']
-                    : null,
+                ? $datos['envio']['codigo_postal']
+                : null,
 
                 !empty($datos['envio']['indicaciones'])
-                    ? $datos['envio']['indicaciones']
-                    : null
+                ? $datos['envio']['indicaciones']
+                : null
 
             ]);
 
@@ -467,6 +467,31 @@ class Pedido
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
 
+    }
+
+    /**
+     * =========================================================
+     * OBTENER PEDIDO POR REFERENCIA DE PAGO
+     * =========================================================
+     */
+
+    public function obtenerPorReferencia($referencia)
+    {
+        $sql = "
+        SELECT *
+        FROM pedidos
+        WHERE referencia_pago = ?
+        LIMIT 1
+    ";
+
+        $stmt =
+            $this->conexion->prepare($sql);
+
+        $stmt->execute([
+            $referencia
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
 
