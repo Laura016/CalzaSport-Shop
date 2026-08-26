@@ -151,7 +151,21 @@ document.addEventListener("DOMContentLoaded", () => {
     CONTINUAR AL PAGO
     ======================================*/
 
-    continuePayment.addEventListener("click", () => {
+    continuePayment.addEventListener("click", async () => {
+
+        /*==================================
+        EVITAR DOBLE CLIC
+        ==================================*/
+
+        continuePayment.disabled = true;
+
+        continuePayment.querySelector("span").textContent =
+            "Preparando pago...";
+
+
+        /*==================================
+        DATOS DEL CLIENTE
+        ==================================*/
 
         const nombre =
             document.getElementById("nombre").value.trim();
@@ -193,10 +207,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Por favor completa todos los campos obligatorios."
             );
 
+            continuePayment.disabled = false;
+
+            continuePayment.querySelector("span").textContent =
+                "Continuar al pago";
+
             return;
 
         }
 
+
+        /*==================================
+        MÉTODO DE PAGO
+        ==================================*/
 
         const metodoPago =
             document.querySelector(
@@ -209,6 +232,11 @@ document.addEventListener("DOMContentLoaded", () => {
             alert(
                 "Selecciona un método de pago para continuar."
             );
+
+            continuePayment.disabled = false;
+
+            continuePayment.querySelector("span").textContent =
+                "Continuar al pago";
 
             return;
 
@@ -274,6 +302,10 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
 
+        /*==================================
+        GUARDAR CHECKOUT LOCALMENTE
+        ==================================*/
+
         localStorage.setItem(
 
             "checkout",
@@ -284,91 +316,212 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         console.log(
-            "Datos del checkout:",
+            "DATOS DEL CHECKOUT:",
             datosCheckout
         );
 
 
-        /*
-         * Por ahora mostramos una confirmación.
-         *
-         * Después conectaremos este paso
-         * con el sistema real de pago.
-         */
+        /*==================================
+        ENVIAR AL SERVIDOR
+        ==================================*/
 
-        fetch("procesar-checkout.php", {
+        try {
 
-            method: "POST",
+            const response =
+                await fetch(
+                    "procesar-checkout.php",
+                    {
 
-            headers: {
+                        method: "POST",
 
-                "Content-Type": "application/json"
+                        headers: {
 
-            },
+                            "Content-Type":
+                                "application/json"
 
-            body: JSON.stringify(datosCheckout)
+                        },
 
-        })
-            .then(response => {
+                        body:
+                            JSON.stringify(
+                                datosCheckout
+                            )
 
-                return response.json();
-
-            })
-            .then(data => {
-
-                if (data.success) {
-
-                    console.log(
-                        "Pedido registrado:",
-                        data
-                    );
+                    }
+                );
 
 
-                    /*
-                     * Guardamos temporalmente
-                     * el número del pedido.
-                     */
-
-                    localStorage.setItem(
-                        "pedido_id",
-                        data.pedido_id
-                    );
+            const data =
+                await response.json();
 
 
-                    /*
-                     * Por ahora iremos a una página
-                     * de confirmación.
-                     */
+            console.log(
+                "RESPUESTA DEL SERVIDOR:",
+                data
+            );
 
-                    localStorage.removeItem("carrito");
 
-                    window.location.href =
-                        "pedido-confirmado.php";
+            /*==================================
+            ERROR DEL SERVIDOR
+            ==================================*/
 
-                } else {
+            if (!data.success) {
 
-                    console.error("ERROR COMPLETO DEL SERVIDOR:", data);
+                throw new Error(
+                    data.error ||
+                    data.message ||
+                    "No fue posible crear el pedido."
+                );
 
-                    alert(
-                        "ERROR DEL SERVIDOR:\n\n" +
-                        (data.error || data.message || "Error desconocido")
-                    );
+            }
+
+
+            /*==================================
+            GUARDAR PEDIDO
+            ==================================*/
+
+            localStorage.setItem(
+
+                "pedido_id",
+
+                data.pedido_id
+
+            );
+
+
+            /*==================================
+            GUARDAR DATOS WOMPI
+            ==================================*/
+
+            localStorage.setItem(
+
+                "wompi_pago",
+
+                JSON.stringify(
+                    data.wompi
+                )
+
+            );
+
+
+            console.log(
+                "DATOS WOMPI:",
+                data.wompi
+            );
+
+
+            /*==================================
+            VALIDAR RESPUESTA WOMPI
+            ==================================*/
+
+            if (
+                !data.wompi ||
+                !data.wompi.public_key ||
+                !data.wompi.reference ||
+                !data.wompi.amount_in_cents ||
+                !data.wompi.signature_integrity
+            ) {
+
+                throw new Error(
+                    "La información necesaria para iniciar el pago no fue recibida correctamente."
+                );
+
+            }
+
+
+            /*==================================
+INICIAR CHECKOUT WOMPI
+==================================*/
+
+            console.log(
+                "Iniciando checkout de Wompi..."
+            );
+
+
+            /*
+             * IMPORTANTE:
+             *
+             * El carrito NO se elimina aquí.
+             *
+             * Solo se eliminará cuando Wompi
+             * confirme que el pago fue aprobado.
+             */
+
+
+            /*==================================
+            VERIFICAR QUE WOMPI ESTÉ CARGADO
+            ==================================*/
+
+            if (typeof WidgetCheckout === "undefined") {
+
+                throw new Error(
+                    "No se pudo cargar el sistema de pagos de Wompi."
+                );
+
+            }
+
+
+            /*==================================
+            CREAR CHECKOUT WOMPI
+            ==================================*/
+
+            const checkout = new WidgetCheckout({
+
+                currency:
+                    data.wompi.currency || "COP",
+
+                amountInCents:
+                    data.wompi.amount_in_cents,
+
+                reference:
+                    data.wompi.reference,
+
+                publicKey:
+                    data.wompi.public_key,
+
+                signature: {
+
+                    integrity:
+                        data.wompi.signature_integrity
 
                 }
 
-            })
-            .catch(error => {
+            });
 
-                console.error(
-                    "Error:",
-                    error
-                );
 
-                alert(
-                    "Ocurrió un error al procesar tu pedido. Intenta nuevamente."
+            /*==================================
+            ABRIR CHECKOUT
+            ==================================*/
+
+            checkout.open(function (result) {
+
+                console.log(
+                    "RESPUESTA DE WOMPI:",
+                    result
                 );
 
             });
+
+
+        } catch (error) {
+
+            console.error(
+                "ERROR AL PROCESAR EL PAGO:",
+                error
+            );
+
+
+            alert(
+                error.message ||
+                "Ocurrió un error al preparar el pago."
+            );
+
+
+            continuePayment.disabled = false;
+
+            continuePayment.querySelector("span").textContent =
+                "Continuar al pago";
+
+        }
 
     });
 

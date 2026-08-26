@@ -2,7 +2,16 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-require_once '../app/models/Pedido.php';
+
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+
+$wompiConfig =
+    require_once __DIR__ . '/../app/config/wompi.php';
+
+
+require_once __DIR__ . '/../app/models/Pedido.php';
 
 
 /* =========================================================
@@ -26,16 +35,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
    RECIBIR EVENTO
 ========================================================= */
 
-$contenido = file_get_contents('php://input');
+$contenido =
+    file_get_contents('php://input');
 
-$evento = json_decode($contenido, true);
+
+$evento =
+    json_decode($contenido, true);
 
 
 /* =========================================================
    VALIDAR JSON
 ========================================================= */
 
-if (!$evento) {
+if (!is_array($evento)) {
 
     http_response_code(400);
 
@@ -49,21 +61,166 @@ if (!$evento) {
 
 
 /* =========================================================
-   VERIFICAR TIPO DE EVENTO
+   VALIDAR FIRMA DE WOMPI
+========================================================= */
+
+$properties =
+    $evento['signature']['properties'] ?? [];
+
+
+$checksumWompi =
+    $evento['signature']['checksum'] ?? '';
+
+
+$timestamp =
+    $evento['timestamp'] ?? null;
+
+
+if (
+    empty($properties) ||
+    empty($checksumWompi) ||
+    !$timestamp
+) {
+
+    http_response_code(400);
+
+    echo json_encode([
+        'success' => false,
+        'message' =>
+            'El evento no contiene información de seguridad válida.'
+    ]);
+
+    exit;
+}
+
+
+/* =========================================================
+   OBTENER VALORES DE LAS PROPERTIES
+========================================================= */
+
+$cadenaFirma = '';
+
+
+foreach ($properties as $property) {
+
+    $partes =
+        explode('.', $property);
+
+
+    $valor =
+        $evento['data'] ?? [];
+
+
+    foreach ($partes as $parte) {
+
+        if (
+            !is_array($valor) ||
+            !array_key_exists($parte, $valor)
+        ) {
+
+            http_response_code(400);
+
+            echo json_encode([
+                'success' => false,
+                'message' =>
+                    'No fue posible validar la firma del evento.'
+            ]);
+
+            exit;
+
+        }
+
+
+        $valor =
+            $valor[$parte];
+
+    }
+
+
+    $cadenaFirma .=
+        (string) $valor;
+
+}
+
+
+/* =========================================================
+   AGREGAR TIMESTAMP
+========================================================= */
+
+$cadenaFirma .=
+    (string) $timestamp;
+
+
+/* =========================================================
+   AGREGAR SECRETO DE EVENTOS
+========================================================= */
+
+$cadenaFirma .=
+    $wompiConfig['events_secret'];
+
+
+/* =========================================================
+   GENERAR CHECKSUM
+========================================================= */
+
+$checksumCalculado =
+    hash(
+        'sha256',
+        $cadenaFirma
+    );
+
+
+/* =========================================================
+   COMPARAR CHECKSUM
+========================================================= */
+
+if (
+    !hash_equals(
+        strtolower($checksumWompi),
+        strtolower($checksumCalculado)
+    )
+) {
+
+    http_response_code(401);
+
+    echo json_encode([
+        'success' => false,
+        'message' =>
+            'Firma de evento no válida.'
+    ]);
+
+    exit;
+
+}
+
+
+/* =========================================================
+   EVENTO AUTÉNTICO
 ========================================================= */
 
 $tipoEvento =
     $evento['event'] ?? '';
 
 
-if ($tipoEvento !== 'transaction.updated') {
+/* =========================================================
+   IGNORAR EVENTOS QUE NO NECESITAMOS
+========================================================= */
+
+if (
+    $tipoEvento !==
+    'transaction.updated'
+) {
+
+    http_response_code(200);
 
     echo json_encode([
         'success' => true,
-        'message' => 'Evento ignorado.'
+        'message' =>
+            'Evento recibido e ignorado.'
     ]);
 
     exit;
+
 }
 
 
@@ -81,7 +238,8 @@ if (!$transaccion) {
 
     echo json_encode([
         'success' => false,
-        'message' => 'No se encontró información de la transacción.'
+        'message' =>
+            'No se encontró la transacción.'
     ]);
 
     exit;
@@ -89,7 +247,7 @@ if (!$transaccion) {
 
 
 /* =========================================================
-   DATOS IMPORTANTES
+   DATOS DE LA TRANSACCIÓN
 ========================================================= */
 
 $transaccionId =
@@ -108,30 +266,28 @@ $montoCentavos =
     $transaccion['amount_in_cents'] ?? null;
 
 
-/* =========================================================
-   VALIDAR DATOS
-========================================================= */
-
 if (
     !$transaccionId ||
     !$referencia ||
     !$estado ||
-    !$montoCentavos
+    $montoCentavos === null
 ) {
 
     http_response_code(400);
 
     echo json_encode([
         'success' => false,
-        'message' => 'Faltan datos de la transacción.'
+        'message' =>
+            'Faltan datos de la transacción.'
     ]);
 
     exit;
+
 }
 
 
 /* =========================================================
-   LOG TEMPORAL
+   LOG
 ========================================================= */
 
 $log = [
@@ -182,12 +338,6 @@ $pedidoModel =
     new Pedido();
 
 
-/*
- * La referencia que enviamos a Wompi
- * debe corresponder con referencia_pago
- * en nuestra tabla pedidos.
- */
-
 $pedido =
     $pedidoModel->obtenerPorReferencia(
         $referencia
@@ -205,6 +355,7 @@ if (!$pedido) {
     ]);
 
     exit;
+
 }
 
 
@@ -232,11 +383,12 @@ if (
     ]);
 
     exit;
+
 }
 
 
 /* =========================================================
-   ACTUALIZAR TRANSACCIÓN
+   ACTUALIZAR PAGO
 ========================================================= */
 
 $actualizado =
@@ -262,11 +414,12 @@ if (!$actualizado) {
     ]);
 
     exit;
+
 }
 
 
 /* =========================================================
-   SI EL PAGO FUE APROBADO
+   PAGO APROBADO
 ========================================================= */
 
 if ($estado === 'APPROVED') {
@@ -277,7 +430,9 @@ if ($estado === 'APPROVED') {
         );
 
 
-    if (!$resultadoStock['success']) {
+    if (
+        !$resultadoStock['success']
+    ) {
 
         http_response_code(500);
 
@@ -290,13 +445,14 @@ if ($estado === 'APPROVED') {
         ]);
 
         exit;
+
     }
 
 }
 
 
 /* =========================================================
-   RESPUESTA A WOMPI
+   RESPUESTA EXITOSA
 ========================================================= */
 
 http_response_code(200);

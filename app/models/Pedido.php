@@ -18,13 +18,22 @@ class Pedido
      * CREAR PEDIDO
      * =========================================================
      *
-     * IMPORTANTE:
+     * Esta función:
      *
-     * Esta función SOLO crea el pedido.
+     * - valida los productos
+     * - valida tallas
+     * - valida stock disponible
+     * - obtiene los precios reales desde la BD
+     * - calcula subtotal y total en el servidor
+     * - crea el cliente
+     * - crea el pedido
+     * - crea los detalles
+     *
+     * IMPORTANTE:
      *
      * NO descuenta stock.
      *
-     * El stock será descontado posteriormente cuando Wompi
+     * El stock será descontado únicamente cuando Wompi
      * confirme que el pago fue aprobado.
      *
      */
@@ -36,10 +45,36 @@ class Pedido
 
 
             /* ==================================================
-               1. VALIDAR PRODUCTOS
+               1. VALIDAR Y PREPARAR PRODUCTOS
             ================================================== */
 
+            $productosProcesados = [];
+
+            $subtotalReal = 0;
+
+
             foreach ($datos['productos'] as $producto) {
+
+                /* ==============================================
+                   VALIDAR ID DEL PRODUCTO
+                ============================================== */
+
+                $productoId =
+                    (int) ($producto['id'] ?? 0);
+
+
+                if ($productoId <= 0) {
+
+                    throw new Exception(
+                        "El producto seleccionado no es válido."
+                    );
+
+                }
+
+
+                /* ==============================================
+                   OBTENER PRODUCTO REAL DESDE LA BASE DE DATOS
+                ============================================== */
 
                 $sqlProducto = "
                     SELECT
@@ -55,12 +90,15 @@ class Pedido
                     FOR UPDATE
                 ";
 
+
                 $stmtProducto =
                     $this->conexion->prepare($sqlProducto);
 
+
                 $stmtProducto->execute([
-                    $producto['id']
+                    $productoId
                 ]);
+
 
                 $productoBD =
                     $stmtProducto->fetch(PDO::FETCH_ASSOC);
@@ -116,7 +154,8 @@ class Pedido
                     $tallaSeleccionada === '' ||
                     !in_array(
                         $tallaSeleccionada,
-                        $tallasDisponibles
+                        $tallasDisponibles,
+                        true
                     )
                 ) {
 
@@ -134,13 +173,15 @@ class Pedido
                 ============================================== */
 
                 $cantidad =
-                    (int) $producto['cantidad'];
+                    (int) ($producto['cantidad'] ?? 0);
 
 
                 if ($cantidad <= 0) {
 
                     throw new Exception(
-                        "La cantidad seleccionada no es válida."
+                        "La cantidad seleccionada para " .
+                        $productoBD['nombre'] .
+                        " no es válida."
                     );
 
                 }
@@ -161,11 +202,111 @@ class Pedido
 
                 }
 
+
+                /* ==============================================
+                   OBTENER PRECIO REAL
+                ============================================== */
+
+                $precioReal =
+                    (float) $productoBD['precio'];
+
+
+                if ($precioReal < 0) {
+
+                    throw new Exception(
+                        "El precio del producto " .
+                        $productoBD['nombre'] .
+                        " no es válido."
+                    );
+
+                }
+
+
+                /* ==============================================
+                   CALCULAR SUBTOTAL REAL
+                ============================================== */
+
+                $subtotalProducto =
+                    $precioReal * $cantidad;
+
+
+                $subtotalReal +=
+                    $subtotalProducto;
+
+
+                /* ==============================================
+                   GUARDAR PRODUCTO PROCESADO
+                ============================================== */
+
+                $productosProcesados[] = [
+
+                    'id' =>
+                        (int) $productoBD['id'],
+
+                    'nombre' =>
+                        $productoBD['nombre'],
+
+                    'referencia' =>
+                        $productoBD['referencia'],
+
+                    'talla' =>
+                        $tallaSeleccionada,
+
+                    'cantidad' =>
+                        $cantidad,
+
+                    'precio' =>
+                        $precioReal,
+
+                    'subtotal' =>
+                        $subtotalProducto
+
+                ];
+
             }
 
 
             /* ==================================================
-               2. CREAR CLIENTE
+               VALIDAR QUE EXISTA AL MENOS UN PRODUCTO
+            ================================================== */
+
+            if (empty($productosProcesados)) {
+
+                throw new Exception(
+                    "El pedido no contiene productos."
+                );
+
+            }
+
+
+            /* ==================================================
+               2. COSTO DE ENVÍO
+            ================================================== */
+
+            /*
+             * Por ahora el costo de envío es 0.
+             *
+             * Más adelante podremos implementar:
+             *
+             * - costo por ciudad
+             * - costo por departamento
+             * - envío gratis
+             * - tarifas de transportadora
+             */
+
+            $costoEnvio = 0;
+
+
+            /* ==================================================
+               3. CALCULAR TOTAL REAL
+            ================================================== */
+
+            $totalReal =
+                $subtotalReal + $costoEnvio;
+
+
+            /* ==================================================
+               4. CREAR CLIENTE
             ================================================== */
 
             $sqlCliente = "
@@ -206,12 +347,12 @@ class Pedido
                 $datos['envio']['barrio'],
 
                 !empty($datos['envio']['codigo_postal'])
-                ? $datos['envio']['codigo_postal']
-                : null,
+                    ? $datos['envio']['codigo_postal']
+                    : null,
 
                 !empty($datos['envio']['indicaciones'])
-                ? $datos['envio']['indicaciones']
-                : null
+                    ? $datos['envio']['indicaciones']
+                    : null
 
             ]);
 
@@ -221,7 +362,7 @@ class Pedido
 
 
             /* ==================================================
-               3. CREAR PEDIDO
+               5. CREAR PEDIDO
             ================================================== */
 
             $sqlPedido = "
@@ -240,14 +381,9 @@ class Pedido
             ";
 
 
-            $costoEnvio = 0;
-
-
             /*
-             * Si Wompi ya generó una referencia,
-             * la guardamos.
-             *
-             * Si todavía no existe, queda NULL.
+             * La referencia es generada previamente por
+             * procesar-checkout.php.
              */
 
             $referenciaPago =
@@ -270,11 +406,11 @@ class Pedido
 
                 $clienteId,
 
-                $datos['subtotal'],
+                $subtotalReal,
 
                 $costoEnvio,
 
-                $datos['total'],
+                $totalReal,
 
                 $datos['metodo_pago'],
 
@@ -292,7 +428,7 @@ class Pedido
 
 
             /* ==================================================
-               4. CREAR DETALLE DEL PEDIDO
+               6. CREAR DETALLE DEL PEDIDO
             ================================================== */
 
             $sqlDetalle = "
@@ -315,19 +451,7 @@ class Pedido
                 $this->conexion->prepare($sqlDetalle);
 
 
-            foreach ($datos['productos'] as $producto) {
-
-                $cantidad =
-                    (int) $producto['cantidad'];
-
-
-                $precio =
-                    (float) $producto['precio'];
-
-
-                $subtotalProducto =
-                    $precio * $cantidad;
-
+            foreach ($productosProcesados as $producto) {
 
                 $stmtDetalle->execute([
 
@@ -339,13 +463,13 @@ class Pedido
 
                     $producto['referencia'] ?? 'N/A',
 
-                    $producto['talla'] ?? 'N/A',
+                    $producto['talla'],
 
-                    $cantidad,
+                    $producto['cantidad'],
 
-                    $precio,
+                    $producto['precio'],
 
-                    $subtotalProducto
+                    $producto['subtotal']
 
                 ]);
 
@@ -353,11 +477,15 @@ class Pedido
 
 
             /* ==================================================
-               5. CONFIRMAR TRANSACCIÓN
+               7. CONFIRMAR TRANSACCIÓN
             ================================================== */
 
             $this->conexion->commit();
 
+
+            /* ==================================================
+               8. DEVOLVER RESULTADO
+            ================================================== */
 
             return [
 
@@ -365,7 +493,19 @@ class Pedido
 
                 'pedido_id' => $pedidoId,
 
-                'cliente_id' => $clienteId
+                'cliente_id' => $clienteId,
+
+                /*
+                 * Estos valores los usará posteriormente
+                 * procesar-checkout.php para generar la firma
+                 * correcta de Wompi.
+                 */
+
+                'subtotal' => $subtotalReal,
+
+                'costo_envio' => $costoEnvio,
+
+                'total' => $totalReal
 
             ];
 
@@ -402,8 +542,9 @@ class Pedido
      * ACTUALIZAR PAGO
      * =========================================================
      *
-     * Esta función será utilizada cuando Wompi confirme
-     * el resultado de la transacción.
+     * Actualiza el estado del pago y la transacción de Wompi.
+     *
+     * NO descuenta stock.
      *
      */
     public function actualizarPago(
@@ -412,28 +553,40 @@ class Pedido
         $transaccionId = null
     ) {
 
-        $sql = "
-            UPDATE pedidos
-            SET
-                estado_pago = ?,
-                transaccion_id = ?
-            WHERE id = ?
-        ";
+        try {
+
+            $sql = "
+                UPDATE pedidos
+                SET
+                    estado_pago = ?,
+                    transaccion_id = ?
+                WHERE id = ?
+            ";
 
 
-        $stmt =
-            $this->conexion->prepare($sql);
+            $stmt =
+                $this->conexion->prepare($sql);
 
 
-        return $stmt->execute([
+            $stmt->execute([
 
-            $estadoPago,
+                $estadoPago,
 
-            $transaccionId,
+                $transaccionId,
 
-            $pedidoId
+                $pedidoId
 
-        ]);
+            ]);
+
+
+            return true;
+
+
+        } catch (PDOException $e) {
+
+            return false;
+
+        }
 
     }
 
@@ -469,6 +622,7 @@ class Pedido
 
     }
 
+
     /**
      * =========================================================
      * OBTENER PEDIDO POR REFERENCIA DE PAGO
@@ -477,21 +631,28 @@ class Pedido
 
     public function obtenerPorReferencia($referencia)
     {
+
         $sql = "
-        SELECT *
-        FROM pedidos
-        WHERE referencia_pago = ?
-        LIMIT 1
-    ";
+            SELECT *
+            FROM pedidos
+            WHERE referencia_pago = ?
+            LIMIT 1
+        ";
+
 
         $stmt =
             $this->conexion->prepare($sql);
 
+
         $stmt->execute([
+
             $referencia
+
         ]);
 
+
         return $stmt->fetch(PDO::FETCH_ASSOC);
+
     }
 
 
@@ -532,10 +693,12 @@ class Pedido
      * DESCONTAR STOCK
      * =========================================================
      *
-     * ESTA FUNCIÓN NO SE EJECUTA AL CREAR EL PEDIDO.
+     * IMPORTANTE:
      *
-     * Será utilizada posteriormente únicamente cuando
-     * Wompi confirme el pago como APPROVED.
+     * Esta función NO se ejecuta al crear el pedido.
+     *
+     * Se ejecutará únicamente después de que Wompi confirme
+     * un pago APPROVED.
      *
      */
     public function descontarStockPedido($pedidoId)
@@ -547,44 +710,7 @@ class Pedido
 
 
             /* ==============================================
-               OBTENER DETALLES
-            ============================================== */
-
-            $sqlDetalles = "
-                SELECT
-                    producto_id,
-                    cantidad
-                FROM detalle_pedido
-                WHERE pedido_id = ?
-            ";
-
-
-            $stmtDetalles =
-                $this->conexion->prepare($sqlDetalles);
-
-
-            $stmtDetalles->execute([
-
-                $pedidoId
-
-            ]);
-
-
-            $detalles =
-                $stmtDetalles->fetchAll(PDO::FETCH_ASSOC);
-
-
-            if (!$detalles) {
-
-                throw new Exception(
-                    "El pedido no tiene productos."
-                );
-
-            }
-
-
-            /* ==============================================
-               VERIFICAR QUE EL PEDIDO NO HAYA SIDO PROCESADO
+               OBTENER PEDIDO
             ============================================== */
 
             $sqlPedido = "
@@ -621,13 +747,28 @@ class Pedido
             }
 
 
-            /*
-             * Si el pedido ya fue confirmado,
-             * NO volvemos a descontar stock.
-             */
+            /* ==============================================
+               VERIFICAR ESTADO DEL PAGO
+            ============================================== */
 
             if (
-                strtolower($pedido['estado_pedido']) ===
+                strtolower(trim($pedido['estado_pago'])) !==
+                'aprobado'
+            ) {
+
+                throw new Exception(
+                    "El pago del pedido todavía no está aprobado."
+                );
+
+            }
+
+
+            /* ==============================================
+               EVITAR DOBLE DESCUENTO
+            ============================================== */
+
+            if (
+                strtolower(trim($pedido['estado_pedido'])) ===
                 'confirmado'
             ) {
 
@@ -641,6 +782,43 @@ class Pedido
                         'El stock de este pedido ya había sido descontado.'
 
                 ];
+
+            }
+
+
+            /* ==============================================
+               OBTENER DETALLES
+            ============================================== */
+
+            $sqlDetalles = "
+                SELECT
+                    producto_id,
+                    cantidad
+                FROM detalle_pedido
+                WHERE pedido_id = ?
+            ";
+
+
+            $stmtDetalles =
+                $this->conexion->prepare($sqlDetalles);
+
+
+            $stmtDetalles->execute([
+
+                $pedidoId
+
+            ]);
+
+
+            $detalles =
+                $stmtDetalles->fetchAll(PDO::FETCH_ASSOC);
+
+
+            if (!$detalles) {
+
+                throw new Exception(
+                    "El pedido no tiene productos."
+                );
 
             }
 
@@ -728,7 +906,7 @@ class Pedido
 
 
             /* ==============================================
-               CONFIRMAR
+               CONFIRMAR TRANSACCIÓN
             ============================================== */
 
             $this->conexion->commit();

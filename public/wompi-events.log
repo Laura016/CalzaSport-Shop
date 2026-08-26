@@ -1,0 +1,18 @@
+{
+    "fecha": "2026-08-26 21:09:09",
+    "evento": "transaction.updated",
+    "transaccion_id": "12165671-1787778546-18904",
+    "referencia": "CALZA-20260826210436-9904",
+    "estado": "ERROR",
+    "monto_centavos": 15000000
+}
+
+{
+    "fecha": "2026-08-26 21:16:27",
+    "evento": "transaction.updated",
+    "transaccion_id": "12165671-1787778985-56533",
+    "referencia": "CALZA-20260826211552-6913",
+    "estado": "APPROVED",
+    "monto_centavos": 15000000
+}
+

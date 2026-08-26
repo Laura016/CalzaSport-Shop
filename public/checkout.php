@@ -644,6 +644,8 @@ require_once '../app/views/tienda/layouts/header.php';
 </main>
 
 
+<script src="https://checkout.wompi.co/widget.js"></script>
+
 <script src="assets/js/tienda/checkout.js"></script>
 
 

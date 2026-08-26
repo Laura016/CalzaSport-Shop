@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | AMBIENTE
+    | Ambiente
     |--------------------------------------------------------------------------
     */
 
@@ -13,32 +13,30 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | LLAVE PÚBLICA
+    | Llaves
     |--------------------------------------------------------------------------
     */
 
     'public_key' => 'pub_test_SZUI1pXOMzGKuTuqAfS9xZSMSwi09RHe',
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | SECRETO DE INTEGRIDAD
-    |--------------------------------------------------------------------------
-    |
-    | NUNCA debe enviarse al navegador.
-    |
-    */
-
-    'integrity_secret' => 'test_integrity_rSTsX7aU2rq5skFnUrFbnmU8tGGE2f8t
-',
+    'private_key' => 'prv_test_PLnVpeUKmD8B1bHiNQlwF3wfJjjuhLgn',
 
 
     /*
     |--------------------------------------------------------------------------
-    | URL DEL CHECKOUT
+    | Secreto de eventos
     |--------------------------------------------------------------------------
     */
 
-    'checkout_url' => 'https://checkout.wompi.co/p/'
+    'events_secret' => 'test_events_5kXsPzOwl9T7ez6eOzzkReyXqcfkVvEu',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Secreto de integridad
+    |--------------------------------------------------------------------------
+    */
+
+    'integrity_secret' => 'test_integrity_rSTsX7aU2rq5skFnUrFbnmU8tGGE2f8t'
 
 ];
