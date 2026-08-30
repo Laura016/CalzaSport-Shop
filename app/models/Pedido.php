@@ -18,23 +18,13 @@ class Pedido
      * CREAR PEDIDO
      * =========================================================
      *
-     * Esta función:
-     *
-     * - valida los productos
-     * - valida tallas
-     * - valida stock disponible
-     * - obtiene los precios reales desde la BD
-     * - calcula subtotal y total en el servidor
-     * - crea el cliente
-     * - crea el pedido
-     * - crea los detalles
+     * Crea el pedido y sus detalles.
      *
      * IMPORTANTE:
-     *
      * NO descuenta stock.
      *
-     * El stock será descontado únicamente cuando Wompi
-     * confirme que el pago fue aprobado.
+     * El stock se descuenta únicamente cuando Wompi
+     * confirma el pago como APPROVED.
      *
      */
     public function crearPedido($datos)
@@ -55,10 +45,6 @@ class Pedido
 
             foreach ($datos['productos'] as $producto) {
 
-                /* ==============================================
-                   VALIDAR ID DEL PRODUCTO
-                ============================================== */
-
                 $productoId =
                     (int) ($producto['id'] ?? 0);
 
@@ -73,7 +59,7 @@ class Pedido
 
 
                 /* ==============================================
-                   OBTENER PRODUCTO REAL DESDE LA BASE DE DATOS
+                   OBTENER PRODUCTO
                 ============================================== */
 
                 $sqlProducto = "
@@ -103,10 +89,6 @@ class Pedido
                 $productoBD =
                     $stmtProducto->fetch(PDO::FETCH_ASSOC);
 
-
-                /* ==============================================
-                   PRODUCTO NO EXISTE
-                ============================================== */
 
                 if (!$productoBD) {
 
@@ -204,7 +186,7 @@ class Pedido
 
 
                 /* ==============================================
-                   OBTENER PRECIO REAL
+                   PRECIO REAL
                 ============================================== */
 
                 $precioReal =
@@ -223,7 +205,7 @@ class Pedido
 
 
                 /* ==============================================
-                   CALCULAR SUBTOTAL REAL
+                   SUBTOTAL
                 ============================================== */
 
                 $subtotalProducto =
@@ -267,7 +249,7 @@ class Pedido
 
 
             /* ==================================================
-               VALIDAR QUE EXISTA AL MENOS UN PRODUCTO
+               VALIDAR PRODUCTOS
             ================================================== */
 
             if (empty($productosProcesados)) {
@@ -283,22 +265,11 @@ class Pedido
                2. COSTO DE ENVÍO
             ================================================== */
 
-            /*
-             * Por ahora el costo de envío es 0.
-             *
-             * Más adelante podremos implementar:
-             *
-             * - costo por ciudad
-             * - costo por departamento
-             * - envío gratis
-             * - tarifas de transportadora
-             */
-
             $costoEnvio = 0;
 
 
             /* ==================================================
-               3. CALCULAR TOTAL REAL
+               3. TOTAL REAL
             ================================================== */
 
             $totalReal =
@@ -347,12 +318,12 @@ class Pedido
                 $datos['envio']['barrio'],
 
                 !empty($datos['envio']['codigo_postal'])
-                    ? $datos['envio']['codigo_postal']
-                    : null,
+                ? $datos['envio']['codigo_postal']
+                : null,
 
                 !empty($datos['envio']['indicaciones'])
-                    ? $datos['envio']['indicaciones']
-                    : null
+                ? $datos['envio']['indicaciones']
+                : null
 
             ]);
 
@@ -381,14 +352,15 @@ class Pedido
             ";
 
 
-            /*
-             * La referencia es generada previamente por
-             * procesar-checkout.php.
-             */
-
             $referenciaPago =
                 $datos['referencia_pago'] ?? null;
 
+
+            /*
+             * Estado inicial.
+             *
+             * Debe coincidir con el ENUM de la BD.
+             */
 
             $estadoPago =
                 'Pendiente';
@@ -484,7 +456,7 @@ class Pedido
 
 
             /* ==================================================
-               8. DEVOLVER RESULTADO
+               8. RESPUESTA
             ================================================== */
 
             return [
@@ -494,12 +466,6 @@ class Pedido
                 'pedido_id' => $pedidoId,
 
                 'cliente_id' => $clienteId,
-
-                /*
-                 * Estos valores los usará posteriormente
-                 * procesar-checkout.php para generar la firma
-                 * correcta de Wompi.
-                 */
 
                 'subtotal' => $subtotalReal,
 
@@ -511,11 +477,6 @@ class Pedido
 
 
         } catch (Exception $e) {
-
-
-            /* ==================================================
-               CANCELAR TODO SI ALGO FALLA
-            ================================================== */
 
             if ($this->conexion->inTransaction()) {
 
@@ -542,9 +503,38 @@ class Pedido
      * ACTUALIZAR PAGO
      * =========================================================
      *
-     * Actualiza el estado del pago y la transacción de Wompi.
+     * Convierte los estados de Wompi a los estados
+     * permitidos por nuestra base de datos.
      *
-     * NO descuenta stock.
+     * Wompi:
+     *
+     * APPROVED
+     * DECLINED
+     * ERROR
+     * VOIDED
+     *
+     * BD:
+     *
+     * Pagado
+     * Rechazado
+     * Pendiente
+     *
+     */
+    /**
+     * =========================================================
+     * ACTUALIZAR PAGO
+     * =========================================================
+     *
+     * Convierte los estados de Wompi a los estados utilizados
+     * por nuestra base de datos.
+     *
+     * Wompi:
+     *
+     * APPROVED  -> Pagado
+     * DECLINED  -> Rechazado
+     * ERROR     -> Rechazado
+     * VOIDED    -> Rechazado
+     * PENDING   -> Pendiente
      *
      */
     public function actualizarPago(
@@ -555,13 +545,58 @@ class Pedido
 
         try {
 
+            /* ==================================================
+               NORMALIZAR ESTADO DE PAGO
+            ================================================== */
+
+            switch (strtoupper(trim($estadoPago))) {
+
+                case 'APPROVED':
+                case 'PAGADO':
+
+                    $estadoBD = 'Pagado';
+
+                    break;
+
+
+                case 'DECLINED':
+                case 'ERROR':
+                case 'VOIDED':
+                case 'RECHAZADO':
+
+                    $estadoBD = 'Rechazado';
+
+                    break;
+
+
+                case 'PENDING':
+                case 'PENDIENTE':
+
+                    $estadoBD = 'Pendiente';
+
+                    break;
+
+
+                default:
+
+                    $estadoBD = 'Pendiente';
+
+                    break;
+
+            }
+
+
+            /* ==================================================
+               ACTUALIZAR PEDIDO
+            ================================================== */
+
             $sql = "
-                UPDATE pedidos
-                SET
-                    estado_pago = ?,
-                    transaccion_id = ?
-                WHERE id = ?
-            ";
+            UPDATE pedidos
+            SET
+                estado_pago = ?,
+                transaccion_id = ?
+            WHERE id = ?
+        ";
 
 
             $stmt =
@@ -570,7 +605,7 @@ class Pedido
 
             $stmt->execute([
 
-                $estadoPago,
+                $estadoBD,
 
                 $transaccionId,
 
@@ -579,10 +614,106 @@ class Pedido
             ]);
 
 
+            /* ==================================================
+               VERIFICAR QUE EL PEDIDO EXISTE
+            ================================================== */
+
+            $sqlVerificar = "
+            SELECT
+                id,
+                estado_pago,
+                estado_pedido,
+                transaccion_id
+            FROM pedidos
+            WHERE id = ?
+            LIMIT 1
+        ";
+
+
+            $stmtVerificar =
+                $this->conexion->prepare($sqlVerificar);
+
+
+            $stmtVerificar->execute([
+
+                $pedidoId
+
+            ]);
+
+
+            $pedido =
+                $stmtVerificar->fetch(PDO::FETCH_ASSOC);
+
+
+            if (!$pedido) {
+
+                error_log(
+                    "ERROR actualizarPago(): no existe el pedido ID " .
+                    $pedidoId
+                );
+
+                return false;
+
+            }
+
+
+            /* ==================================================
+               VERIFICAR ESTADO GUARDADO
+            ================================================== */
+
+            if (
+                $pedido['estado_pago'] !== $estadoBD
+            ) {
+
+                error_log(
+                    "ERROR actualizarPago(): estado esperado [" .
+                    $estadoBD .
+                    "] pero BD tiene [" .
+                    $pedido['estado_pago'] .
+                    "]"
+                );
+
+                return false;
+
+            }
+
+
+            /* ==================================================
+               VERIFICAR TRANSACCIÓN
+            ================================================== */
+
+            if (
+                $transaccionId !== null &&
+                $pedido['transaccion_id'] !== $transaccionId
+            ) {
+
+                error_log(
+                    "ERROR actualizarPago(): la transacción no se guardó correctamente."
+                );
+
+                return false;
+
+            }
+
+
             return true;
 
 
         } catch (PDOException $e) {
+
+            error_log(
+                "ERROR actualizarPago(): " .
+                $e->getMessage()
+            );
+
+            return false;
+
+        } catch (Exception $e) {
+
+            error_log(
+                "ERROR actualizarPago(): " .
+                $e->getMessage()
+            );
 
             return false;
 
@@ -593,7 +724,7 @@ class Pedido
 
     /**
      * =========================================================
-     * OBTENER PEDIDO
+     * OBTENER PEDIDO POR ID
      * =========================================================
      */
 
@@ -625,7 +756,7 @@ class Pedido
 
     /**
      * =========================================================
-     * OBTENER PEDIDO POR REFERENCIA DE PAGO
+     * OBTENER PEDIDO POR REFERENCIA
      * =========================================================
      */
 
@@ -658,7 +789,7 @@ class Pedido
 
     /**
      * =========================================================
-     * OBTENER DETALLES DEL PEDIDO
+     * OBTENER DETALLES
      * =========================================================
      */
 
@@ -693,12 +824,7 @@ class Pedido
      * DESCONTAR STOCK
      * =========================================================
      *
-     * IMPORTANTE:
-     *
-     * Esta función NO se ejecuta al crear el pedido.
-     *
-     * Se ejecutará únicamente después de que Wompi confirme
-     * un pago APPROVED.
+     * SOLO se ejecuta después de un pago APPROVED.
      *
      */
     public function descontarStockPedido($pedidoId)
@@ -748,12 +874,19 @@ class Pedido
 
 
             /* ==============================================
-               VERIFICAR ESTADO DEL PAGO
+               VERIFICAR PAGO
             ============================================== */
+
+            /*
+             * IMPORTANTE:
+             *
+             * La BD utiliza "Pagado",
+             * no "Aprobado".
+             */
 
             if (
                 strtolower(trim($pedido['estado_pago'])) !==
-                'aprobado'
+                'pagado'
             ) {
 
                 throw new Exception(
@@ -768,8 +901,8 @@ class Pedido
             ============================================== */
 
             if (
-                strtolower(trim($pedido['estado_pedido'])) ===
-                'confirmado'
+                strtolower(trim($pedido['estado_pedido'])) !==
+                'pendiente'
             ) {
 
                 $this->conexion->commit();
@@ -882,16 +1015,16 @@ class Pedido
 
 
             /* ==============================================
-               ACTUALIZAR ESTADO DEL PEDIDO
+               CONFIRMAR PEDIDO
             ============================================== */
 
             $sqlEstado = "
-                UPDATE pedidos
-                SET
-                    estado_pago = 'Aprobado',
-                    estado_pedido = 'Confirmado'
-                WHERE id = ?
-            ";
+    UPDATE pedidos
+    SET
+        estado_pago = 'Pagado',
+        estado_pedido = 'Preparando'
+    WHERE id = ?
+";
 
 
             $stmtEstado =
@@ -924,8 +1057,9 @@ class Pedido
 
         } catch (Exception $e) {
 
-
-            if ($this->conexion->inTransaction()) {
+            if (
+                $this->conexion->inTransaction()
+            ) {
 
                 $this->conexion->rollBack();
 

@@ -1,0 +1,55 @@
+{
+    "fecha": "2026-08-29 22:38:36",
+    "pedido_id": 19,
+    "estado_wompi": "APPROVED",
+    "estado_pago_antes_stock": "Pendiente",
+    "resultado_stock": {
+        "success": false,
+        "error": "SQLSTATE[01000]: Warning: 1265 Data truncated for column 'estado_pedido' at row 1"
+    }
+}
+
+{
+    "fecha": "2026-08-29 22:38:40",
+    "pedido_id": 19,
+    "estado_wompi": "APPROVED",
+    "estado_pago_antes_stock": "Pagado",
+    "resultado_stock": {
+        "success": false,
+        "error": "SQLSTATE[01000]: Warning: 1265 Data truncated for column 'estado_pedido' at row 1"
+    }
+}
+
+{
+    "fecha": "2026-08-29 22:38:43",
+    "pedido_id": 19,
+    "estado_wompi": "APPROVED",
+    "estado_pago_antes_stock": "Pagado",
+    "resultado_stock": {
+        "success": false,
+        "error": "SQLSTATE[01000]: Warning: 1265 Data truncated for column 'estado_pedido' at row 1"
+    }
+}
+
+{
+    "fecha": "2026-08-29 22:38:46",
+    "pedido_id": 19,
+    "estado_wompi": "APPROVED",
+    "estado_pago_antes_stock": "Pagado",
+    "resultado_stock": {
+        "success": false,
+        "error": "SQLSTATE[01000]: Warning: 1265 Data truncated for column 'estado_pedido' at row 1"
+    }
+}
+
+{
+    "fecha": "2026-08-30 23:33:00",
+    "pedido_id": 20,
+    "estado_wompi": "APPROVED",
+    "estado_pago_antes_stock": "Pendiente",
+    "resultado_stock": {
+        "success": true,
+        "message": "Pago confirmado y stock actualizado."
+    }
+}
+

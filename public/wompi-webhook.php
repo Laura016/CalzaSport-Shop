@@ -95,7 +95,7 @@ if (
 
 
 /* =========================================================
-   OBTENER VALORES DE LAS PROPERTIES
+   CONSTRUIR CADENA DE FIRMA
 ========================================================= */
 
 $cadenaFirma = '';
@@ -127,7 +127,6 @@ foreach ($properties as $property) {
             ]);
 
             exit;
-
         }
 
 
@@ -190,7 +189,6 @@ if (
     ]);
 
     exit;
-
 }
 
 
@@ -207,8 +205,7 @@ $tipoEvento =
 ========================================================= */
 
 if (
-    $tipoEvento !==
-    'transaction.updated'
+    $tipoEvento !== 'transaction.updated'
 ) {
 
     http_response_code(200);
@@ -220,7 +217,6 @@ if (
     ]);
 
     exit;
-
 }
 
 
@@ -282,12 +278,11 @@ if (
     ]);
 
     exit;
-
 }
 
 
 /* =========================================================
-   LOG
+   LOG DEL EVENTO
 ========================================================= */
 
 $log = [
@@ -355,7 +350,6 @@ if (!$pedido) {
     ]);
 
     exit;
-
 }
 
 
@@ -383,6 +377,32 @@ if (
     ]);
 
     exit;
+}
+
+
+/* =========================================================
+   CONVERTIR ESTADO WOMPI
+   A ESTADO DE CALZASPORT
+========================================================= */
+
+if ($estado === 'APPROVED') {
+
+    $estadoPagoCalzaSport =
+        'Pagado';
+
+} elseif (
+    $estado === 'DECLINED' ||
+    $estado === 'ERROR' ||
+    $estado === 'VOIDED'
+) {
+
+    $estadoPagoCalzaSport =
+        'Rechazado';
+
+} else {
+
+    $estadoPagoCalzaSport =
+        'Pendiente';
 
 }
 
@@ -396,11 +416,95 @@ $actualizado =
 
         $pedido['id'],
 
-        $estado,
+        $estadoPagoCalzaSport,
 
         $transaccionId
 
     );
+
+
+/* =========================================================
+   DEBUG TEMPORAL
+========================================================= */
+
+file_put_contents(
+
+    __DIR__ . '/wompi-debug.log',
+
+    json_encode([
+
+        'fecha' =>
+            date('Y-m-d H:i:s'),
+
+        'pedido_id' =>
+            $pedido['id'],
+
+        'referencia' =>
+            $referencia,
+
+        'estado_wompi' =>
+            $estado,
+
+        'estado_calzasport' =>
+            $estadoPagoCalzaSport,
+
+        'transaccion_id' =>
+            $transaccionId,
+
+        'actualizado' =>
+            $actualizado
+
+    ],
+    JSON_PRETTY_PRINT |
+    JSON_UNESCAPED_UNICODE
+    ) .
+    PHP_EOL .
+    PHP_EOL,
+
+    FILE_APPEND
+
+);
+
+
+
+$pedidoDespues =
+    $pedidoModel->obtenerPorId(
+        $pedido['id']
+    );
+
+
+file_put_contents(
+
+    __DIR__ . '/wompi-debug.log',
+
+    json_encode([
+
+        'VERIFICACION_DESPUES_DE_ACTUALIZAR' => [
+
+            'pedido_id' =>
+                $pedidoDespues['id'] ?? null,
+
+            'estado_pago' =>
+                $pedidoDespues['estado_pago'] ?? null,
+
+            'estado_pedido' =>
+                $pedidoDespues['estado_pedido'] ?? null,
+
+            'transaccion_id' =>
+                $pedidoDespues['transaccion_id'] ?? null
+
+        ]
+
+    ],
+    JSON_PRETTY_PRINT |
+    JSON_UNESCAPED_UNICODE
+    ) .
+    PHP_EOL .
+    PHP_EOL,
+
+    FILE_APPEND
+
+);
 
 
 if (!$actualizado) {
@@ -414,7 +518,6 @@ if (!$actualizado) {
     ]);
 
     exit;
-
 }
 
 
@@ -430,18 +533,67 @@ if ($estado === 'APPROVED') {
         );
 
 
+    /* =====================================================
+       DEBUG STOCK
+    ===================================================== */
+
+    file_put_contents(
+
+        __DIR__ . '/wompi-stock-debug.log',
+
+        json_encode(
+
+            [
+                'fecha' =>
+                    date('Y-m-d H:i:s'),
+
+                'pedido_id' =>
+                    $pedido['id'],
+
+                'estado_wompi' =>
+                    $estado,
+
+                'estado_pago_antes_stock' =>
+                    $pedido['estado_pago'],
+
+                'resultado_stock' =>
+                    $resultadoStock
+
+            ],
+
+            JSON_PRETTY_PRINT |
+            JSON_UNESCAPED_UNICODE
+
+        ) .
+        PHP_EOL .
+        PHP_EOL,
+
+        FILE_APPEND
+
+    );
+
+
+    /* =====================================================
+       VALIDAR RESULTADO
+    ===================================================== */
+
     if (
+        !isset($resultadoStock['success']) ||
         !$resultadoStock['success']
     ) {
 
         http_response_code(500);
 
         echo json_encode([
+
             'success' => false,
+
             'message' =>
                 'El pago fue recibido, pero ocurrió un error al actualizar el inventario.',
+
             'error' =>
-                $resultadoStock['error'] ?? null
+                $resultadoStock['error'] ?? 'Error desconocido.'
+
         ]);
 
         exit;
@@ -462,7 +614,16 @@ echo json_encode([
     'success' => true,
 
     'message' =>
-        'Evento procesado correctamente.'
+        'Evento procesado correctamente.',
+
+    'pedido_id' =>
+        $pedido['id'],
+
+    'estado_wompi' =>
+        $estado,
+
+    'estado_pago' =>
+        $estadoPagoCalzaSport
 
 ]);
 

@@ -1,0 +1,209 @@
+{
+    "fecha": "2026-08-28 14:42:42",
+    "pedido_id": 17,
+    "referencia": "CALZA-20260828144205-1550",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1787928159-57372",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 17,
+        "estado_pago": "Pendiente",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1787928159-57372"
+    }
+}
+
+{
+    "fecha": "2026-08-28 15:12:46",
+    "pedido_id": 17,
+    "referencia": "CALZA-20260828144205-1550",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1787928159-57372",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 17,
+        "estado_pago": "Pendiente",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1787928159-57372"
+    }
+}
+
+{
+    "fecha": "2026-08-28 21:06:08",
+    "pedido_id": 18,
+    "referencia": "CALZA-20260828210541-4292",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1787951161-59960",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 18,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1787951161-59960"
+    }
+}
+
+{
+    "fecha": "2026-08-28 21:06:08",
+    "pedido_id": 18,
+    "referencia": "CALZA-20260828210541-4292",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1787951161-59960",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 18,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1787951161-59960"
+    }
+}
+
+{
+    "fecha": "2026-08-28 21:06:13",
+    "pedido_id": 18,
+    "referencia": "CALZA-20260828210541-4292",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1787951161-59960",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 18,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1787951161-59960"
+    }
+}
+
+{
+    "fecha": "2026-08-28 21:06:14",
+    "pedido_id": 18,
+    "referencia": "CALZA-20260828210541-4292",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1787951161-59960",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 18,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1787951161-59960"
+    }
+}
+
+{
+    "fecha": "2026-08-29 22:38:36",
+    "pedido_id": 19,
+    "referencia": "CALZA-20260829223810-6170",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1788043117-24219",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 19,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1788043117-24219"
+    }
+}
+
+{
+    "fecha": "2026-08-29 22:38:40",
+    "pedido_id": 19,
+    "referencia": "CALZA-20260829223810-6170",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1788043117-24219",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 19,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1788043117-24219"
+    }
+}
+
+{
+    "fecha": "2026-08-29 22:38:43",
+    "pedido_id": 19,
+    "referencia": "CALZA-20260829223810-6170",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1788043117-24219",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 19,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1788043117-24219"
+    }
+}
+
+{
+    "fecha": "2026-08-29 22:38:46",
+    "pedido_id": 19,
+    "referencia": "CALZA-20260829223810-6170",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1788043117-24219",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 19,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1788043117-24219"
+    }
+}
+
+{
+    "fecha": "2026-08-30 23:33:00",
+    "pedido_id": 20,
+    "referencia": "CALZA-20260830233240-6681",
+    "estado_wompi": "APPROVED",
+    "estado_calzasport": "Pagado",
+    "transaccion_id": "12165671-1788132777-52445",
+    "actualizado": true
+}
+
+{
+    "VERIFICACION_DESPUES_DE_ACTUALIZAR": {
+        "pedido_id": 20,
+        "estado_pago": "Pagado",
+        "estado_pedido": "Pendiente",
+        "transaccion_id": "12165671-1788132777-52445"
+    }
+}
+
