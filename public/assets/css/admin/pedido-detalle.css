@@ -1,0 +1,350 @@
+/* =========================================================
+   DETALLE DEL PEDIDO
+   ========================================================= */
+
+.order-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 25px;
+}
+
+.order-detail-header h2 {
+    margin: 12px 0 5px;
+    font-size: 26px;
+    color: #111827;
+}
+
+.order-detail-header p {
+    margin: 0;
+    color: #6B7280;
+    font-size: 14px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #2563EB;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.order-detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.order-bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.detail-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+}
+
+.detail-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #F3F4F6;
+    margin-bottom: 18px;
+}
+
+.detail-card-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #F3F4F6;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.detail-card-header h3 {
+    margin: 0 0 3px;
+    color: #111827;
+    font-size: 16px;
+}
+
+.detail-card-header p {
+    margin: 0;
+    color: #6B7280;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   INFORMACIÓN
+   ========================================================= */
+
+.detail-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail-info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.detail-info-item span:first-child {
+    color: #6B7280;
+    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.detail-info-item span:first-child i {
+    width: 15px;
+    text-align: center;
+}
+
+.detail-info-item strong {
+    color: #111827;
+    font-size: 13px;
+    text-align: right;
+    max-width: 60%;
+    word-break: break-word;
+}
+
+.detail-info-full {
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-info-full strong {
+    max-width: 100%;
+    text-align: left;
+}
+
+
+/* =========================================================
+   PRODUCTOS
+   ========================================================= */
+
+.products-detail-card {
+    margin-top: 20px;
+}
+
+.order-products-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.order-products-table table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.order-products-table th {
+    text-align: left;
+    padding: 12px 10px;
+    background: #F9FAFB;
+    color: #6B7280;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.order-products-table td {
+    padding: 15px 10px;
+    border-bottom: 1px solid #F3F4F6;
+    color: #374151;
+    font-size: 13px;
+}
+
+.order-products-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.product-order-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.product-order-name i {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: #F3F4F6;
+    color: #374151;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-order-name strong {
+    color: #111827;
+}
+
+.size-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: #F3F4F6;
+    color: #374151;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   RESUMEN
+   ========================================================= */
+
+.order-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-row span {
+    color: #6B7280;
+    font-size: 13px;
+}
+
+.summary-row strong {
+    color: #111827;
+    font-size: 14px;
+}
+
+.summary-divider {
+    height: 1px;
+    background: #E5E7EB;
+    margin: 3px 0;
+}
+
+.summary-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 4px;
+}
+
+.summary-total span {
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.summary-total strong {
+    color: #111827;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.order-actions-card {
+    margin-top: 20px;
+}
+
+.order-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.order-action-btn {
+    border: none;
+    border-radius: 9px;
+    padding: 11px 16px;
+    background: #F3F4F6;
+    color: #9CA3AF;
+    font-size: 13px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .order-detail-grid,
+    .order-bottom-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .order-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .detail-card {
+        padding: 17px;
+    }
+
+    .detail-info-item {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .detail-info-item strong {
+        max-width: 100%;
+        text-align: left;
+    }
+
+    .summary-total strong {
+        font-size: 21px;
+    }
+
+}

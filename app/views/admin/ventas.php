@@ -36,12 +36,87 @@ require_once 'layouts/sidebar.php';
 
         <div class="page-header">
 
-            <div>
-                <h2>Pedidos y ventas</h2>
+            <!-- RESUMEN DE VENTAS -->
+            <div class="sales-stats-grid">
 
-                <p>
-                    Consulta y administra las compras realizadas en CalzaSport.
-                </p>
+                <!-- TOTAL PEDIDOS -->
+                <div class="sales-stat-card">
+
+                    <div class="sales-stat-icon">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+
+                    <div class="sales-stat-info">
+                        <span>Total pedidos</span>
+                        <strong>
+                            <?= $totalPedidos ?>
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <!-- VENTAS PAGADAS -->
+                <div class="sales-stat-card">
+
+                    <div class="sales-stat-icon">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+
+                    <div class="sales-stat-info">
+                        <span>Pagos aprobados</span>
+                        <strong>
+                            <?= $ventasPagadas ?>
+                        </strong>
+                    </div>
+
+                </div>
+
+
+                <!-- PEDIDOS PENDIENTES -->
+                <div class="sales-stat-card">
+
+                    <div class="sales-stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+
+                    <div class="sales-stat-info">
+                        <span>Pedidos pendientes</span>
+                        <strong>
+                            <?= $pedidosPendientes ?>
+                        </strong>
+                    </div>
+
+                    <div class="sales-stat-card">
+
+                        <div class="sales-stat-icon">
+                            <i class="fa-solid fa-truck"></i>
+                        </div>
+
+                        <div class="sales-stat-info">
+                            <span>Pedidos entregados</span>
+                            <strong>
+                                <?= $pedidosCompletados ?>
+                            </strong>
+                        </div>
+
+                    </div>
+
+                    <div>
+                        <h2>Pedidos y ventas</h2>
+
+                        <p>
+                            Consulta y administra las compras realizadas en CalzaSport.
+                        </p>
+                    </div>
+
+
+                </div>
+
+
+                <!-- PEDIDOS ENTREGADOS -->
+
+
             </div>
 
         </div>
@@ -202,11 +277,8 @@ require_once 'layouts/sidebar.php';
                                 <!-- ACCIONES -->
                                 <td>
 
-                                    <a
-                                        href="#"
-                                        class="btn-action btn-view"
-                                        title="Ver pedido"
-                                    >
+                                    <a href="admin.php?accion=verPedido&id=<?= (int) $pedido['id'] ?>"
+                                        class="btn-action btn-view" title="Ver pedido">
                                         <i class="fa-solid fa-eye"></i>
                                     </a>
 
@@ -220,10 +292,7 @@ require_once 'layouts/sidebar.php';
 
                         <tr>
 
-                            <td
-                                colspan="7"
-                                class="empty-table"
-                            >
+                            <td colspan="7" class="empty-table">
 
                                 <div>
 

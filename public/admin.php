@@ -52,6 +52,10 @@ switch ($accion) {
         $admin->ventas();
         break;
 
+    case 'verPedido':
+    $admin->verPedido($_GET['id'] ?? 0);
+    break;
+
     default:
         $admin->dashboard();
         break;

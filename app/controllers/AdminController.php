@@ -253,4 +253,18 @@ class AdminController
 
         require_once '../app/views/admin/ventas.php';
     }
+
+    public function verPedido($id)
+{
+    $pedido = $this->pedido->obtenerPorId($id);
+
+    if (!$pedido) {
+        header('Location: admin.php?accion=ventas');
+        exit;
+    }
+
+    $detalles = $this->pedido->obtenerDetalles($id);
+
+    require_once '../app/views/admin/pedido-detalle.php';
+}
 }

@@ -730,27 +730,44 @@ class Pedido
 
     public function obtenerPorId($pedidoId)
     {
-
         $sql = "
-            SELECT *
-            FROM pedidos
-            WHERE id = ?
-        ";
+        SELECT
+            p.id,
+            p.cliente_id,
+            p.subtotal,
+            p.costo_envio,
+            p.total,
+            p.metodo_pago,
+            p.referencia_pago,
+            p.transaccion_id,
+            p.estado_pago,
+            p.estado_pedido,
+            p.fecha_creacion,
 
+            c.nombre AS cliente_nombre,
+            c.telefono AS cliente_telefono,
+            c.correo AS cliente_correo,
+            c.direccion,
+            c.departamento,
+            c.ciudad,
+            c.barrio,
+            c.codigo_postal,
+            c.indicaciones
 
-        $stmt =
-            $this->conexion->prepare($sql);
+        FROM pedidos p
 
+        INNER JOIN clientes c
+            ON p.cliente_id = c.id
 
-        $stmt->execute([
+        WHERE p.id = ?
 
-            $pedidoId
+        LIMIT 1
+    ";
 
-        ]);
-
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute([$pedidoId]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
-
     }
 
 
@@ -1141,5 +1158,7 @@ class Pedido
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
 
 }
