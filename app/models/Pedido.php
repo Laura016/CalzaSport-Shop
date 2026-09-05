@@ -1078,4 +1078,68 @@ class Pedido
 
     }
 
+    /**
+     * =========================================================
+     * ESTADÍSTICAS DEL DASHBOARD
+     * =========================================================
+     */
+
+    public function totalVentas()
+    {
+        $sql = "
+            SELECT COALESCE(SUM(total), 0) AS total
+            FROM pedidos
+            WHERE estado_pago = 'Pagado'
+        ";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+
+        return (float) $stmt->fetchColumn();
+    }
+
+
+    public function totalClientes()
+    {
+        $sql = "
+            SELECT COUNT(*) AS total
+            FROM clientes
+        ";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function obtenerTodos()
+    {
+        $sql = "
+        SELECT 
+            p.id,
+            p.cliente_id,
+            p.subtotal,
+            p.costo_envio,
+            p.total,
+            p.metodo_pago,
+            p.referencia_pago,
+            p.transaccion_id,
+            p.estado_pago,
+            p.estado_pedido,
+            p.fecha_creacion,
+            c.nombre AS cliente_nombre,
+            c.telefono AS cliente_telefono,
+            c.correo AS cliente_correo
+        FROM pedidos p
+        INNER JOIN clientes c 
+            ON p.cliente_id = c.id
+        ORDER BY p.fecha_creacion DESC
+    ";
+
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }

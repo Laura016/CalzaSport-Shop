@@ -1,76 +1,404 @@
-/*==========================
-SIDEBAR
-==========================*/
+/* ==========================
+   SIDEBAR
+========================== */
 
-.sidebar{
-    width:260px;
-    background:var(--dark);
-    color:#fff;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    padding:25px;
+.sidebar {
+    position: relative;
+
+    width: 260px;
+    height: 100vh;
+
+    background: var(--dark);
+    color: #fff;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 25px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
 }
 
-.logo{
-    text-align:center;
-    margin-bottom:40px;
+
+/* ==========================
+   LOGO
+========================== */
+
+.logo {
+    text-align: center;
+
+    margin-bottom: 40px;
+
+    flex-shrink: 0;
 }
 
-.logo h2{
-    font-size:28px;
-    font-weight:700;
-    margin-bottom:5px;
+.logo h2 {
+    font-size: 28px;
+    font-weight: 700;
+
+    margin-bottom: 5px;
 }
 
-.logo span{
-    color:#9CA3AF;
-    font-size:13px;
-    letter-spacing:3px;
+.logo span {
+    color: #9CA3AF;
+
+    font-size: 13px;
+
+    letter-spacing: 3px;
 }
 
-.sidebar nav ul{
-    list-style:none;
+
+/* ==========================
+   MENÚ PRINCIPAL
+========================== */
+
+.sidebar-nav {
+    flex: 1;
+
+    min-height: 0;
+
+    overflow-y: auto;
 }
 
-.sidebar nav ul li{
-    margin-bottom:12px;
+.sidebar-nav ul {
+    list-style: none;
+
+    margin: 0;
+    padding: 0;
 }
 
-.sidebar nav ul li a{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    color:#D1D5DB;
-    text-decoration:none;
-    padding:14px 18px;
-    border-radius:12px;
-    transition:.3s;
+.sidebar-nav ul li {
+    margin-bottom: 12px;
 }
 
-.sidebar nav ul li a i{
-    width:20px;
-    text-align:center;
+
+/* Links principales */
+
+.sidebar-nav ul li a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    width: 100%;
+
+    color: #D1D5DB;
+
+    text-decoration: none;
+
+    padding: 14px 18px;
+
+    border-radius: 12px;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
 }
 
-.sidebar nav ul li:hover a{
-    background:#374151;
-    color:white;
+
+/* Iconos */
+
+.sidebar-nav ul li a i {
+    width: 20px;
+
+    min-width: 20px;
+
+    text-align: center;
 }
 
-.sidebar .active a{
-    background:var(--primary);
-    color:white;
+
+/* Hover */
+
+.sidebar-nav ul li:hover a {
+    background: #374151;
+
+    color: #ffffff;
 }
 
-.overlay{
-    display:none;
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.4);
-    z-index:998;
+
+/* Elemento activo */
+
+.sidebar-nav .active a {
+    background: var(--primary);
+
+    color: #ffffff;
 }
 
-.overlay.active{
-    display:block;
+
+/* ==========================
+   PARTE INFERIOR
+========================== */
+
+.sidebar-bottom {
+    flex-shrink: 0;
+
+    margin-top: 15px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+
+/* ==========================
+   CONFIGURACIÓN
+========================== */
+
+.sidebar-dropdown {
+    width: 100%;
+}
+
+
+/* Botón */
+
+.sidebar-dropdown-toggle {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 14px 18px;
+
+    background: transparent;
+
+    border: none;
+
+    outline: none;
+
+    color: #D1D5DB;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    text-align: left;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    appearance: none;
+
+    -webkit-appearance: none;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
+}
+
+
+/* Icono */
+
+.sidebar-dropdown-toggle > i:first-child {
+    width: 20px;
+
+    min-width: 20px;
+
+    text-align: center;
+}
+
+
+/* Flecha */
+
+.sidebar-dropdown-toggle .dropdown-arrow {
+    width: auto;
+
+    min-width: auto;
+
+    margin-left: auto;
+
+    font-size: 10px;
+
+    transition: transform 0.25s ease;
+}
+
+
+/* Hover */
+
+.sidebar-dropdown-toggle:hover {
+    background: #374151;
+
+    color: #ffffff;
+}
+
+
+/* Cuando está abierto */
+
+.sidebar-dropdown.active .sidebar-dropdown-toggle {
+    background: #374151;
+
+    color: #ffffff;
+}
+
+
+/* Flecha abierta */
+
+.sidebar-dropdown.active .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+
+/* ==========================
+   SUBMENÚ CONFIGURACIÓN
+========================== */
+
+.sidebar-dropdown-menu {
+    display: none;
+
+    padding: 5px 0 5px 35px;
+}
+
+
+/* Mostrar */
+
+.sidebar-dropdown.active .sidebar-dropdown-menu {
+    display: block;
+}
+
+
+/* Link del submenu */
+
+.sidebar-dropdown-link {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 10px 12px;
+
+    color: #9CA3AF;
+
+    text-decoration: none;
+
+    font-size: 13px;
+
+    border-radius: 8px;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+/* Hover */
+
+.sidebar-dropdown-link:hover {
+    background: #374151;
+
+    color: #ffffff;
+}
+
+
+/* Icono */
+
+.sidebar-dropdown-link i {
+    width: 16px;
+
+    text-align: center;
+}
+
+
+/* ==========================
+   CERRAR SESIÓN
+========================== */
+
+.sidebar-logout {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-top: 8px;
+
+    padding: 14px 18px;
+
+    background: transparent;
+
+    color: #FCA5A5 !important;
+
+    text-decoration: none;
+
+    border-radius: 12px;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease;
+}
+
+
+/* Icono */
+
+.sidebar-logout i {
+    width: 20px;
+
+    min-width: 20px;
+
+    text-align: center;
+}
+
+
+/* Hover */
+
+.sidebar-logout:hover {
+    background: rgba(220, 38, 38, 0.12);
+
+    color: #F87171 !important;
+}
+
+
+/* ==========================
+   SCROLL DEL MENÚ
+========================== */
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+    background: #374151;
+
+    border-radius: 10px;
+}
+
+
+/* ==========================
+   OVERLAY
+========================== */
+
+.overlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0, 0, 0, .4);
+
+    z-index: 998;
+}
+
+.overlay.active {
+    display: block;
 }

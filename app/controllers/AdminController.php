@@ -1,19 +1,30 @@
 <?php
 
 require_once '../app/models/Producto.php';
+require_once '../app/models/Pedido.php';
 
 class AdminController
 {
     private $producto;
+    private $pedido;
 
     public function __construct()
     {
         $this->producto = new Producto();
+        $this->pedido = new Pedido();
     }
 
     // Dashboard
     public function dashboard()
     {
+        $totalProductos = (int) $this->producto->totalProductos()['total'];
+
+        $productosDisponibles = (int) $this->producto->productosDisponibles()['total'];
+
+        $totalVentas = $this->pedido->totalVentas();
+
+        $totalClientes = $this->pedido->totalClientes();
+
         require_once '../app/views/admin/dashboard.php';
     }
 
@@ -32,186 +43,214 @@ class AdminController
     }
 
     // Guardar producto
-   public function guardarProducto()
-{
-    // Subir la imagen usando la función reutilizable
-    $nombreImagen = $this->subirImagen($_FILES['imagen']);
+    public function guardarProducto()
+    {
+        // Subir la imagen usando la función reutilizable
+        $nombreImagen = $this->subirImagen($_FILES['imagen']);
 
-    if ($nombreImagen === null) {
+        if ($nombreImagen === null) {
 
-        die("Debes seleccionar una imagen válida (JPG, JPEG, PNG o WEBP, máximo 5 MB).");
+            die("Debes seleccionar una imagen válida (JPG, JPEG, PNG o WEBP, máximo 5 MB).");
 
+        }
+
+        $datos = [
+
+            "nombre" => $_POST['nombre'],
+
+            "referencia" => $_POST['referencia'],
+
+            "descripcion" => $_POST['descripcion'],
+
+            "categoria" => $_POST['categoria'],
+
+            "marca" => $_POST['marca'],
+
+            "precio" => $_POST['precio'],
+
+            "imagen" => $nombreImagen,
+
+            "tallas" => $_POST['tallas'],
+
+            "stock" => $_POST['stock'],
+
+            "destacado" => $_POST['destacado']
+
+        ];
+
+        $this->producto->guardar($datos);
+
+        header("Location: admin.php?accion=productos");
+
+        exit;
     }
-
-    $datos = [
-
-        "nombre" => $_POST['nombre'],
-
-        "referencia" => $_POST['referencia'],
-
-        "descripcion" => $_POST['descripcion'],
-
-        "categoria" => $_POST['categoria'],
-
-        "marca" => $_POST['marca'],
-
-        "precio" => $_POST['precio'],
-
-        "imagen" => $nombreImagen,
-
-        "tallas" => $_POST['tallas'],
-
-        "stock" => $_POST['stock'],
-
-        "destacado" => $_POST['destacado']
-
-    ];
-
-    $this->producto->guardar($datos);
-
-    header("Location: admin.php?accion=productos");
-
-    exit;
-}
 
     // Mostrar formulario editar
-   public function editarProducto($id)
-{
-    $producto = $this->producto->obtenerPorId($id);
+    public function editarProducto($id)
+    {
+        $producto = $this->producto->obtenerPorId($id);
 
-    if (!$producto) {
-        die("Producto no encontrado.");
+        if (!$producto) {
+            die("Producto no encontrado.");
+        }
+
+        require_once '../app/views/admin/editar_producto.php';
     }
-
-    require_once '../app/views/admin/editar_producto.php';
-}
 
     // Actualizar producto
     public function actualizarProducto()
-{
-    $productoActual = $this->producto->obtenerPorId($_POST['id']);
+    {
+        $productoActual = $this->producto->obtenerPorId($_POST['id']);
 
-    $nombreImagen = $productoActual['imagen'];
+        $nombreImagen = $productoActual['imagen'];
 
-    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
+        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] == 0) {
 
-        $nombreImagen = time() . "_" . basename($_FILES['imagen']['name']);
+            $nombreImagen = time() . "_" . basename($_FILES['imagen']['name']);
 
-        $rutaDestino = __DIR__ . "/../../public/assets/img/" . $nombreImagen;
+            $rutaDestino = __DIR__ . "/../../public/assets/img/" . $nombreImagen;
 
-        move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
+            move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
 
-        // Eliminar la imagen anterior
-        $imagenAnterior = __DIR__ . "/../../public/assets/img/" . $productoActual['imagen'];
+            // Eliminar la imagen anterior
+            $imagenAnterior = __DIR__ . "/../../public/assets/img/" . $productoActual['imagen'];
 
-        if (file_exists($imagenAnterior)) {
-            unlink($imagenAnterior);
+            if (file_exists($imagenAnterior)) {
+                unlink($imagenAnterior);
+            }
         }
+
+        $datos = [
+
+            "id" => $_POST['id'],
+
+            "nombre" => $_POST['nombre'],
+
+            "referencia" => $_POST['referencia'],
+
+            "descripcion" => $_POST['descripcion'],
+
+            "categoria" => $_POST['categoria'],
+
+            "marca" => $_POST['marca'],
+
+            "precio" => $_POST['precio'],
+
+            "imagen" => $nombreImagen,
+
+            "tallas" => $_POST['tallas'],
+
+            "stock" => $_POST['stock'],
+
+            "destacado" => $_POST['destacado']
+
+        ];
+
+        $this->producto->actualizar($datos);
+
+        header("Location: admin.php?accion=productos");
+
+        exit;
     }
-
-    $datos = [
-
-        "id" => $_POST['id'],
-
-        "nombre" => $_POST['nombre'],
-
-        "referencia" => $_POST['referencia'],
-
-        "descripcion" => $_POST['descripcion'],
-
-        "categoria" => $_POST['categoria'],
-
-        "marca" => $_POST['marca'],
-
-        "precio" => $_POST['precio'],
-
-        "imagen" => $nombreImagen,
-
-        "tallas" => $_POST['tallas'],
-
-        "stock" => $_POST['stock'],
-
-        "destacado" => $_POST['destacado']
-
-    ];
-
-    $this->producto->actualizar($datos);
-
-    header("Location: admin.php?accion=productos");
-
-    exit;
-}
 
     // Eliminar producto
     public function eliminarProducto($id)
-{
-    $producto = $this->producto->obtenerPorId($id);
+    {
+        $producto = $this->producto->obtenerPorId($id);
 
-    if (!$producto) {
-        die("Producto no encontrado.");
+        if (!$producto) {
+            die("Producto no encontrado.");
+        }
+
+        $rutaImagen = __DIR__ . "/../../public/assets/img/" . $producto['imagen'];
+
+        if (file_exists($rutaImagen)) {
+            unlink($rutaImagen);
+        }
+
+        $this->producto->eliminar($id);
+
+        header("Location: admin.php?accion=productos");
+
+        exit;
+
     }
 
-    $rutaImagen = __DIR__ . "/../../public/assets/img/" . $producto['imagen'];
+    private function subirImagen($archivo)
+    {
+        if (
+            !isset($archivo) ||
+            $archivo['error'] != 0 ||
+            empty($archivo['name'])
+        ) {
+            return null;
+        }
 
-    if (file_exists($rutaImagen)) {
-        unlink($rutaImagen);
-    }
+        $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
 
-    $this->producto->eliminar($id);
+        $permitidas = ['jpg', 'jpeg', 'png', 'webp'];
 
-    header("Location: admin.php?accion=productos");
+        if (!in_array($extension, $permitidas)) {
+            return null;
+        }
 
-    exit;
- 
-}
+        // Tamaño máximo: 5 MB
+        if ($archivo['size'] > 5 * 1024 * 1024) {
+            return null;
+        }
 
-private function subirImagen($archivo)
-{
-    if (
-        !isset($archivo) ||
-        $archivo['error'] != 0 ||
-        empty($archivo['name'])
-    ) {
+        $nombre = uniqid('producto_') . "." . $extension;
+
+        $ruta = __DIR__ . "/../../public/assets/img/" . $nombre;
+
+        if (move_uploaded_file($archivo['tmp_name'], $ruta)) {
+
+            return $nombre;
+
+        }
+
         return null;
     }
+    public function inventario()
+    {
+        $productos = $this->producto->obtenerProductos();
 
-    $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+        $totalProductos = $this->producto->totalProductos();
 
-    $permitidas = ['jpg', 'jpeg', 'png', 'webp'];
+        $productosDisponibles = $this->producto->productosDisponibles();
 
-    if (!in_array($extension, $permitidas)) {
-        return null;
+        $productosAgotados = $this->producto->productosAgotados();
+
+        $productosBajoStock = $this->producto->productosBajoStock();
+
+        require_once '../app/views/admin/inventario.php';
     }
 
-    // Tamaño máximo: 5 MB
-    if ($archivo['size'] > 5 * 1024 * 1024) {
-        return null;
+    public function ventas()
+    {
+        $pedidos = $this->pedido->obtenerTodos();
+
+        $totalPedidos = count($pedidos);
+
+        $ventasPagadas = 0;
+        $pedidosPendientes = 0;
+        $pedidosCompletados = 0;
+
+        foreach ($pedidos as $pedido) {
+
+            if ($pedido['estado_pago'] === 'Pagado') {
+                $ventasPagadas++;
+            }
+
+            if ($pedido['estado_pedido'] === 'Pendiente') {
+                $pedidosPendientes++;
+            }
+
+            if ($pedido['estado_pedido'] === 'Entregado') {
+                $pedidosCompletados++;
+            }
+        }
+
+        require_once '../app/views/admin/ventas.php';
     }
-
-    $nombre = uniqid('producto_') . "." . $extension;
-
-    $ruta = __DIR__ . "/../../public/assets/img/" . $nombre;
-
-    if (move_uploaded_file($archivo['tmp_name'], $ruta)) {
-
-        return $nombre;
-
-    }
-
-    return null;
-}
-public function inventario()
-{
-    $productos = $this->producto->obtenerProductos();
-
-    $totalProductos = $this->producto->totalProductos();
-
-    $productosDisponibles = $this->producto->productosDisponibles();
-
-    $productosAgotados = $this->producto->productosAgotados();
-
-    $productosBajoStock = $this->producto->productosBajoStock();
-
-    require_once '../app/views/admin/inventario.php';
-}
 }

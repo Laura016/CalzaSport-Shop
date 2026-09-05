@@ -1,0 +1,173 @@
+/* ================================
+   VENTAS
+================================ */
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.page-header h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    color: #111827;
+}
+
+.page-header p {
+    margin: 0;
+    color: #6B7280;
+    font-size: 14px;
+}
+
+
+/* ================================
+   INFORMACIÓN CLIENTE
+================================ */
+
+.cliente-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.cliente-info strong {
+    color: #111827;
+    font-size: 14px;
+}
+
+.cliente-info small {
+    color: #6B7280;
+    font-size: 12px;
+}
+
+
+/* ================================
+   BADGES
+================================ */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-badge i {
+    font-size: 11px;
+}
+
+
+/* PAGO */
+
+.status-paid {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.status-pending {
+    background: #FEF3C7;
+    color: #92400E;
+}
+
+.status-rejected {
+    background: #FEE2E2;
+    color: #991B1B;
+}
+
+
+/* PEDIDO */
+
+.status-preparing {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.status-shipped {
+    background: #E0E7FF;
+    color: #3730A3;
+}
+
+.status-delivered {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+
+/* ================================
+   BOTÓN VER
+================================ */
+
+.btn-action {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+
+    transition: all .2s ease;
+}
+
+.btn-view {
+    background: #EFF6FF;
+    color: #2563EB;
+}
+
+.btn-view:hover {
+    background: #2563EB;
+    color: #fff;
+}
+
+
+/* ================================
+   TABLA VACÍA
+================================ */
+
+.empty-table {
+    padding: 50px !important;
+    text-align: center;
+}
+
+.empty-table div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.empty-table i {
+    font-size: 35px;
+    color: #9CA3AF;
+}
+
+.empty-table p {
+    margin: 0;
+    color: #6B7280;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    #tablaVentas {
+        min-width: 900px;
+    }
+
+}

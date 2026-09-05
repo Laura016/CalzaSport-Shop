@@ -26,7 +26,9 @@ require_once 'layouts/sidebar.php';
 
         <i class="fa-solid fa-user"></i>
 
-        <span>Administrador</span>
+        <span> 
+            <?= htmlspecialchars($_SESSION['admin_nombre'] ?? 'Administrador') ?>
+        </span>
 
     </div>
 
@@ -50,7 +52,7 @@ require_once 'layouts/sidebar.php';
 
         <h3>Productos</h3>
 
-        <span>5</span>
+        <span><?= $totalProductos ?></span>
 
     </div>
 
@@ -60,7 +62,7 @@ require_once 'layouts/sidebar.php';
 
         <h3>Disponibles</h3>
 
-        <span>5</span>
+        <span><?= $productosDisponibles ?></span>
 
     </div>
 
@@ -70,7 +72,7 @@ require_once 'layouts/sidebar.php';
 
         <h3>Ventas</h3>
 
-        <span>$0</span>
+        <span>$<?= number_format($totalVentas, 0, ',', '.') ?></span>
 
     </div>
 
@@ -80,7 +82,7 @@ require_once 'layouts/sidebar.php';
 
         <h3>Clientes</h3>
 
-        <span>0</span>
+        <span><?= $totalClientes ?></span>
 
     </div>
 
