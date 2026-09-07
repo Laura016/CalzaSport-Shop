@@ -2,16 +2,20 @@
 
 require_once '../app/models/Producto.php';
 require_once '../app/models/Pedido.php';
+require_once '../app/models/Promocion.php';
 
 class AdminController
 {
     private $producto;
     private $pedido;
 
+    private $promocion;
+
     public function __construct()
     {
         $this->producto = new Producto();
         $this->pedido = new Pedido();
+        $this->promocion = new Promocion();
     }
 
     // Dashboard
@@ -252,6 +256,20 @@ class AdminController
         }
 
         require_once '../app/views/admin/ventas.php';
+    }
+
+    public function promociones()
+    {
+        $promociones = $this->promocion->obtenerTodas();
+
+        require_once '../app/views/admin/promociones.php';
+    }
+
+    public function nuevaPromocion()
+    {
+        $productos = $this->producto->obtenerTodos();
+
+        require_once '../app/views/admin/nueva_promocion.php';
     }
 
     public function verPedido($id)

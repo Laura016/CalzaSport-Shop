@@ -54,6 +54,13 @@
                 </a>
             </li>
 
+            <li>
+                <a href="admin.php?accion=promociones">
+                    <i class="fa-solid fa-tags"></i>
+                    <span>Promociones</span>
+                </a>
+            </li>
+
         </ul>
 
     </nav>

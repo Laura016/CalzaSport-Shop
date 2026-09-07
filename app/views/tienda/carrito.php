@@ -65,6 +65,7 @@
                 Finalizar compra
 
             </a>
+            
 
             <a href="catalogo.php" class="continue-shopping">
 

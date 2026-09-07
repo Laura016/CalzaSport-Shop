@@ -52,6 +52,14 @@ switch ($accion) {
         $admin->ventas();
         break;
 
+    case 'promociones':
+    $admin->promociones();
+    break;
+
+    case 'nuevaPromocion':
+    $admin->nuevaPromocion();
+    break;
+
     case 'verPedido':
     $admin->verPedido($_GET['id'] ?? 0);
     break;
