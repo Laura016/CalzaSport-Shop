@@ -121,31 +121,6 @@ if (
 
 
 /*======================================
-VALIDAR TOTAL
-======================================*/
-
-$total =
-    (float) ($datos['total'] ?? 0);
-
-
-if ($total <= 0) {
-
-    http_response_code(400);
-
-    echo json_encode([
-
-        'success' => false,
-
-        'message' =>
-            'El total del pedido no es válido.'
-
-    ]);
-
-    exit;
-}
-
-
-/*======================================
 GENERAR REFERENCIA ÚNICA
 ======================================*/
 
@@ -193,6 +168,30 @@ if (!$resultado['success']) {
 
         'error' =>
             $resultado['error'] ?? null
+
+    ]);
+
+    exit;
+}
+
+/*======================================
+TOTAL REAL CALCULADO POR EL SERVIDOR
+======================================*/
+
+$total =
+    (float) ($resultado['total'] ?? 0);
+
+
+if ($total <= 0) {
+
+    http_response_code(400);
+
+    echo json_encode([
+
+        'success' => false,
+
+        'message' =>
+            'El total calculado del pedido no es válido.'
 
     ]);
 

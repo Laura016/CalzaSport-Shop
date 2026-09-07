@@ -56,7 +56,7 @@
 
                 <li>
 
-                    <a href="#">
+                    <a href="https://wa.me/573242994225" target="_blank">
 
                         <i class="fa-brands fa-whatsapp"></i>
 
@@ -68,7 +68,7 @@
 
                 <li>
 
-                    <a href="#">
+                    <a href="https://www.instagram.com/calza_sportt?stkn=MXh3cWEyb2pnbjJ1OA%3D%3D&utm_source=qr" target="_blank">
 
                         <i class="fa-brands fa-instagram"></i>
 

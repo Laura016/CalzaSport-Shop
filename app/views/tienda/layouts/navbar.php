@@ -116,7 +116,7 @@
 
     <hr>
 
-    <a href="https://wa.me/TUNUMERO" target="_blank">
+    <a href="https://wa.me/573242994225" target="_blank">
 
         <i class="fa-brands fa-whatsapp"></i>
 
@@ -124,7 +124,7 @@
 
     </a>
 
-    <a href="https://instagram.com/TUUSUARIO" target="_blank">
+    <a href="https://www.instagram.com/calza_sportt?stkn=MXh3cWEyb2pnbjJ1OA%3D%3D&utm_source=qr" target="_blank">
 
         <i class="fa-brands fa-instagram"></i>
 

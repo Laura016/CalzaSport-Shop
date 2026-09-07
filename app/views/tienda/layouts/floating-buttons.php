@@ -1,12 +1,12 @@
 <div class="floating-buttons">
 
-    <a href="https://wa.me/573001112233" target="_blank" class="float-btn whatsapp">
+    <a href="https://wa.me/573242994225" target="_blank" class="float-btn whatsapp">
 
         <i class="fa-brands fa-whatsapp"></i>
 
     </a>
 
-    <a href="https://instagram.com/calzasport" target="_blank" class="float-btn instagram">
+    <a href="https://www.instagram.com/calza_sportt?stkn=MXh3cWEyb2pnbjJ1OA%3D%3D&utm_source=qr" target="_blank" class="float-btn instagram">
 
         <i class="fa-brands fa-instagram"></i>
 
