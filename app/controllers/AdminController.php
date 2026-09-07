@@ -108,12 +108,12 @@ class AdminController
 
             $nombreImagen = time() . "_" . basename($_FILES['imagen']['name']);
 
-            $rutaDestino = __DIR__ . "/../../public/assets/img/" . $nombreImagen;
+            $rutaDestino = __DIR__ . "/../../public/assets/img/productos/" . $nombreImagen;
 
             move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino);
 
             // Eliminar la imagen anterior
-            $imagenAnterior = __DIR__ . "/../../public/assets/img/" . $productoActual['imagen'];
+            $imagenAnterior = __DIR__ . "/../../public/assets/img/productos/" . $productoActual['imagen'];
 
             if (file_exists($imagenAnterior)) {
                 unlink($imagenAnterior);
@@ -162,7 +162,7 @@ class AdminController
             die("Producto no encontrado.");
         }
 
-        $rutaImagen = __DIR__ . "/../../public/assets/img/" . $producto['imagen'];
+        $rutaImagen = __DIR__ . "/../../public/assets/img/productos/" . $producto['imagen'];
 
         if (file_exists($rutaImagen)) {
             unlink($rutaImagen);
@@ -201,7 +201,7 @@ class AdminController
 
         $nombre = uniqid('producto_') . "." . $extension;
 
-        $ruta = __DIR__ . "/../../public/assets/img/" . $nombre;
+        $ruta = __DIR__ . "/../../public/assets/img/productos/" . $nombre;
 
         if (move_uploaded_file($archivo['tmp_name'], $ruta)) {
 

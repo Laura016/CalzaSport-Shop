@@ -1,8 +1,8 @@
 <div class="product-card-mobile">
 
-    <img src="assets/img/<?php echo $producto['imagen']; ?>"
-         class="product-card-img"
-         alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
+    <img src="assets/img/productos/<?php echo htmlspecialchars($producto['imagen']); ?>" 
+        class="product-card-img"
+        alt="<?php echo htmlspecialchars($producto['nombre']); ?>">
 
     <div class="product-card-body">
 
@@ -19,7 +19,7 @@
 
         <div class="product-card-price">
 
-            $<?php echo number_format($producto['precio'],0,",","."); ?>
+            $<?php echo number_format($producto['precio'], 0, ",", "."); ?>
 
         </div>
 
@@ -29,7 +29,7 @@
 
         </div>
 
-        <span class="badge <?php echo $producto['estado']=="Disponible" ? "badge-success":"badge-danger"; ?>">
+        <span class="badge <?php echo $producto['estado'] == "Disponible" ? "badge-success" : "badge-danger"; ?>">
 
             <?php echo $producto['estado']; ?>
 
@@ -37,16 +37,13 @@
 
         <div class="product-card-actions">
 
-            <a href="admin.php?accion=editar&id=<?php echo $producto['id']; ?>"
-               class="btn-edit">
+            <a href="admin.php?accion=editar&id=<?php echo $producto['id']; ?>" class="btn-edit">
 
                 <i class="fa-solid fa-pen-to-square"></i>
 
             </a>
 
-            <a href="#"
-               class="btn-delete eliminarProducto"
-               data-id="<?php echo $producto['id']; ?>">
+            <a href="#" class="btn-delete eliminarProducto" data-id="<?php echo $producto['id']; ?>">
 
                 <i class="fa-solid fa-trash"></i>
 
