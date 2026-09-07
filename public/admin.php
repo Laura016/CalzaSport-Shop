@@ -56,6 +56,10 @@ switch ($accion) {
     $admin->verPedido($_GET['id'] ?? 0);
     break;
 
+    case 'actualizarEstadoPedido':
+    $admin->actualizarEstadoPedido();
+    break;
+
     default:
         $admin->dashboard();
         break;

@@ -42,10 +42,7 @@ require_once 'layouts/sidebar.php';
 
             <div>
 
-                <a
-                    href="admin.php?accion=ventas"
-                    class="back-link"
-                >
+                <a href="admin.php?accion=ventas" class="back-link">
                     <i class="fa-solid fa-arrow-left"></i>
                     Volver a ventas
                 </a>
@@ -678,39 +675,102 @@ require_once 'layouts/sidebar.php';
 
             <div class="order-actions">
 
-                <button
-                    type="button"
-                    class="order-action-btn"
-                    disabled
-                >
-                    <i class="fa-solid fa-box"></i>
-                    Preparar pedido
-                </button>
+                <?php if ($pedido['estado_pedido'] === 'Pendiente'): ?>
+
+                    <?php if ($pedido['estado_pago'] === 'Pagado'): ?>
+
+                        <form method="POST" action="admin.php?accion=actualizarEstadoPedido">
+
+                            <input type="hidden" name="pedido_id" value="<?= (int) $pedido['id'] ?>">
+
+                            <input type="hidden" name="nuevo_estado" value="Preparando">
+
+                            <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+
+                            <button type="submit" class="order-action-btn btn-prepare">
+                                <i class="fa-solid fa-box"></i>
+                                Preparar pedido
+                            </button>
+
+                        </form>
+
+                    <?php else: ?>
+
+                        <div class="order-action-disabled">
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            <span>
+                                El pedido no puede prepararse hasta que
+                                el pago sea aprobado.
+                            </span>
+
+                        </div>
+
+                    <?php endif; ?>
 
 
-                <button
-                    type="button"
-                    class="order-action-btn"
-                    disabled
-                >
-                    <i class="fa-solid fa-truck"></i>
-                    Marcar como enviado
-                </button>
+                <?php elseif ($pedido['estado_pedido'] === 'Preparando'): ?>
+
+                    <form method="POST" action="admin.php?accion=actualizarEstadoPedido">
+
+                        <input type="hidden" name="pedido_id" value="<?= (int) $pedido['id'] ?>">
+
+                        <input type="hidden" name="nuevo_estado" value="Enviado">
+
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+
+                        <button type="submit" class="order-action-btn btn-shipped">
+                            <i class="fa-solid fa-truck"></i>
+                            Marcar como enviado
+                        </button>
+
+                    </form>
 
 
-                <button
-                    type="button"
-                    class="order-action-btn"
-                    disabled
-                >
-                    <i class="fa-solid fa-circle-check"></i>
-                    Marcar como entregado
-                </button>
+                <?php elseif ($pedido['estado_pedido'] === 'Enviado'): ?>
+
+                    <form method="POST" action="admin.php?accion=actualizarEstadoPedido">
+
+                        <input type="hidden" name="pedido_id" value="<?= (int) $pedido['id'] ?>">
+
+                        <input type="hidden" name="nuevo_estado" value="Entregado">
+
+                        <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
+
+                        <button type="submit" class="order-action-btn btn-delivered">
+                            <i class="fa-solid fa-circle-check"></i>
+                            Marcar como entregado
+                        </button>
+
+                    </form>
+
+
+                <?php elseif ($pedido['estado_pedido'] === 'Entregado'): ?>
+
+                    <div class="order-completed-message">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        <div>
+
+                            <strong>
+                                Pedido completado
+                            </strong>
+
+                            <span>
+                                Este pedido ya fue marcado como entregado.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                <?php endif; ?>
 
             </div>
 
         </div>
-
     </section>
 
 </main>

@@ -255,16 +255,128 @@ class AdminController
     }
 
     public function verPedido($id)
-{
-    $pedido = $this->pedido->obtenerPorId($id);
+    {
+        $pedido = $this->pedido->obtenerPorId($id);
 
-    if (!$pedido) {
-        header('Location: admin.php?accion=ventas');
-        exit;
+        if (!$pedido) {
+            header('Location: admin.php?accion=ventas');
+            exit;
+        }
+
+        $detalles = $this->pedido->obtenerDetalles($id);
+
+
+        /*
+         * =====================================================
+         * TOKEN CSRF
+         * =====================================================
+         */
+
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(
+                random_bytes(32)
+            );
+        }
+
+        $csrfToken = $_SESSION['csrf_token'];
+
+
+        /*
+         * =====================================================
+         * MENSAJES
+         * =====================================================
+         */
+
+        $mensajeExito = $_SESSION['admin_mensaje_exito'] ?? null;
+        $mensajeError = $_SESSION['admin_mensaje_error'] ?? null;
+
+        unset($_SESSION['admin_mensaje_exito']);
+        unset($_SESSION['admin_mensaje_error']);
+
+
+        require_once '../app/views/admin/pedido-detalle.php';
     }
 
-    $detalles = $this->pedido->obtenerDetalles($id);
+    public function actualizarEstadoPedido()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: admin.php?accion=ventas');
+            exit;
+        }
 
-    require_once '../app/views/admin/pedido-detalle.php';
-}
+        $pedidoId = (int) ($_POST['pedido_id'] ?? 0);
+        $nuevoEstado = trim($_POST['nuevo_estado'] ?? '');
+
+        if ($pedidoId <= 0 || $nuevoEstado === '') {
+            header(
+                'Location: admin.php?accion=ventas'
+            );
+            exit;
+        }
+
+
+        /*
+         * =====================================================
+         * PROTECCIÓN CSRF
+         * =====================================================
+         */
+
+        $tokenSesion = $_SESSION['csrf_token'] ?? '';
+        $tokenFormulario = $_POST['csrf_token'] ?? '';
+
+        if (
+            empty($tokenSesion) ||
+            empty($tokenFormulario) ||
+            !hash_equals($tokenSesion, $tokenFormulario)
+        ) {
+
+            $_SESSION['admin_mensaje_error'] =
+                'La solicitud no es válida. Intenta nuevamente.';
+
+            header(
+                'Location: admin.php?accion=verPedido&id=' .
+                $pedidoId
+            );
+
+            exit;
+        }
+
+
+        /*
+         * Actualizar estado
+         */
+
+        $resultado = $this->pedido->actualizarEstadoPedido(
+            $pedidoId,
+            $nuevoEstado
+        );
+
+
+        /*
+         * Guardar mensaje para mostrarlo
+         */
+
+        if ($resultado['success']) {
+
+            $_SESSION['admin_mensaje_exito'] =
+                $resultado['message'];
+
+        } else {
+
+            $_SESSION['admin_mensaje_error'] =
+                $resultado['error'];
+        }
+
+
+        /*
+         * Regresar al detalle
+         */
+
+        header(
+            'Location: admin.php?accion=verPedido&id=' .
+            $pedidoId
+        );
+
+        exit;
+    }
 }

@@ -292,18 +292,117 @@
     gap: 12px;
 }
 
+.order-actions form {
+    margin: 0;
+}
+
 .order-action-btn {
     border: none;
     border-radius: 9px;
     padding: 11px 16px;
-    background: #F3F4F6;
-    color: #9CA3AF;
     font-size: 13px;
     font-weight: 600;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    cursor: not-allowed;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.order-action-btn:hover {
+    transform: translateY(-1px);
+}
+
+
+/* PREPARAR */
+
+.btn-prepare {
+    background: #DBEAFE;
+    color: #1E40AF;
+}
+
+.btn-prepare:hover {
+    background: #2563EB;
+    color: #FFFFFF;
+}
+
+
+/* ENVIAR */
+
+.btn-shipped {
+    background: #E0E7FF;
+    color: #3730A3;
+}
+
+.btn-shipped:hover {
+    background: #4F46E5;
+    color: #FFFFFF;
+}
+
+
+/* ENTREGAR */
+
+.btn-delivered {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+.btn-delivered:hover {
+    background: #16A34A;
+    color: #FFFFFF;
+}
+
+
+/* PEDIDO BLOQUEADO */
+
+.order-action-disabled {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    border-radius: 9px;
+    background: #F9FAFB;
+    border: 1px solid #E5E7EB;
+    color: #6B7280;
+    font-size: 13px;
+}
+
+.order-action-disabled i {
+    color: #9CA3AF;
+}
+
+
+/* PEDIDO COMPLETADO */
+
+.order-completed-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 10px;
+}
+
+.order-completed-message>i {
+    font-size: 22px;
+    color: #16A34A;
+}
+
+.order-completed-message div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.order-completed-message strong {
+    color: #166534;
+    font-size: 14px;
+}
+
+.order-completed-message span {
+    color: #4B5563;
+    font-size: 12px;
 }
 
 

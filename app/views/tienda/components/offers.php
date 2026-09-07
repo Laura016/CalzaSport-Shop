@@ -2,7 +2,7 @@
 
     <div class="section-title">
 
-        <h2>Ofertas de la semana</h2>
+        <h2>Promociones</h2>
 
         <p>Aprovecha nuestros mejores descuentos por tiempo limitado.</p>
 

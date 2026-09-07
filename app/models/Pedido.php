@@ -1159,6 +1159,177 @@ class Pedido
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * =========================================================
+     * ACTUALIZAR ESTADO DEL PEDIDO
+     * =========================================================
+     *
+     * Estados permitidos:
+     *
+     * Pendiente → Preparando
+     * Preparando → Enviado
+     * Enviado → Entregado
+     *
+     * El estado del pago NO se modifica aquí.
+     * Ese estado continúa siendo responsabilidad de Wompi.
+     *
+     */
+    public function actualizarEstadoPedido($pedidoId, $nuevoEstado)
+    {
+        try {
 
+            $estadosPermitidos = [
+                'Pendiente',
+                'Preparando',
+                'Enviado',
+                'Entregado'
+            ];
+
+            if (!in_array($nuevoEstado, $estadosPermitidos, true)) {
+                return [
+                    'success' => false,
+                    'error' => 'El estado seleccionado no es válido.'
+                ];
+            }
+
+            /*
+             * Obtener el pedido actual
+             */
+            $sqlPedido = "
+            SELECT
+                id,
+                estado_pago,
+                estado_pedido
+            FROM pedidos
+            WHERE id = ?
+            LIMIT 1
+        ";
+
+            $stmtPedido = $this->conexion->prepare($sqlPedido);
+            $stmtPedido->execute([$pedidoId]);
+
+            $pedido = $stmtPedido->fetch(PDO::FETCH_ASSOC);
+
+            if (!$pedido) {
+                return [
+                    'success' => false,
+                    'error' => 'El pedido no existe.'
+                ];
+            }
+
+
+            $estadoActual = $pedido['estado_pedido'];
+
+
+            /*
+             * Si ya está en el mismo estado
+             */
+            if ($estadoActual === $nuevoEstado) {
+                return [
+                    'success' => false,
+                    'error' => 'El pedido ya se encuentra en ese estado.'
+                ];
+            }
+
+
+            /*
+             * No permitir modificar pedidos terminados
+             */
+            if ($estadoActual === 'Entregado') {
+                return [
+                    'success' => false,
+                    'error' => 'Un pedido entregado no puede modificarse.'
+                ];
+            }
+
+
+            /*
+             * Verificar que el pago esté aprobado
+             * antes de comenzar a preparar el pedido.
+             */
+            if (
+                $estadoActual === 'Pendiente' &&
+                $nuevoEstado === 'Preparando'
+            ) {
+
+                if ($pedido['estado_pago'] !== 'Pagado') {
+                    return [
+                        'success' => false,
+                        'error' => 'El pedido no puede prepararse porque el pago todavía no ha sido aprobado.'
+                    ];
+                }
+            }
+
+
+            /*
+             * Validar flujo correcto
+             */
+            $transiciones = [
+                'Pendiente' => ['Preparando'],
+                'Preparando' => ['Enviado'],
+                'Enviado' => ['Entregado']
+            ];
+
+
+            if (
+                !isset($transiciones[$estadoActual]) ||
+                !in_array(
+                    $nuevoEstado,
+                    $transiciones[$estadoActual],
+                    true
+                )
+            ) {
+
+                return [
+                    'success' => false,
+                    'error' =>
+                        'No se puede cambiar el pedido de "' .
+                        $estadoActual .
+                        '" a "' .
+                        $nuevoEstado .
+                        '".'
+                ];
+            }
+
+
+            /*
+             * Actualizar únicamente el estado del pedido
+             */
+            $sql = "
+            UPDATE pedidos
+            SET estado_pedido = ?
+            WHERE id = ?
+        ";
+
+            $stmt = $this->conexion->prepare($sql);
+
+            $stmt->execute([
+                $nuevoEstado,
+                $pedidoId
+            ]);
+
+
+            return [
+                'success' => true,
+                'message' =>
+                    'El pedido ahora está en estado "' .
+                    $nuevoEstado .
+                    '".'
+            ];
+
+
+        } catch (PDOException $e) {
+
+            error_log(
+                "ERROR actualizarEstadoPedido(): " .
+                $e->getMessage()
+            );
+
+            return [
+                'success' => false,
+                'error' => 'No fue posible actualizar el estado del pedido.'
+            ];
+        }
+    }
 
 }
