@@ -14,10 +14,7 @@ require_once '../app/views/admin/layouts/header.php';
         </div>
 
         <div>
-            <a
-                href="admin.php?accion=promociones"
-                class="btn-secondary"
-            >
+            <a href="admin.php?accion=promociones" class="btn-secondary">
                 <i class="fa-solid fa-arrow-left"></i>
                 Volver
             </a>
@@ -27,11 +24,7 @@ require_once '../app/views/admin/layouts/header.php';
 
     <div class="form-card">
 
-        <form
-            action="admin.php?accion=guardarPromocion"
-            method="POST"
-            enctype="multipart/form-data"
-        >
+        <form action="admin.php?accion=guardarPromocion" method="POST" enctype="multipart/form-data">
 
             <div class="form-grid">
 
@@ -41,13 +34,7 @@ require_once '../app/views/admin/layouts/header.php';
                         Nombre interno
                     </label>
 
-                    <input
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        placeholder="Ej: Oferta Running Julio"
-                        required
-                    >
+                    <input type="text" id="nombre" name="nombre" placeholder="Ej: Oferta Running Julio" required>
 
                 </div>
 
@@ -58,13 +45,7 @@ require_once '../app/views/admin/layouts/header.php';
                         Título de la promoción
                     </label>
 
-                    <input
-                        type="text"
-                        id="titulo"
-                        name="titulo"
-                        placeholder="Ej: 30% de descuento en Running"
-                        required
-                    >
+                    <input type="text" id="titulo" name="titulo" placeholder="Ej: 30% de descuento en Running" required>
 
                 </div>
 
@@ -75,12 +56,8 @@ require_once '../app/views/admin/layouts/header.php';
                         Descripción
                     </label>
 
-                    <textarea
-                        id="descripcion"
-                        name="descripcion"
-                        rows="4"
-                        placeholder="Describe brevemente la promoción..."
-                    ></textarea>
+                    <textarea id="descripcion" name="descripcion" rows="4"
+                        placeholder="Describe brevemente la promoción..."></textarea>
 
                 </div>
 
@@ -91,12 +68,7 @@ require_once '../app/views/admin/layouts/header.php';
                         Imagen de la promoción
                     </label>
 
-                    <input
-                        type="file"
-                        id="imagen"
-                        name="imagen"
-                        accept=".jpg,.jpeg,.png,.webp"
-                    >
+                    <input type="file" id="imagen" name="imagen" accept=".jpg,.jpeg,.png,.webp">
 
                     <small>
                         Formatos permitidos: JPG, JPEG, PNG y WEBP.
@@ -111,11 +83,7 @@ require_once '../app/views/admin/layouts/header.php';
                         Tipo de descuento
                     </label>
 
-                    <select
-                        id="tipo_descuento"
-                        name="tipo_descuento"
-                        required
-                    >
+                    <select id="tipo_descuento" name="tipo_descuento" required>
 
                         <option value="porcentaje">
                             Porcentaje (%)
@@ -136,15 +104,8 @@ require_once '../app/views/admin/layouts/header.php';
                         Descuento
                     </label>
 
-                    <input
-                        type="number"
-                        id="descuento"
-                        name="descuento"
-                        min="0"
-                        step="0.01"
-                        placeholder="Ej: 20"
-                        required
-                    >
+                    <input type="number" id="descuento" name="descuento" min="0.01" step="0.01" placeholder="Ej: 20"
+                        required>
 
                     <small>
                         Si eliges porcentaje, escribe por ejemplo 20 para 20%.
@@ -159,12 +120,7 @@ require_once '../app/views/admin/layouts/header.php';
                         Fecha de inicio
                     </label>
 
-                    <input
-                        type="date"
-                        id="fecha_inicio"
-                        name="fecha_inicio"
-                        required
-                    >
+                    <input type="date" id="fecha_inicio" name="fecha_inicio" required>
 
                 </div>
 
@@ -175,12 +131,7 @@ require_once '../app/views/admin/layouts/header.php';
                         Fecha de finalización
                     </label>
 
-                    <input
-                        type="date"
-                        id="fecha_fin"
-                        name="fecha_fin"
-                        required
-                    >
+                    <input type="date" id="fecha_fin" name="fecha_fin" required>
 
                 </div>
 
@@ -191,11 +142,7 @@ require_once '../app/views/admin/layouts/header.php';
                         Estado
                     </label>
 
-                    <select
-                        id="estado"
-                        name="estado"
-                        required
-                    >
+                    <select id="estado" name="estado" required>
 
                         <option value="Activa">
                             Activa
@@ -224,11 +171,7 @@ require_once '../app/views/admin/layouts/header.php';
 
                                 <label class="producto-checkbox">
 
-                                    <input
-                                        type="checkbox"
-                                        name="productos[]"
-                                        value="<?= (int) $producto['id'] ?>"
-                                    >
+                                    <input type="checkbox" name="productos[]" value="<?= (int) $producto['id'] ?>">
 
                                     <span>
                                         <?= htmlspecialchars($producto['nombre']) ?>
@@ -260,17 +203,11 @@ require_once '../app/views/admin/layouts/header.php';
 
             <div class="form-actions">
 
-                <a
-                    href="admin.php?accion=promociones"
-                    class="btn-secondary"
-                >
+                <a href="admin.php?accion=promociones" class="btn-secondary">
                     Cancelar
                 </a>
 
-                <button
-                    type="submit"
-                    class="btn-primary"
-                >
+                <button type="submit" class="btn-primary">
                     <i class="fa-solid fa-floppy-disk"></i>
                     Guardar promoción
                 </button>

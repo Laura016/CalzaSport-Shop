@@ -2,7 +2,7 @@
 require_once '../app/views/admin/layouts/header.php';
 ?>
 
-<div class="admin-content">
+<div class="admin-content promociones-page">
 
     <div class="page-header">
 
@@ -14,10 +14,7 @@ require_once '../app/views/admin/layouts/header.php';
         </div>
 
         <div>
-            <a
-                href="admin.php?accion=nuevaPromocion"
-                class="btn-primary"
-            >
+            <a href="admin.php?accion=nuevaPromocion" class="btn-primary">
                 <i class="fa-solid fa-plus"></i>
                 Nueva promoción
             </a>
@@ -26,14 +23,11 @@ require_once '../app/views/admin/layouts/header.php';
     </div>
 
 
-    <div class="table-card">
+    <div class="promociones-table-card">
 
         <div class="table-responsive">
 
-            <table
-                id="tablaPromociones"
-                class="admin-table"
-            >
+            <table id="tablaPromociones" class="admin-table">
 
                 <thead>
 
@@ -67,25 +61,90 @@ require_once '../app/views/admin/layouts/header.php';
                             <tr>
 
                                 <td>
-                                    #<?= (int) $promocion['id'] ?>
+                                    <span class="promocion-id">
+                                        #<?= (int) $promocion['id'] ?>
+                                    </span>
                                 </td>
 
 
                                 <td>
 
-                                    <strong>
-                                        <?= htmlspecialchars(
-                                            $promocion['nombre']
-                                        ) ?>
-                                    </strong>
+                                    <div class="promocion-info">
 
-                                    <br>
+                                        <strong>
+                                            <?= htmlspecialchars(
+                                                $promocion['nombre']
+                                            ) ?>
+                                        </strong>
 
-                                    <small>
-                                        <?= htmlspecialchars(
-                                            $promocion['titulo']
+                                        <span>
+                                            <?= htmlspecialchars(
+                                                $promocion['titulo']
+                                            ) ?>
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <span class="promocion-descuento">
+
+                                        <?php if (
+                                            $promocion['tipo_descuento'] === 'porcentaje'
+                                        ): ?>
+
+                                            -<?= number_format(
+                                                $promocion['descuento'],
+                                                0
+                                            ) ?>%
+
+                                        <?php else: ?>
+
+                                            -$<?= number_format(
+                                                $promocion['descuento'],
+                                                0,
+                                                ',',
+                                                '.'
+                                            ) ?>
+
+                                        <?php endif; ?>
+
+                                    </span>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="promocion-fecha">
+
+                                        <i class="fa-regular fa-calendar"></i>
+
+                                        <?= date(
+                                            'd/m/Y',
+                                            strtotime($promocion['fecha_inicio'])
                                         ) ?>
-                                    </small>
+
+                                    </div>
+
+                                </td>
+
+
+                                <td>
+
+                                    <div class="promocion-fecha">
+
+                                        <i class="fa-regular fa-calendar-check"></i>
+
+                                        <?= date(
+                                            'd/m/Y',
+                                            strtotime($promocion['fecha_fin'])
+                                        ) ?>
+
+                                    </div>
 
                                 </td>
 
@@ -93,57 +152,16 @@ require_once '../app/views/admin/layouts/header.php';
                                 <td>
 
                                     <?php if (
-                                        $promocion['tipo_descuento']
-                                        === 'porcentaje'
+                                        $promocion['estado'] === 'Activa'
                                     ): ?>
 
-                                        <?= number_format(
-                                            $promocion['descuento'],
-                                            0
-                                        ) ?>%
-
-                                    <?php else: ?>
-
-                                        $<?= number_format(
-                                            $promocion['descuento'],
-                                            0,
-                                            ',',
-                                            '.'
-                                        ) ?>
-
-                                    <?php endif; ?>
-
-                                </td>
-
-
-                                <td>
-                                    <?= htmlspecialchars(
-                                        $promocion['fecha_inicio']
-                                    ) ?>
-                                </td>
-
-
-                                <td>
-                                    <?= htmlspecialchars(
-                                        $promocion['fecha_fin']
-                                    ) ?>
-                                </td>
-
-
-                                <td>
-
-                                    <?php if (
-                                        $promocion['estado']
-                                        === 'Activa'
-                                    ): ?>
-
-                                        <span class="status-badge status-active">
+                                        <span class="promocion-estado activa">
                                             Activa
                                         </span>
 
                                     <?php else: ?>
 
-                                        <span class="status-badge status-inactive">
+                                        <span class="promocion-estado inactiva">
                                             Inactiva
                                         </span>
 
@@ -154,23 +172,17 @@ require_once '../app/views/admin/layouts/header.php';
 
                                 <td>
 
-                                    <div class="action-buttons">
+                                    <div class="promocion-actions">
 
-                                        <a
-                                            href="admin.php?accion=editarPromocion&id=<?= (int) $promocion['id'] ?>"
-                                            class="btn-action btn-edit"
-                                            title="Editar promoción"
-                                        >
+                                        <a href="admin.php?accion=editarPromocion&id=<?= (int) $promocion['id'] ?>"
+                                            class="btn-action btn-edit" title="Editar promoción">
                                             <i class="fa-solid fa-pen"></i>
                                         </a>
 
 
-                                        <a
-                                            href="admin.php?accion=eliminarPromocion&id=<?= (int) $promocion['id'] ?>"
-                                            class="btn-action btn-delete"
-                                            title="Eliminar promoción"
-                                            onclick="return confirm('¿Estás segura de eliminar esta promoción?');"
-                                        >
+                                        <a href="admin.php?accion=eliminarPromocion&id=<?= (int) $promocion['id'] ?>"
+                                            class="btn-action btn-delete" title="Eliminar promoción"
+                                            onclick="return confirm('¿Estás segura de eliminar esta promoción?');">
                                             <i class="fa-solid fa-trash"></i>
                                         </a>
 
@@ -186,16 +198,21 @@ require_once '../app/views/admin/layouts/header.php';
 
                         <tr>
 
-                            <td
-                                colspan="7"
-                                class="empty-state"
-                            >
+                            <td colspan="7" class="promociones-empty">
 
-                                <i class="fa-solid fa-tags"></i>
+                                <div class="promociones-empty-content">
 
-                                <p>
-                                    Aún no tienes promociones creadas.
-                                </p>
+                                    <i class="fa-solid fa-tags"></i>
+
+                                    <strong>
+                                        Aún no tienes promociones creadas
+                                    </strong>
+
+                                    <span>
+                                        Crea tu primera promoción para comenzar a ofrecer descuentos.
+                                    </span>
+
+                                </div>
 
                             </td>
 

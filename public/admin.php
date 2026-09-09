@@ -60,6 +60,10 @@ switch ($accion) {
     $admin->nuevaPromocion();
     break;
 
+    case 'guardarPromocion':
+    $admin->guardarPromocion();
+    break;
+
     case 'verPedido':
     $admin->verPedido($_GET['id'] ?? 0);
     break;

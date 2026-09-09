@@ -267,9 +267,200 @@ class AdminController
 
     public function nuevaPromocion()
     {
-        $productos = $this->producto->obtenerTodos();
+        $productos = $this->producto->obtenerProductos();
 
         require_once '../app/views/admin/nueva_promocion.php';
+    }
+
+    public function guardarPromocion()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: admin.php?accion=promociones');
+            exit;
+        }
+
+        $nombre = trim($_POST['nombre'] ?? '');
+        $titulo = trim($_POST['titulo'] ?? '');
+        $descripcion = trim($_POST['descripcion'] ?? '');
+        $tipoDescuento = $_POST['tipo_descuento'] ?? 'porcentaje';
+        $descuento = (float) ($_POST['descuento'] ?? 0);
+        $fechaInicio = $_POST['fecha_inicio'] ?? '';
+        $fechaFin = $_POST['fecha_fin'] ?? '';
+        $estado = $_POST['estado'] ?? 'Activa';
+        $productos = $_POST['productos'] ?? [];
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validaciones
+        |--------------------------------------------------------------------------
+        */
+
+        if (
+            $nombre === '' ||
+            $titulo === '' ||
+            $fechaInicio === '' ||
+            $fechaFin === ''
+        ) {
+            die('Por favor completa todos los campos obligatorios.');
+        }
+
+        if (!in_array($tipoDescuento, ['porcentaje', 'valor_fijo'], true)) {
+            die('El tipo de descuento no es válido.');
+        }
+
+        if (!in_array($estado, ['Activa', 'Inactiva'], true)) {
+            die('El estado seleccionado no es válido.');
+        }
+
+        if ($descuento <= 0) {
+            die('El descuento debe ser mayor que cero.');
+        }
+
+        if (
+            $tipoDescuento === 'porcentaje' &&
+            $descuento > 100
+        ) {
+            die('El descuento porcentual no puede ser mayor al 100%.');
+        }
+
+        if ($fechaInicio > $fechaFin) {
+            die('La fecha de inicio no puede ser posterior a la fecha de finalización.');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Imagen
+        |--------------------------------------------------------------------------
+        */
+
+        $nombreImagen = null;
+
+        if (
+            isset($_FILES['imagen']) &&
+            $_FILES['imagen']['error'] !== UPLOAD_ERR_NO_FILE
+        ) {
+
+            if ($_FILES['imagen']['error'] !== UPLOAD_ERR_OK) {
+                die('Ocurrió un error al subir la imagen.');
+            }
+
+            $extensionesPermitidas = [
+                'jpg',
+                'jpeg',
+                'png',
+                'webp'
+            ];
+
+            $nombreOriginal = $_FILES['imagen']['name'];
+            $extension = strtolower(
+                pathinfo($nombreOriginal, PATHINFO_EXTENSION)
+            );
+
+            if (!in_array($extension, $extensionesPermitidas, true)) {
+                die('El formato de imagen no está permitido.');
+            }
+
+            if ($_FILES['imagen']['size'] > 5 * 1024 * 1024) {
+                die('La imagen no puede superar los 5 MB.');
+            }
+
+            $nombreImagen =
+                'promocion_' .
+                time() .
+                '_' .
+                uniqid() .
+                '.' .
+                $extension;
+
+            $directorioDestino =
+                __DIR__ .
+                '/../../public/assets/img/ofertas/';
+
+            if (!is_dir($directorioDestino)) {
+                mkdir(
+                    $directorioDestino,
+                    0755,
+                    true
+                );
+            }
+
+            $rutaDestino =
+                $directorioDestino .
+                $nombreImagen;
+
+            if (
+                !move_uploaded_file(
+                    $_FILES['imagen']['tmp_name'],
+                    $rutaDestino
+                )
+            ) {
+                die('No fue posible guardar la imagen.');
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Crear promoción
+        |--------------------------------------------------------------------------
+        */
+
+        $datos = [
+            'nombre' => $nombre,
+            'titulo' => $titulo,
+            'descripcion' => $descripcion,
+            'imagen' => $nombreImagen,
+            'tipo_descuento' => $tipoDescuento,
+            'descuento' => $descuento,
+            'fecha_inicio' => $fechaInicio,
+            'fecha_fin' => $fechaFin,
+            'estado' => $estado
+        ];
+
+        $promocionId = $this->promocion->crear($datos);
+
+        if (!$promocionId) {
+
+            /*
+             * Si la promoción no pudo crearse,
+             * eliminamos la imagen que acabamos de subir.
+             */
+
+            if ($nombreImagen !== null) {
+
+                $rutaImagen =
+                    __DIR__ .
+                    '/../../public/assets/img/ofertas/' .
+                    $nombreImagen;
+
+                if (file_exists($rutaImagen)) {
+                    unlink($rutaImagen);
+                }
+            }
+
+            die('No fue posible crear la promoción.');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Asignar productos
+        |--------------------------------------------------------------------------
+        */
+
+        $this->promocion->asignarProductos(
+            $promocionId,
+            $productos
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Volver al listado
+        |--------------------------------------------------------------------------
+        */
+
+        header(
+            'Location: admin.php?accion=promociones'
+        );
+        exit;
     }
 
     public function verPedido($id)
