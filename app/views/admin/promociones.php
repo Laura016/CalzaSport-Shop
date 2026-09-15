@@ -14,9 +14,9 @@ require_once '../app/views/admin/layouts/header.php';
         </div>
 
         <div>
-            <a href="admin.php?accion=nuevaPromocion" class="btn-primary">
+            <a href="admin.php?accion=nuevaPromocion" class="btn-promo-primary">
                 <i class="fa-solid fa-plus"></i>
-                Nueva promoción
+                <span>Nueva promoción</span>
             </a>
         </div>
 

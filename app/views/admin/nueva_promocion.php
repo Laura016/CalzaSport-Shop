@@ -2,7 +2,7 @@
 require_once '../app/views/admin/layouts/header.php';
 ?>
 
-<div class="admin-content">
+<div class="admin-content promociones-page nueva-promocion-page">
 
     <div class="page-header">
 
@@ -14,17 +14,17 @@ require_once '../app/views/admin/layouts/header.php';
         </div>
 
         <div>
-            <a href="admin.php?accion=promociones" class="btn-secondary">
+            <a href="admin.php?accion=promociones" class="btn-promo-secondary">
                 <i class="fa-solid fa-arrow-left"></i>
-                Volver
+                <span>Volver a promociones</span>
             </a>
         </div>
 
     </div>
 
-    <div class="form-card">
+    <div class="promocion-form-card">
 
-        <form action="admin.php?accion=guardarPromocion" method="POST" enctype="multipart/form-data">
+        <form action="admin.php?accion=guardarPromocion" method="POST" enctype="multipart/form-data" id="formPromocion">
 
             <div class="form-grid">
 
@@ -62,17 +62,64 @@ require_once '../app/views/admin/layouts/header.php';
                 </div>
 
 
-                <div class="form-group">
+                <div class="promocion-form-section promocion-imagen-section">
 
-                    <label for="imagen">
-                        Imagen de la promoción
-                    </label>
+                    <div class="promocion-section-header">
 
-                    <input type="file" id="imagen" name="imagen" accept=".jpg,.jpeg,.png,.webp">
+                        <div class="promocion-section-icon">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
 
-                    <small>
-                        Formatos permitidos: JPG, JPEG, PNG y WEBP.
-                    </small>
+                        <div>
+                            <h2>Imagen de la promoción</h2>
+                            <p>
+                                Agrega una imagen que represente la oferta.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="promocion-imagen-upload">
+
+                        <div class="promocion-imagen-preview" id="imagenPreviewContainer">
+
+                            <div class="promocion-imagen-placeholder" id="imagenPlaceholder">
+
+                                <i class="fa-regular fa-image"></i>
+
+                                <strong>
+                                    Vista previa
+                                </strong>
+
+                                <span>
+                                    La imagen aparecerá aquí
+                                </span>
+
+                            </div>
+
+                            <img id="imagenPreview" src="" alt="Vista previa de la promoción">
+
+                        </div>
+
+
+                        <div class="promocion-imagen-info">
+
+                            <label for="imagen" class="promocion-upload-button">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                Seleccionar imagen
+                            </label>
+
+                            <input type="file" id="imagen" name="imagen" accept=".jpg,.jpeg,.png,.webp" hidden>
+
+                            <p>
+                                JPG, JPEG, PNG o WEBP.
+                                Tamaño máximo: 5 MB.
+                            </p>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -157,11 +204,23 @@ require_once '../app/views/admin/layouts/header.php';
                 </div>
 
 
-                <div class="form-group form-group-full">
+                <div class="promocion-form-section promocion-productos-section">
 
-                    <label>
-                        Productos incluidos
-                    </label>
+                    <div class="promocion-section-header">
+
+                        <div class="promocion-section-icon">
+                            <i class="fa-solid fa-box-open"></i>
+                        </div>
+
+                        <div>
+                            <h2>Productos incluidos</h2>
+                            <p>
+                                Selecciona los productos a los que aplicará esta promoción.
+                            </p>
+                        </div>
+
+                    </div>
+
 
                     <div class="productos-promocion">
 
@@ -169,18 +228,43 @@ require_once '../app/views/admin/layouts/header.php';
 
                             <?php foreach ($productos as $producto): ?>
 
-                                <label class="producto-checkbox">
+                                <label class="producto-promocion-card">
 
                                     <input type="checkbox" name="productos[]" value="<?= (int) $producto['id'] ?>">
 
-                                    <span>
-                                        <?= htmlspecialchars($producto['nombre']) ?>
-                                    </span>
+                                    <div class="producto-promocion-check">
+                                        <i class="fa-solid fa-check"></i>
+                                    </div>
 
-                                    <small>
-                                        Ref:
-                                        <?= htmlspecialchars($producto['referencia']) ?>
-                                    </small>
+
+                                    <div class="producto-promocion-info">
+
+                                        <strong>
+                                            <?= htmlspecialchars(
+                                                $producto['nombre']
+                                            ) ?>
+                                        </strong>
+
+                                        <span>
+                                            Ref:
+                                            <?= htmlspecialchars(
+                                                $producto['referencia']
+                                            ) ?>
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="producto-promocion-precio">
+
+                                        $<?= number_format(
+                                            $producto['precio'],
+                                            0,
+                                            ',',
+                                            '.'
+                                        ) ?>
+
+                                    </div>
 
                                 </label>
 
@@ -188,9 +272,19 @@ require_once '../app/views/admin/layouts/header.php';
 
                         <?php else: ?>
 
-                            <p>
-                                No hay productos disponibles.
-                            </p>
+                            <div class="productos-promocion-empty">
+
+                                <i class="fa-solid fa-box-open"></i>
+
+                                <strong>
+                                    No hay productos disponibles
+                                </strong>
+
+                                <span>
+                                    Agrega productos desde la sección Productos.
+                                </span>
+
+                            </div>
 
                         <?php endif; ?>
 
@@ -201,15 +295,15 @@ require_once '../app/views/admin/layouts/header.php';
             </div>
 
 
-            <div class="form-actions">
+            <div class="promocion-form-actions">
 
-                <a href="admin.php?accion=promociones" class="btn-secondary">
+                <a href="admin.php?accion=promociones" class="btn-promo-secondary">
                     Cancelar
                 </a>
 
-                <button type="submit" class="btn-primary">
+                <button type="submit" class="btn-promo-primary">
                     <i class="fa-solid fa-floppy-disk"></i>
-                    Guardar promoción
+                    <span>Guardar promoción</span>
                 </button>
 
             </div>
@@ -219,3 +313,4 @@ require_once '../app/views/admin/layouts/header.php';
     </div>
 
 </div>
+<script src="assets/js/admin/promociones.js"></script>
