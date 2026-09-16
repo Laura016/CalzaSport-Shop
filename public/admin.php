@@ -53,24 +53,32 @@ switch ($accion) {
         break;
 
     case 'promociones':
-    $admin->promociones();
-    break;
+        $admin->promociones();
+        break;
 
     case 'nuevaPromocion':
-    $admin->nuevaPromocion();
-    break;
+        $admin->nuevaPromocion();
+        break;
 
     case 'guardarPromocion':
-    $admin->guardarPromocion();
-    break;
+        $admin->guardarPromocion();
+        break;
+
+    case 'editarPromocion':
+        $admin->editarPromocion($_GET['id'] ?? 0);
+        break;
+
+    case 'actualizarPromocion':
+        $admin->actualizarPromocion();
+        break;
 
     case 'verPedido':
-    $admin->verPedido($_GET['id'] ?? 0);
-    break;
+        $admin->verPedido($_GET['id'] ?? 0);
+        break;
 
     case 'actualizarEstadoPedido':
-    $admin->actualizarEstadoPedido();
-    break;
+        $admin->actualizarEstadoPedido();
+        break;
 
     default:
         $admin->dashboard();

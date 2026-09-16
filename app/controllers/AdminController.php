@@ -272,6 +272,35 @@ class AdminController
         require_once '../app/views/admin/nueva_promocion.php';
     }
 
+    public function editarPromocion($id)
+    {
+        $id = (int) $id;
+
+        if ($id <= 0) {
+            header('Location: admin.php?accion=promociones');
+            exit;
+        }
+
+        $promocion = $this->promocion->obtenerPorId($id);
+
+        if (!$promocion) {
+            header('Location: admin.php?accion=promociones');
+            exit;
+        }
+
+        $productos = $this->producto->obtenerProductos();
+
+        $productosPromocion = $this->promocion->obtenerProductos($id);
+
+        $productosSeleccionados = [];
+
+        foreach ($productosPromocion as $producto) {
+            $productosSeleccionados[] = (int) $producto['id'];
+        }
+
+        require_once '../app/views/admin/editar_promocion.php';
+    }
+
     public function guardarPromocion()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -460,6 +489,340 @@ class AdminController
         header(
             'Location: admin.php?accion=promociones'
         );
+        exit;
+    }
+
+    public function actualizarPromocion()
+    {
+        $id = (int) ($_POST['id'] ?? 0);
+
+        if ($id <= 0) {
+            header('Location: admin.php?accion=promociones');
+            exit;
+        }
+
+        $promocionActual = $this->promocion->obtenerPorId($id);
+
+        if (!$promocionActual) {
+            header('Location: admin.php?accion=promociones');
+            exit;
+        }
+
+        $nombre = trim($_POST['nombre'] ?? '');
+        $titulo = trim($_POST['titulo'] ?? '');
+        $descripcion = trim($_POST['descripcion'] ?? '');
+
+        $tipoDescuento = $_POST['tipo_descuento'] ?? 'porcentaje';
+
+        $descuento = (float) ($_POST['descuento'] ?? 0);
+
+        $fechaInicio = $_POST['fecha_inicio'] ?? '';
+        $fechaFin = $_POST['fecha_fin'] ?? '';
+
+        $estado = $_POST['estado'] ?? 'Activa';
+
+        $productos = $_POST['productos'] ?? [];
+
+
+        /* =========================================
+           VALIDACIONES
+        ========================================== */
+
+        if (
+            $nombre === '' ||
+            $titulo === '' ||
+            $fechaInicio === '' ||
+            $fechaFin === ''
+        ) {
+            header(
+                'Location: admin.php?accion=editarPromocion&id=' . $id
+            );
+            exit;
+        }
+
+
+        if (
+            !in_array(
+                $tipoDescuento,
+                ['porcentaje', 'valor_fijo'],
+                true
+            )
+        ) {
+            header(
+                'Location: admin.php?accion=editarPromocion&id=' . $id
+            );
+            exit;
+        }
+
+
+        if (
+            !in_array(
+                $estado,
+                ['Activa', 'Inactiva'],
+                true
+            )
+        ) {
+            header(
+                'Location: admin.php?accion=editarPromocion&id=' . $id
+            );
+            exit;
+        }
+
+
+        if ($descuento <= 0) {
+            header(
+                'Location: admin.php?accion=editarPromocion&id=' . $id
+            );
+            exit;
+        }
+
+
+        if ($fechaFin < $fechaInicio) {
+            header(
+                'Location: admin.php?accion=editarPromocion&id=' . $id
+            );
+            exit;
+        }
+
+
+        /* =========================================
+           IMAGEN
+        ========================================== */
+
+        $nombreImagen = $promocionActual['imagen'];
+
+
+        if (
+            isset($_FILES['imagen']) &&
+            $_FILES['imagen']['error'] !== UPLOAD_ERR_NO_FILE
+        ) {
+
+            if (
+                $_FILES['imagen']['error'] !== UPLOAD_ERR_OK
+            ) {
+                header(
+                    'Location: admin.php?accion=editarPromocion&id=' . $id
+                );
+                exit;
+            }
+
+
+            $archivo = $_FILES['imagen'];
+
+            $extension = strtolower(
+                pathinfo(
+                    $archivo['name'],
+                    PATHINFO_EXTENSION
+                )
+            );
+
+
+            $extensionesPermitidas = [
+                'jpg',
+                'jpeg',
+                'png',
+                'webp'
+            ];
+
+
+            if (
+                !in_array(
+                    $extension,
+                    $extensionesPermitidas,
+                    true
+                )
+            ) {
+                header(
+                    'Location: admin.php?accion=editarPromocion&id=' . $id
+                );
+                exit;
+            }
+
+
+            if ($archivo['size'] > 5 * 1024 * 1024) {
+                header(
+                    'Location: admin.php?accion=editarPromocion&id=' . $id
+                );
+                exit;
+            }
+
+
+            $nombreImagen =
+                'promocion_' .
+                uniqid('', true) .
+                '.' .
+                $extension;
+
+
+            $directorio =
+                __DIR__ .
+                '/../../public/assets/img/ofertas/';
+
+
+            if (!is_dir($directorio)) {
+                mkdir(
+                    $directorio,
+                    0755,
+                    true
+                );
+            }
+
+
+            $rutaNueva =
+                $directorio .
+                $nombreImagen;
+
+
+            if (
+                !move_uploaded_file(
+                    $archivo['tmp_name'],
+                    $rutaNueva
+                )
+            ) {
+                header(
+                    'Location: admin.php?accion=editarPromocion&id=' . $id
+                );
+                exit;
+            }
+
+
+            /* =========================================
+               ELIMINAR IMAGEN ANTERIOR
+            ========================================== */
+
+            if (
+                !empty($promocionActual['imagen'])
+            ) {
+
+                $rutaAnterior =
+                    $directorio .
+                    $promocionActual['imagen'];
+
+
+                if (
+                    is_file($rutaAnterior)
+                ) {
+                    unlink($rutaAnterior);
+                }
+            }
+        }
+
+
+        /* =========================================
+           ACTUALIZAR PROMOCIÓN
+        ========================================== */
+
+        $datos = [
+
+            'id' => $id,
+
+            'nombre' => $nombre,
+
+            'titulo' => $titulo,
+
+            'descripcion' => $descripcion,
+
+            'imagen' => $nombreImagen,
+
+            'tipo_descuento' => $tipoDescuento,
+
+            'descuento' => $descuento,
+
+            'fecha_inicio' => $fechaInicio,
+
+            'fecha_fin' => $fechaFin,
+
+            'estado' => $estado
+
+        ];
+
+
+        $resultado =
+            $this->promocion->actualizar($datos);
+
+
+        if (!$resultado) {
+            header(
+                'Location: admin.php?accion=editarPromocion&id=' . $id
+            );
+            exit;
+        }
+
+
+        /* =========================================
+           ACTUALIZAR PRODUCTOS
+        ========================================== */
+
+        $this->promocion->asignarProductos(
+            $id,
+            $productos
+        );
+
+
+        /* =========================================
+           VOLVER A PROMOCIONES
+        ========================================== */
+
+        header(
+            'Location: admin.php?accion=promociones'
+        );
+
+        exit;
+    }
+
+    public function eliminarPromocion($id)
+    {
+        $id = (int) $id;
+
+        if ($id <= 0) {
+            header('Location: admin.php?accion=promociones');
+            exit;
+        }
+
+        // Buscar la promoción
+        $promocion = $this->promocion->obtenerPorId($id);
+
+        if (!$promocion) {
+            header('Location: admin.php?accion=promociones');
+            exit;
+        }
+
+        /*
+        |----------------------------------------------------------
+        | Eliminar imagen de la promoción
+        |----------------------------------------------------------
+        */
+
+        if (!empty($promocion['imagen'])) {
+
+            $rutaImagen = __DIR__
+                . '/../../public/assets/img/ofertas/'
+                . $promocion['imagen'];
+
+            if (is_file($rutaImagen)) {
+                unlink($rutaImagen);
+            }
+        }
+
+        /*
+        |----------------------------------------------------------
+        | Eliminar promoción de la base de datos
+        |----------------------------------------------------------
+        */
+
+        $resultado = $this->promocion->eliminar($id);
+
+        if (!$resultado) {
+            die('No fue posible eliminar la promoción.');
+        }
+
+        /*
+        |----------------------------------------------------------
+        | Regresar al listado
+        |----------------------------------------------------------
+        */
+
+        header('Location: admin.php?accion=promociones');
         exit;
     }
 

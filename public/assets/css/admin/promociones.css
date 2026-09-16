@@ -56,6 +56,22 @@
     line-height: 1.5;
 }
 
+/* =========================================
+   ACCIONES DEL ENCABEZADO
+========================================= */
+
+.promociones-header-actions {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    flex: 0 0 auto;
+}
+
 
 /* =========================================
    BOTÓN NUEVA PROMOCIÓN
@@ -500,6 +516,16 @@
         margin-bottom: 20px;
     }
 
+    .promociones-header-actions {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        width: 100%;
+
+        gap: 10px;
+    }
+
     .promociones-page .page-header h1 {
         font-size: 24px;
     }
@@ -508,7 +534,8 @@
         font-size: 13px;
     }
 
-    .btn-promo-primary {
+    .btn-promo-primary,
+    .btn-promo-secondary {
         width: 100%;
 
         min-height: 46px;

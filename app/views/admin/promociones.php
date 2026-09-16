@@ -8,16 +8,26 @@ require_once '../app/views/admin/layouts/header.php';
 
         <div>
             <h1>Promociones</h1>
+
             <p>
                 Administra las promociones y descuentos de CalzaSport.
             </p>
         </div>
 
-        <div>
+
+        <div class="promociones-header-actions">
+
+            <a href="admin.php?accion=dashboard" class="btn-promo-secondary">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Dashboard</span>
+            </a>
+
+
             <a href="admin.php?accion=nuevaPromocion" class="btn-promo-primary">
                 <i class="fa-solid fa-plus"></i>
                 <span>Nueva promoción</span>
             </a>
+
         </div>
 
     </div>
