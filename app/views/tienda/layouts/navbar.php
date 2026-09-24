@@ -20,10 +20,6 @@
 
             <a href="catalogo.php?categoria=Mujer">Mujer</a>
 
-            <a href="catalogo.php?categoria=Running">Running</a>
-
-            <a href="catalogo.php?categoria=Casual">Casual</a>
-
             <a href="ofertas.php">Ofertas</a>
 
         </nav>

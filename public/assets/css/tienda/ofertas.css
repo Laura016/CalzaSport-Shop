@@ -1,0 +1,515 @@
+/* =========================================================
+   CALZASPORT - PÁGINA DE OFERTAS
+========================================================= */
+
+.ofertas-page {
+    background: #f8f8f8;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.ofertas-hero {
+    position: relative;
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 70px 20px;
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.68),
+            rgba(0, 0, 0, 0.68)
+        ),
+        url("../img/ofertas/hero-ofertas.jpg") center / cover no-repeat;
+    overflow: hidden;
+}
+
+.ofertas-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    color: #fff;
+}
+
+.ofertas-eyebrow {
+    display: inline-block;
+    margin-bottom: 15px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.ofertas-hero h1 {
+    margin: 0 0 15px;
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -2px;
+}
+
+.ofertas-hero p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   SECCIÓN PRINCIPAL
+========================================================= */
+
+.ofertas-section {
+    width: min(1200px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: 80px 0;
+}
+
+.ofertas-section .section-title {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 55px;
+}
+
+.ofertas-section .section-subtitle {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    color: #777;
+}
+
+.ofertas-section .section-title h2 {
+    margin: 0 0 12px;
+    color: #111;
+    font-size: clamp(30px, 4vw, 46px);
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.ofertas-section .section-title p {
+    margin: 0;
+    color: #777;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   CONTENEDOR DE PROMOCIONES
+========================================================= */
+
+.promociones-publicas {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+}
+
+
+/* =========================================================
+   TARJETA DE PROMOCIÓN
+========================================================= */
+
+.promocion-publica {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    background: #fff;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+    border: 1px solid #ededed;
+}
+
+
+/* =========================================================
+   IMAGEN PROMOCIÓN
+========================================================= */
+
+.promocion-publica-imagen {
+    min-height: 440px;
+    background: #eeeeee;
+    overflow: hidden;
+}
+
+.promocion-publica-imagen img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.promocion-publica:hover .promocion-publica-imagen img {
+    transform: scale(1.04);
+}
+
+
+/* =========================================================
+   CONTENIDO PROMOCIÓN
+========================================================= */
+
+.promocion-publica-contenido {
+    padding: 45px;
+}
+
+.promocion-publica-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 7px 15px;
+    border-radius: 50px;
+    background: #111;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.promocion-publica-contenido h2 {
+    margin: 18px 0 12px;
+    color: #111;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.1;
+    font-weight: 800;
+}
+
+.promocion-publica-contenido > p {
+    margin: 0 0 18px;
+    color: #666;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   FECHA
+========================================================= */
+
+.promocion-publica-fechas {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+    color: #777;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.promocion-publica-fechas i {
+    color: #111;
+}
+
+
+/* =========================================================
+   PRODUCTOS EN PROMOCIÓN
+========================================================= */
+
+.promocion-productos-publicos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+
+/* =========================================================
+   PRODUCTO
+========================================================= */
+
+.producto-oferta {
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    background: #fafafa;
+    border: 1px solid #eeeeee;
+    border-radius: 16px;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.producto-oferta:hover {
+    transform: translateY(-3px);
+    border-color: #d8d8d8;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================================
+   IMAGEN PRODUCTO
+========================================================= */
+
+.producto-oferta-imagen {
+    flex: 0 0 105px;
+    width: 105px;
+    height: 105px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.producto-oferta-imagen img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   INFORMACIÓN PRODUCTO
+========================================================= */
+
+.producto-oferta-info {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.producto-oferta-info h3 {
+    margin: 0 0 5px;
+    color: #111;
+    font-size: 15px;
+    line-height: 1.3;
+    font-weight: 750;
+}
+
+.producto-oferta-referencia {
+    margin-bottom: 10px;
+    color: #999;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   PRECIOS
+========================================================= */
+
+.producto-oferta-precios {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.producto-oferta-precios .precio-original {
+    color: #999;
+    font-size: 12px;
+    text-decoration: line-through;
+}
+
+.producto-oferta-precios strong {
+    color: #111;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   BOTÓN
+========================================================= */
+
+.btn-producto-oferta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: 7px 13px;
+    border-radius: 8px;
+    background: #111;
+    color: #fff;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 700;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+.btn-producto-oferta:hover {
+    background: #333;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   SIN PROMOCIONES
+========================================================= */
+
+.ofertas-vacias {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 70px 30px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #ededed;
+    border-radius: 24px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+}
+
+.ofertas-vacias > i {
+    margin-bottom: 20px;
+    color: #222;
+    font-size: 42px;
+}
+
+.ofertas-vacias h3 {
+    margin: 0 0 10px;
+    color: #111;
+    font-size: 24px;
+}
+
+.ofertas-vacias p {
+    margin: 0 0 25px;
+    color: #777;
+    line-height: 1.6;
+}
+
+.btn-ofertas {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 24px;
+    border-radius: 10px;
+    background: #111;
+    color: #fff;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 0.2s ease;
+}
+
+.btn-ofertas:hover {
+    background: #333;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .promocion-publica {
+        grid-template-columns: 1fr;
+    }
+
+    .promocion-publica-imagen {
+        min-height: 350px;
+        max-height: 420px;
+    }
+
+    .promocion-publica-contenido {
+        padding: 35px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET PEQUEÑA
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .ofertas-hero {
+        min-height: 310px;
+        padding: 60px 20px;
+    }
+
+    .ofertas-hero h1 {
+        letter-spacing: -1px;
+    }
+
+    .ofertas-section {
+        width: min(100% - 28px, 650px);
+        padding: 55px 0;
+    }
+
+    .promocion-publica-imagen {
+        min-height: 280px;
+    }
+
+    .promocion-publica-contenido {
+        padding: 28px 22px;
+    }
+
+    .promocion-productos-publicos {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .ofertas-hero {
+        min-height: 270px;
+    }
+
+    .ofertas-hero p {
+        font-size: 15px;
+    }
+
+    .ofertas-section {
+        width: calc(100% - 22px);
+        padding: 45px 0;
+    }
+
+    .ofertas-section .section-title {
+        margin-bottom: 35px;
+    }
+
+    .ofertas-section .section-title h2 {
+        font-size: 30px;
+    }
+
+    .promocion-publica {
+        border-radius: 18px;
+    }
+
+    .promocion-publica-imagen {
+        min-height: 230px;
+        max-height: 280px;
+    }
+
+    .promocion-publica-contenido {
+        padding: 24px 18px;
+    }
+
+    .promocion-publica-contenido h2 {
+        font-size: 28px;
+    }
+
+    .producto-oferta {
+        padding: 11px;
+    }
+
+    .producto-oferta-imagen {
+        flex-basis: 85px;
+        width: 85px;
+        height: 85px;
+    }
+
+    .producto-oferta-info h3 {
+        font-size: 14px;
+    }
+
+    .producto-oferta-precios strong {
+        font-size: 16px;
+    }
+
+}
