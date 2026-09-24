@@ -72,6 +72,10 @@ switch ($accion) {
         $admin->actualizarPromocion();
         break;
 
+    case 'eliminarPromocion':
+        $admin->eliminarPromocion($_GET['id'] ?? 0);
+        break;
+
     case 'verPedido':
         $admin->verPedido($_GET['id'] ?? 0);
         break;
